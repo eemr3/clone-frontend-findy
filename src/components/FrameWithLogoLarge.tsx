@@ -9,17 +9,16 @@ interface FrameWithLogoLargeProps {
 
 export function FrameWithLogoLarge({
   children,
-  frameHeight = "h-[87rem]",
+  frameHeight = "87rem",
   sectionClassName = "",
 }: FrameWithLogoLargeProps) {
   return (
-    /* <div className={`bg-blue-dark h-[${frameHeight}]`}> */
-    <div className={`bg-blue-dark ${frameHeight}`}>
+    <article className={`bg-blue-dark`} style={{ height: frameHeight }}>
       <LogoLarge className="absolute mt-[1.533rem]  ml-[2.891rem]" />
 
       <section className={`relative z-10 ${sectionClassName}`}>
         {children}
       </section>
-    </div>
+    </article>
   );
 }
