@@ -5,6 +5,7 @@ import { Login } from "../pages/Login";
 export const AppRouter = () => {
   return (
     <Routes>
+      
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
     </Routes>
