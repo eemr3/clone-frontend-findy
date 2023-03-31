@@ -115,13 +115,25 @@ export function Home() {
         </section>
 
 
-        <div className="mt-[8rem] h-60 bg-grey-#5">
+        <section className="mt-[8rem] h-[64.3rem] bg-grey-#5">
+
+          <div className="w-[112.187rem] flex justify-between">
+            <Heading
+              type="sm"
+              className="text-grey-#1"
+            >
+
+            </Heading>
+
+
+          </div>
+
           <h1 className="ml-40 mt-4 text-5xl font-bold">Categoria</h1>
-        </div>
+        </section>
 
       </main>
 
-     
+
     </div>
   );
 }
