@@ -5,7 +5,7 @@ interface TextProps extends HTMLAttributes<HTMLSpanElement> {
   type: 'lg' | 'md' | 'sm';
 }
 
-export function Text({ children, type, className, ...rest }: TextProps) {
+export function Text({ children, type, className = "", ...rest }: TextProps) {
   const typeClassName = type == "lg" ?
     "text-[3.2rem] leading-[3.2rem] font-semibold" :
     type == "md" ?

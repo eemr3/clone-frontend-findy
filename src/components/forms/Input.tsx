@@ -1,5 +1,5 @@
-import Icon, { MagnifyingGlass } from "@phosphor-icons/react";
-import { DetailedHTMLProps, InputHTMLAttributes, LegacyRef, useRef } from "react";
+import Icon from "@phosphor-icons/react";
+import { DetailedHTMLProps, InputHTMLAttributes, useRef } from "react";
 
 interface InputProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
   placeholder: string;
