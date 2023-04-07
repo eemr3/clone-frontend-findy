@@ -5,37 +5,55 @@ import { LogoLarge } from "../../components/LogoLarge";
 export function Login() {
   return (
     <>
-    <div className="w-max-[144rem] flex flex-col">
-      <Header />
+      <div className="w-max-[144rem] flex flex-col">
+        <Header />
 
-      <div className="w-full h-[73vh] flex items-center">
-        <LogoLarge className="absolute  mt-[1.533rem]  ml-[4.891rem] z-[-1]" />
+        <div className="flex h-[73vh] w-full items-center">
+          <LogoLarge className="absolute  z-[-1]  mt-[1.533rem] ml-[4.891rem]" />
 
-        <div className="w-[63.5rem] h-[68rem] bg-[#FFFFFF]  mx-auto rounded-[2.6rem] flex items-center flex-col">
-          <h2 className="text-[4.8rem] font-[700] mt-[6.4rem] mb-[6.4rem]">Acesse a sua conta</h2>
-        
-          <input className="w-[70%] mb-[2.4rem] h-[6rem] border border-black rounded-[0.8rem] pl-[1rem] text-[2.4rem]" type="email" placeholder="Email" />
-          <input className="w-[70%] h-[6rem] border border-black rounded-[0.8rem] pl-[1rem] text-[2.4rem] " type="password" id="password" placeholder="Senha" /> 
+          <div className="mx-auto flex h-[68rem]  w-[63.5rem] flex-col items-center rounded-[2.6rem] bg-[#FFFFFF]">
+            <h2 className="mt-[6.4rem] mb-[6.4rem] text-[4.8rem] font-[700]">
+              Acesse a sua conta
+            </h2>
 
-          <div className="flex justify-between w-[70%] mt-[2rem]">
-            <div className="flex">
-            <input className="mr-[1.2rem] w-[2.8rem] h-[2.9rem] border-green-medium" type="checkbox" />
-            <p className="text-[1.6rem]">Matenha-me logado</p>
+            <input
+              className="border-black mb-[2.4rem] h-[6rem] w-[70%] rounded-[0.8rem] border pl-[1rem] text-[2.4rem]"
+              type="email"
+              placeholder="Email"
+            />
+            <input
+              className="border-black h-[6rem] w-[70%] rounded-[0.8rem] border pl-[1rem] text-[2.4rem] "
+              type="password"
+              id="password"
+              placeholder="Senha"
+            />
+
+            <div className="mt-[2rem] flex w-[70%] justify-between">
+              <div className="flex">
+                <input
+                  className="mr-[1.2rem] h-[2.9rem] w-[2.8rem] border-green-medium"
+                  type="checkbox"
+                />
+                <p className="text-[1.6rem]">Matenha-me logado</p>
+              </div>
+              <Link to="#" className="text-[1.6rem] text-green-medium ">
+                Esqueceu a senha?
+              </Link>
             </div>
-            <Link to="#" className="text-[1.6rem] text-green-medium ">Esqueceu a senha?</Link>
-
+            <button className="mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195]">
+              <p className="text-[2.4rem] text-[#FFFFFF] ">Login</p>
+            </button>
+            <p className="mt-[6.4rem] text-[2.4rem]">
+              Você é novo na Findy?{" "}
+              <Link to="#" className="text-[#01A195]">
+                {" "}
+                Crie sua conta aqui
+              </Link>{" "}
+            </p>
           </div>
-          <button className="bg-[#01A195] w-[70%] h-[6rem] rounded-[3.2rem] mt-[6.6rem]">
-            <p className="text-[#FFFFFF] text-[2.4rem] ">Login</p>
-          </button>
-          <p className="mt-[6.4rem] text-[2.4rem]">Você é novo na Findy? <Link to="#" className="text-[#01A195]">  Crie sua conta aqui</Link> </p>
-
+        </div>
+        <Footer />
       </div>
-
-
-      </div>
-      <Footer />
-    </div>
     </>
   );
 }

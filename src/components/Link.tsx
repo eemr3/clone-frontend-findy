@@ -5,7 +5,7 @@ interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   disabled?: boolean;
 }
 
-export function Link({
+export function CustomerLink({
   children,
   disabled = false,
   className,
