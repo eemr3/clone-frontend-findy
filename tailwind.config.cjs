@@ -48,6 +48,30 @@ module.exports = {
         'frame-one': 'url(/assets/bg-frame1.png)'
       }
     },
+    screens: {
+      '4xl': {'max': '2170px'},
+       // => @media (max-width: 2170px) { ... }
+       // => @media (max-width: 2170px) { ... }
+      '3xl': {'max': '1770px'},
+       // => @media (max-width: 1870px) { ... }
+      '2xl': {'max': '1600px'},
+      // => @media (max-width: 1670px) { ... }
+
+      'xl': {'max': '1350px'},
+      // => @media (max-width: 1279px) and (max-height: 1350px) { ... }
+
+      'lg': {'max': '1023px'},
+      // => @media (max-width: 1023px) { ... }
+
+      'md': {'max': '767px'},
+      // => @media (max-width: 767px)  { ... }
+
+      'sm': {'max': '639px'},
+      // => @media (max-width: 639px) { ... }
+      'md-h': { 'raw': '(max-height: 1110px)' },
+      // => @media (min-height: 800px) { ... }
+    },
   },
+  
   plugins: [],
 }

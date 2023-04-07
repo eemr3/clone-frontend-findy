@@ -1,13 +1,6 @@
-import { SVGAttributes } from "react";
+import { SVGIconProps } from "../../types/SVGIcon";
 
-interface DatabaseIconProps
-  extends Partial<
-    Omit<SVGAttributes<SVGSVGElement>, "width" | "height" | "fill" | "viewBox">
-  > {
-  color?: string;
-}
-
-export function DatabaseIcon({ color = "#F9F9F9", ...rest }: DatabaseIconProps) {
+export function DatabaseIcon({ color = "#F9F9F9", ...rest }: SVGIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

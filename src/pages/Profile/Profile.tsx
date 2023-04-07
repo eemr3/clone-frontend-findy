@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { HeaderProfile } from "../../components/HeaderProfile";
 import { Heading } from "../../components/Heading";
-import { Logo } from "../../components/Logo";
 import { Text } from "../../components/Text";
 import { InputDB } from "../../components/forms/InputDB";
 import { EnvelopeIcon } from "../../components/icons/EnvelopeIcon";
 import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
 import { TelephoneIcon } from "../../components/icons/TelephoneIcon";
-import { Spinner } from "../../components/Spinner";
 
 
 

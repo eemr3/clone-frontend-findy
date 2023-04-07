@@ -43,10 +43,7 @@ export function Heading({ children, type, className, ...rest }: HeadingProps) {
   const typeClassName = listTypeStyle.filter(typeStyle => typeStyle.type == type)[0].style;
 
   return (
-    <h1
-      className={`${typeClassName} ${className}`}
-      {...rest}
-    >
+    <h1 className={`${typeClassName} ${className}`} {...rest}>
       {children}
     </h1>
   );

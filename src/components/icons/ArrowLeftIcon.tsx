@@ -1,10 +1,8 @@
-import { SVGAttributes, useState } from "react";
+import { useState } from "react";
+import { SVGIconProps } from "../../types/SVGIcon";
 
 interface ArrowLeftIconProps
-  extends Partial<
-    Omit<SVGAttributes<SVGSVGElement>, "width" | "height" | "fill" | "viewBox">
-  > {
-  color?: string;
+  extends SVGIconProps {
   colorHover?: string;
 }
 
