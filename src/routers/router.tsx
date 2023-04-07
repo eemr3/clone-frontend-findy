@@ -7,7 +7,6 @@ import { Profile } from "../pages/Profile/Profile";
 export const AppRouter = () => {
   return (
     <Routes>
-
       <Route path="/" element={<Home />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/login" element={<Login />} />

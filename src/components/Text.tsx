@@ -6,11 +6,12 @@ interface TextProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 export function Text({ children, type, className = "", ...rest }: TextProps) {
-  const typeClassName = type == "lg" ?
-    "text-[3.2rem] leading-[3.2rem] font-semibold" :
-    type == "md" ?
-      "text-[2.4rem] leading-[3.2rem] font-medium" :
-      "text-[1.6rem] leading-[2.4rem] font-medium";
+  const typeClassName =
+    type == "lg"
+      ? "text-[3.2rem] leading-[3.2rem] font-semibold"
+      : type == "md"
+      ? "text-[2.4rem] leading-[3.2rem] font-medium"
+      : "text-[1.6rem] leading-[2.4rem] font-medium";
 
   return (
     <span className={`${typeClassName} ${className}`} {...rest}>

@@ -17,12 +17,12 @@ export function Login() {
             </h2>
 
             <input
-              className="border-black mb-[2.4rem] h-[6rem] w-[70%] rounded-[0.8rem] border pl-[1rem] text-[2.4rem]"
+              className="mb-[2.4rem] h-[6rem] w-[70%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem]"
               type="email"
               placeholder="Email"
             />
             <input
-              className="border-black h-[6rem] w-[70%] rounded-[0.8rem] border pl-[1rem] text-[2.4rem] "
+              className="h-[6rem] w-[70%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] "
               type="password"
               id="password"
               placeholder="Senha"

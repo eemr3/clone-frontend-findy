@@ -17,5 +17,3 @@ export function CodeIcon({ color = "#F9F9F9", ...rest }: SVGIconProps) {
     </svg>
   );
 }
-
-

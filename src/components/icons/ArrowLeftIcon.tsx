@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { SVGIconProps } from "../../types/SVGIcon";
 
-interface ArrowLeftIconProps
-  extends SVGIconProps {
+interface ArrowLeftIconProps extends SVGIconProps {
   colorHover?: string;
 }
 
-export function ArrowLeftIcon({ color = "#252C43", colorHover = "#326BFF", ...rest }: ArrowLeftIconProps) {
+export function ArrowLeftIcon({
+  color = "#252C43",
+  colorHover = "#326BFF",
+  ...rest
+}: ArrowLeftIconProps) {
   const [mouseOver, setMouseOver] = useState(false);
 
   return (
@@ -20,9 +23,11 @@ export function ArrowLeftIcon({ color = "#252C43", colorHover = "#326BFF", ...re
       onMouseLeave={() => setMouseOver(false)}
       {...rest}
     >
-      <path stroke={mouseOver ? colorHover : color} strokeWidth="8" d="M31 3L6 26.5 31 50"></path>
+      <path
+        stroke={mouseOver ? colorHover : color}
+        strokeWidth="8"
+        d="M31 3L6 26.5 31 50"
+      ></path>
     </svg>
   );
 }
-
-

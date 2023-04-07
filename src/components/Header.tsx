@@ -13,7 +13,7 @@ export function Header(props: { showJustify: boolean }) {
         <Link to="/">
           <Logo
             className={`ml-[4.624rem] ${
-              props.showJustify ? "" : "mr-[12.3rem]"
+              props.showJustify ? "" : "mr-[12.3rem] sm:mr-[6rem]"
             }`}
           />
         </Link>

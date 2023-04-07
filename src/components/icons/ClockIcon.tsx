@@ -19,5 +19,3 @@ export function ClockIcon({ color = "#fff", ...rest }: SVGIconProps) {
     </svg>
   );
 }
-
-
