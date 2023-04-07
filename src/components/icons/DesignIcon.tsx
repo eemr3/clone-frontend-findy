@@ -1,13 +1,6 @@
-import { SVGAttributes } from "react";
+import { SVGIconProps } from "../../types/SVGIcon";
 
-interface DesignIconProps
-  extends Partial<
-    Omit<SVGAttributes<SVGSVGElement>, "width" | "height" | "fill" | "viewBox">
-  > {
-  color?: string;
-}
-
-export function DesignIcon({ color = "#F9F9F9", ...rest }: DesignIconProps) {
+export function DesignIcon({ color = "#F9F9F9", ...rest }: SVGIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
