@@ -43,7 +43,7 @@ export function Profile() {
 
       <section className="mt-[10.2rem] bg-grey-#5 ">
 
-        <Spinner />
+
 
         <form
           className="w-[112.4rem] mt-[7.4rem] mx-auto mb-[16rem]"
