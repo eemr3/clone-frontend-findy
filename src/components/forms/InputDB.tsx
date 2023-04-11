@@ -16,7 +16,8 @@ interface InputDBProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputEl
   placeholder?: string;
   icon?: SVGIcon;
   error?: string;
-  fieldSetClassName?: string
+  fieldSetClassName?: string;
+  wantInputWidthFull?: boolean;
 }
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
@@ -28,6 +29,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
     type = 'text',
     error = null,
     fieldSetClassName = '',
+    wantInputWidthFull = false,
     className = "",
     ...rest }, ref) => {
 
@@ -52,7 +54,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
           </label>
         }
 
-        <div className="w-[42.5rem] h-[6.631rem] rounded-[0.8rem] flex bg-white border-[0.1rem] border-grey-#1">
+        <div className={`w-[42.5rem] h-[6.631rem] rounded-[0.8rem] flex bg-white border-[0.1rem] border-grey-#1 ${wantInputWidthFull ? "w-full" : ""}`}>
 
           {icon &&
             <div className="w-[5.3rem] rounded-tl-[0.6rem] rounded-bl-[0.6rem] flex items-center justify-center bg-blue-dark-#1">
@@ -65,7 +67,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
             ref={inputRef}
             type={type}
             placeholder={placeholder}
-            className={`${className} w-[33.2rem] text-[2.4rem] leading-[2.831rem] tracking-[-0.5%] ml-[2rem] font-medium text-grey-#1 placeholder:text-grey-#2 border-none outline-none`}
+            className={`w-[33.2rem] text-[2.4rem] leading-[2.831rem] tracking-[-0.5%] ml-[2rem] font-medium text-grey-#1 placeholder:text-grey-#2 border-none outline-none ${className} ${wantInputWidthFull ? "w-[96%]" : ""}`}
             {...rest}
           />
         </div>
@@ -85,30 +87,3 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
 
 export const InputDB = forwardRef(InputBase);
 
-/* export function InputDB({ placeholder, icon = undefined, className, ...rest }: InputDBProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-
-  return (
-    <fieldset
-      className="flex gap-[1.6rem] items-center"
-      onClick={() => {
-        if (inputRef.current)
-          inputRef.current.focus()
-      }}
-    >
-
-      {icon &&
-        <>
-          {icon}
-        </>
-      }
-      <input
-        ref={inputRef}
-        type="text"
-        placeholder={placeholder}
-        className={`${className} text-[2.4rem] leading-[3.2rem] font-medium text-black placeholder:text-grey-#2 border-none outline-none`}
-        {...rest}
-      />
-    </fieldset>
-  );
-} */

@@ -12,6 +12,8 @@ import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
 import { TelephoneIcon } from "../../components/icons/TelephoneIcon";
 import { ClockIcon } from "../../components/icons/ClockIcon";
+import { Checkbox } from "../../components/forms/Checkbox";
+import { Button } from "../../components/Button";
 
 
 
@@ -100,18 +102,117 @@ export function Profile() {
               }}
             />
 
-            <SelectDB
+            <InputDB
+              icon={<ClockIcon />}
+              label="Quanto tempo você tem disponível?"
+              placeholder="Horas/ semana"
+              fieldSetClassName={"even:ml-auto"}
+            />
+
+            {/* <SelectDB
               icon={<ClockIcon />}
               options={timeToWeek}
-              label="Quanto tempo você tem disponível? "
+              label="Quanto tempo você tem disponível?"
               placeholder="Horas/ semana"
               fieldSetClassName={"even:ml-auto"}
               whenListIsEmpty="disabled"
+            /> */}
+          </div>
+
+          <fieldset
+            className="mt-[8rem]"
+          >
+            <legend className="text-[2.4rem] leading-[2.813rem] tracking-[-0.5%] font-medium text-grey-#1">
+              Qual a sua área de atuação?
+            </legend>
+
+            <div className="mt-[3.8rem] grid grid-cols-2 gap-y-[2.5rem]">
+
+              <Checkbox
+                name="area"
+                id="front"
+                label="Desenvolvedor Front-End"
+              />
+
+              <Checkbox
+                name="area"
+                id="SM"
+                label="Agilistas - Scrum Master"
+              />
+
+              <Checkbox
+                name="area"
+                id="Back"
+                label="Desenvolvedor Back-End"
+              />
+
+              <Checkbox
+                name="area"
+                id="UX"
+                label="UX (Designer, Research, Writer)"
+              />
+
+              <Checkbox
+                name="area"
+                id="QA"
+                label="QA"
+              />
+
+              <Checkbox
+                name="area"
+                id="UI"
+                label="UI"
+              />
+
+              <Checkbox
+                name="area"
+                id="DevOps"
+                label="DevOps"
+              />
+
+              <Checkbox
+                name="area"
+                id="Mentor"
+                label="Mentores - (alguém com experiência guiando o time)"
+              />
+            </div>
+
+            <Checkbox
+              name="area"
+              id="APM"
+              label="APM - Product Manager"
+              labelClassName="mt-[2.5rem]"
             />
 
+            <div className="mt-[2.5rem] flex items-center gap-16">
+              <Checkbox
+                name="area"
+                id="Outro"
+                label="Outro: "
+              />
+
+              <InputDB
+                placeholder="Cargo"
+                fieldSetClassName="h-[6rem]"
+              />
+            </div>
+
+          </fieldset>
 
 
-          </div>
+          <InputDB
+            label="Quais seus interesses na sua área de atuação?"
+            placeholder="Ex.: Área de Dados - “Cientista de dados”, “Analista de dados”, etc..."
+            fieldSetClassName="mt-[8rem] w-[111.6rem] gap-[3.2rem]"
+            wantInputWidthFull
+          />
+
+          <Button
+            className="mt-[6.4rem] w-[32.9rem] h-[5.7rem] text-[2.4rem] leading-[2.4rem] font-semibold"
+            fill
+          >
+            SALVAR PERFIL
+          </Button>
 
         </form>
       </section>
