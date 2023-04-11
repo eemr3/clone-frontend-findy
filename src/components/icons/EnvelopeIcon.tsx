@@ -19,5 +19,3 @@ export function EnvelopeIcon({ color = "#fff", ...rest }: SVGIconProps) {
     </svg>
   );
 }
-
-

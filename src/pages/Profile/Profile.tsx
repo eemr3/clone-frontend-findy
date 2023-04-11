@@ -5,20 +5,16 @@ import { Heading } from "../../components/Heading";
 import { Text } from "../../components/Text";
 
 import { InputDB } from "../../components/forms/InputDB";
-import { SelectDB } from "../../components/forms/SelectDB";
 
 import { EnvelopeIcon } from "../../components/icons/EnvelopeIcon";
 import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
 import { TelephoneIcon } from "../../components/icons/TelephoneIcon";
-import { ClockIcon } from "../../components/icons/ClockIcon";
-
-
 
 export function Profile() {
   // Teste de Error no nome e e-mail
-  const [errorName, setErrorName] = useState('');
-  const [errorEmail, setErrorEmail] = useState('');
+  const [errorName, setErrorName] = useState("");
+  const [errorEmail, setErrorEmail] = useState("");
 
   const timeToWeek = new Array(20).fill(null).map((item, index) => `${String((index + 1) * 2).padStart(2, "0")} horas`);
 
@@ -27,29 +23,20 @@ export function Profile() {
       <HeaderProfile />
 
       <article className="ml-[15.9rem] mt-[6.414rem] text-grey-#5">
-        <Heading
-          type="lg-leading58"
-        >
-          Seu perfil
-        </Heading>
+        <Heading type="lg-leading58">Seu perfil</Heading>
 
-        <Text
-          type="md"
-          className="inline-block mt-[6.4rem]"
-        >
+        <Text type="md" className="mt-[6.4rem] inline-block">
           Destaque suas habilidades, experiências e interesses profissionais:
-          <br /><br />
-          Preencha seu perfil e seja encontrado por recrutadores de todo o mundo.
+          <br />
+          <br />
+          Preencha seu perfil e seja encontrado por recrutadores de todo o
+          mundo.
         </Text>
-
       </article>
 
-
-
       <section className="mt-[10.2rem] bg-grey-#5 ">
-
         <form
-          className="w-[112.4rem] mt-[7.4rem] mx-auto mb-[16rem]"
+          className="mx-auto mt-[7.4rem] mb-[16rem] w-[112.4rem]"
           onSubmit={undefined}
         >
           <div className="grid grid-cols-2 gap-y-[6.469rem]">
@@ -60,10 +47,12 @@ export function Profile() {
               fieldSetClassName={"even:ml-auto"}
               error={errorName}
               onBlur={(e) => {
-                setErrorName(e.currentTarget.value.length < 4 ?
-                  "Nome precisa de ter no mínimo 4 caracteres" : "")
-              }
-              }
+                setErrorName(
+                  e.currentTarget.value.length < 4
+                    ? "Nome precisa de ter no mínimo 4 caracteres"
+                    : ""
+                );
+              }}
             />
 
             <InputDB
@@ -95,29 +84,18 @@ export function Profile() {
               fieldSetClassName={"even:ml-auto"}
               error={errorEmail}
               onBlur={(e) => {
-                setErrorEmail(e.currentTarget.value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g) == null ?
-                  "E-mail inválido" : "");
+                setErrorEmail(
+                  e.currentTarget.value.match(
+                    /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+                  ) == null
+                    ? "E-mail inválido"
+                    : ""
+                );
               }}
             />
-
-            <SelectDB
-              icon={<ClockIcon />}
-              options={timeToWeek}
-              label="Quanto tempo você tem disponível? "
-              placeholder="Horas/ semana"
-              fieldSetClassName={"even:ml-auto"}
-              whenListIsEmpty="disabled"
-            />
-
-
-
           </div>
-
         </form>
       </section>
-
-
-
     </div>
   );
 }

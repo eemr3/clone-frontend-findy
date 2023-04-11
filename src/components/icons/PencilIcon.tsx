@@ -19,5 +19,3 @@ export function PencilIcon({ color = "#fff", ...rest }: SVGIconProps) {
     </svg>
   );
 }
-
-

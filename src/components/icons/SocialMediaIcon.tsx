@@ -2,7 +2,6 @@ import { SVGIconProps } from "../../types/SVGIcon";
 
 export function SocialMediaIcon({ color = "#fff", ...rest }: SVGIconProps) {
   return (
-
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width="26"
@@ -27,5 +26,3 @@ export function SocialMediaIcon({ color = "#fff", ...rest }: SVGIconProps) {
     </svg>
   );
 }
-
-

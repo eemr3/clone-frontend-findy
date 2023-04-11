@@ -1,13 +1,6 @@
-import { SVGAttributes } from "react";
+import { SVGIconProps } from "../../types/SVGIcon";
 
-interface CodeIconProps
-  extends Partial<
-    Omit<SVGAttributes<SVGSVGElement>, "width" | "height" | "fill" | "viewBox">
-  > {
-  color?: string;
-}
-
-export function CodeIcon({ color = "#F9F9F9", ...rest }: CodeIconProps) {
+export function CodeIcon({ color = "#F9F9F9", ...rest }: SVGIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -24,5 +17,3 @@ export function CodeIcon({ color = "#F9F9F9", ...rest }: CodeIconProps) {
     </svg>
   );
 }
-
-

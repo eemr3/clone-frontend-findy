@@ -14,14 +14,16 @@ export function Button({
   ...rest
 }: ButtonProps) {
   const buttonStyle = fill
-    ? `${disabled
-      ? "bg-grey-#4 text-grey-#2"
-      : "shadow-shadow-button bg-green-medium text-grey-#5 hover:bg-green-dark"
-    }`
-    : `border-[1px] ${disabled
-      ? "text-grey-#2 border-grey-#2"
-      : "shadow-shadow-button text-green-medium border-green-medium hover:text-green-dark hover:border-green-dark"
-    }`;
+    ? `${
+        disabled
+          ? "bg-grey-#4 text-grey-#2"
+          : "shadow-shadow-button bg-green-medium text-grey-#5 hover:bg-green-dark"
+      }`
+    : `border-[1px] ${
+        disabled
+          ? "text-grey-#2 border-grey-#2"
+          : "shadow-shadow-button text-green-medium border-green-medium hover:text-green-dark hover:border-green-dark"
+      }`;
 
   return (
     <button

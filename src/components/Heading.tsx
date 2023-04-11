@@ -3,11 +3,11 @@ import { HTMLAttributes, ReactNode } from "react";
 type TypeStyle = {
   type: string;
   style: string;
-}
+};
 
 interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
   children: ReactNode;
-  type: 'lg' | 'lg-leading58' | 'md' | 'sm' | 'xs';
+  type: "lg" | "lg-leading58" | "md" | "sm" | "xs";
 }
 
 export function Heading({ children, type, className, ...rest }: HeadingProps) {
@@ -19,34 +19,33 @@ export function Heading({ children, type, className, ...rest }: HeadingProps) {
 
   const listTypeStyle: TypeStyle[] = [
     {
-      type: 'lg',
-      style: 'text-[6.4rem] leading-[7.25rem] font-bold'
+      type: "lg",
+      style: "text-[6.4rem] leading-[7.25rem] font-bold",
     },
     {
-      type: 'lg-leading58',
-      style: 'text-[6.4rem] leading-[7.25rem] font-bold'
+      type: "lg-leading58",
+      style: "text-[6.4rem] leading-[7.25rem] font-bold",
     },
     {
-      type: 'md',
-      style: 'text-[5.6rem] leading-[5.8rem] font-bold'
+      type: "md",
+      style: "text-[5.6rem] leading-[5.8rem] font-bold",
     },
     {
-      type: 'sm',
-      style: 'text-[4.8rem] leading-[5.8rem] font-semibold'
+      type: "sm",
+      style: "text-[4.8rem] leading-[5.8rem] font-semibold",
     },
     {
-      type: 'xs',
-      style: 'text-[3.6rem] leading-[4.219rem] font-normal'
-    }
-  ]
+      type: "xs",
+      style: "text-[3.6rem] leading-[4.219rem] font-normal",
+    },
+  ];
 
-  const typeClassName = listTypeStyle.filter(typeStyle => typeStyle.type == type)[0].style;
+  const typeClassName = listTypeStyle.filter(
+    (typeStyle) => typeStyle.type == type
+  )[0].style;
 
   return (
-    <h1
-      className={`${typeClassName} ${className}`}
-      {...rest}
-    >
+    <h1 className={`${typeClassName} ${className}`} {...rest}>
       {children}
     </h1>
   );
