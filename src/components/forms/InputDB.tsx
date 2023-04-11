@@ -28,7 +28,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
     type = 'text',
     error = null,
     fieldSetClassName = '',
-    className,
+    className = "",
     ...rest }, ref) => {
 
     const inputRef = useRef<HTMLInputElement>(null);

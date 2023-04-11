@@ -1,14 +1,17 @@
 import { useState } from "react";
+
 import { HeaderProfile } from "../../components/HeaderProfile";
 import { Heading } from "../../components/Heading";
-import { Logo } from "../../components/Logo";
 import { Text } from "../../components/Text";
+
 import { InputDB } from "../../components/forms/InputDB";
+import { SelectDB } from "../../components/forms/SelectDB";
+
 import { EnvelopeIcon } from "../../components/icons/EnvelopeIcon";
 import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
 import { TelephoneIcon } from "../../components/icons/TelephoneIcon";
-import { Spinner } from "../../components/Spinner";
+import { ClockIcon } from "../../components/icons/ClockIcon";
 
 
 
@@ -16,6 +19,8 @@ export function Profile() {
   // Teste de Error no nome e e-mail
   const [errorName, setErrorName] = useState('');
   const [errorEmail, setErrorEmail] = useState('');
+
+  const timeToWeek = new Array(20).fill(null).map((item, index) => `${String((index + 1) * 2).padStart(2, "0")} horas`);
 
   return (
     <div className="w-max-[144rem] flex flex-col bg-blue-dark">
@@ -42,8 +47,6 @@ export function Profile() {
 
 
       <section className="mt-[10.2rem] bg-grey-#5 ">
-
-
 
         <form
           className="w-[112.4rem] mt-[7.4rem] mx-auto mb-[16rem]"
@@ -95,6 +98,15 @@ export function Profile() {
                 setErrorEmail(e.currentTarget.value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g) == null ?
                   "E-mail inválido" : "");
               }}
+            />
+
+            <SelectDB
+              icon={<ClockIcon />}
+              options={timeToWeek}
+              label="Quanto tempo você tem disponível? "
+              placeholder="Horas/ semana"
+              fieldSetClassName={"even:ml-auto"}
+              whenListIsEmpty="disabled"
             />
 
 
