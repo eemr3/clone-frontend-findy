@@ -64,7 +64,7 @@ export function Home() {
           />
         </FrameWithLogoLarge>
 
-        <section className="relative z-20 mx-auto mt-[-20.9rem] flex h-[39.6rem] w-[120rem] flex-col items-center rounded-[2.6rem] bg-grey-#5 shadow-shadow-#3">
+        <section className="shadow-shadow-#3 relative z-20 mx-auto mt-[-20.9rem] flex h-[39.6rem] w-[120rem] flex-col items-center rounded-[2.6rem] bg-grey-#5">
           <Heading type="sm" className="mt-[4rem] text-black">
             Encontre a melhor oportunidade
           </Heading>

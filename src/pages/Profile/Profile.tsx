@@ -16,7 +16,9 @@ export function Profile() {
   const [errorName, setErrorName] = useState("");
   const [errorEmail, setErrorEmail] = useState("");
 
-  const timeToWeek = new Array(20).fill(null).map((item, index) => `${String((index + 1) * 2).padStart(2, "0")} horas`);
+  const timeToWeek = new Array(20)
+    .fill(null)
+    .map((item, index) => `${String((index + 1) * 2).padStart(2, "0")} horas`);
 
   return (
     <div className="w-max-[144rem] flex flex-col bg-blue-dark">
@@ -36,7 +38,7 @@ export function Profile() {
 
       <section className="mt-[10.2rem] bg-grey-#5 ">
         <form
-          className="mx-auto mt-[7.4rem] mb-[16rem] w-[112.4rem]"
+          className="mx-auto mb-[16rem] mt-[7.4rem] w-[112.4rem]"
           onSubmit={undefined}
         >
           <div className="grid grid-cols-2 gap-y-[6.469rem]">

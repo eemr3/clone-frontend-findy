@@ -10,26 +10,25 @@ interface AuthContextData {
   user: User | null;
   loading: boolean;
   login: (data: object) => void;
-  logout: () => void; 
+  logout: () => void;
   setLoggedUser: (user: User) => void;
- 
 }
 
 interface AuthProviderProps {
- 
   children: React.ReactNode | any;
 }
-export const AuthContext = createContext<AuthContextData>({} as AuthContextData);
+export const AuthContext = createContext<AuthContextData>(
+  {} as AuthContextData
+);
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | any>(null);
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
- 
 
   useEffect(() => {
-    const recoveredUser = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
+    const recoveredUser = localStorage.getItem("user");
+    const token = localStorage.getItem("token");
 
     if (recoveredUser && token) {
       api.defaults.headers.Authorization = `Bearer ${token}`;
@@ -40,26 +39,23 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login =  ({data}: any) => {
- 
-  
-
+  const login = ({ data }: any) => {
     const loggedUser = {
-      data
+      data,
     };
-    
-    const token=data.data.access_token
-    
+
+    const token = data.data.access_token;
+
     console.log(data);
     localStorage.setItem("user", JSON.stringify(loggedUser));
-    localStorage.setItem("token", token); 
+    localStorage.setItem("token", token);
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
 
     setAuthenticated(true);
     setUser(loggedUser);
 
-    const respTest =   getTest();
+    const respTest = getTest();
     console.log(respTest);
   };
 
@@ -84,7 +80,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         loading,
         login,
         logout,
-        setLoggedUser
+        setLoggedUser,
       }}
     >
       {children}

@@ -61,7 +61,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
 
       <div className="flex h-[6.631rem] w-[42.5rem] rounded-[0.8rem] border-[0.1rem] border-grey-#1 bg-white">
         {icon && (
-          <div className="flex w-[5.3rem] items-center justify-center rounded-tl-[0.6rem] rounded-bl-[0.6rem] bg-blue-dark-#1">
+          <div className="flex w-[5.3rem] items-center justify-center rounded-bl-[0.6rem] rounded-tl-[0.6rem] bg-blue-dark-#1">
             <>{icon}</>
           </div>
         )}

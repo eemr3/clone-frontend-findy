@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import * as yup from "yup";
 import mulherPagePrincipal from "../../assets/mulher-page-principal2.svg";
 import { Header } from "../../components/Header";
@@ -20,12 +20,7 @@ const schema = yup
   .shape({
     nome: yup.string().required("Nome obrigatório"),
     email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
-    password: yup
-      .string()
-      .required()
-      .min(8)
-      .matches(/[0-9]/)
-      .matches(/[A-Z]/),
+    password: yup.string().required().min(8).matches(/[0-9]/).matches(/[A-Z]/),
     password_confirmation: yup
       .string()
       .oneOf([undefined, yup.ref("password")], "As senhas precisam ser iguais"),
@@ -41,7 +36,7 @@ export function Cadastro() {
     handleSubmit,
     watch,
     setError,
-    formState: { errors },// Adicione essa propriedade na desestruturação
+    formState: { errors }, // Adicione essa propriedade na desestruturação
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
@@ -52,34 +47,32 @@ export function Cadastro() {
 
   const onSubmit = async (data: any) => {
     const body = {
-      "name": data.nome,
-      "email": data.email,
-      "password": data.password,
-      "confirmPassword": data.password_confirmation
+      name: data.nome,
+      email: data.email,
+      password: data.password,
+      confirmPassword: data.password_confirmation,
     };
 
     if (data != null && isChecked) {
       let result = await createUser(body);
       console.log(result);
-      if(result.status === 201) {
+      if (result.status === 201) {
         toast.success(result.message);
       }
       if (result.status === 409) {
         setError("email", {
           message: result.message,
         });
-      } 
+      }
     }
     setIsSuccess(true);
   };
 
-
-
   return (
-    <div className="w-max-[144rem] flex h-[100%] flex-col bg-blue-dark" >
+    <div className="w-max-[144rem] flex h-[100%] flex-col bg-blue-dark">
       <Header showJustify={false} />
 
-      <div className="flex w-[55%] items-center justify-end pt-[8rem] pb-[12rem] xl:w-[100%] xl:justify-center ">
+      <div className="flex w-[55%] items-center justify-end pb-[12rem] pt-[8rem] xl:w-[100%] xl:justify-center ">
         <img
           src={mulherPagePrincipal}
           alt="mulher"
@@ -87,7 +80,7 @@ export function Cadastro() {
         />
 
         <div className="flex h-[98.5rem]  w-[63.5rem] flex-col items-center rounded-[2.6rem] bg-[#FFFFFF]">
-          <h2 className="mt-[6.4rem] mb-[6.4rem] text-[4.8rem] font-[700]">
+          <h2 className="mb-[6.4rem] mt-[6.4rem] text-[4.8rem] font-[700]">
             Crie uma Conta
           </h2>
 
@@ -102,7 +95,7 @@ export function Cadastro() {
                   : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem]"
               }
             />
-            <span className=" mt-[0.8rem] mb-[1rem] block  pl-[1rem] text-[1.8rem] text-red">
+            <span className=" mb-[1rem] mt-[0.8rem] block  pl-[1rem] text-[1.8rem] text-red">
               {errors.nome ? errors.nome?.message : ""}{" "}
             </span>
           </div>
@@ -118,8 +111,12 @@ export function Cadastro() {
                   : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem]"
               }
             />
-            <span className=" mt-[0.8rem] mb-[1rem] block  pl-[1rem] text-[1.8rem] text-red">
-            {errors.email ? errors.email.message : ""/* (result?.message === "" ? "" : result.message) */}
+            <span className=" mb-[1rem] mt-[0.8rem] block  pl-[1rem] text-[1.8rem] text-red">
+              {
+                errors.email
+                  ? errors.email.message
+                  : "" /* (result?.message === "" ? "" : result.message) */
+              }
             </span>
           </div>
 
@@ -141,7 +138,10 @@ export function Cadastro() {
                   className={"mr-[1rem] h-[1.6rem] w-[1.6rem]"}
                   fill={
                     errors.password
-                      ? password.length < 8 ? "red" : "#01A195" : !isSuccess
+                      ? password.length < 8
+                        ? "red"
+                        : "#01A195"
+                      : !isSuccess
                       ? "black"
                       : "#01A195"
                   }
@@ -150,7 +150,11 @@ export function Cadastro() {
                   className={
                     errors.password
                       ? password.length < 8
-                        ? "text-[red]" : "text-[#01A195] " : !isSuccess ? "text-[black]" : "text-[#01A195]"
+                        ? "text-[red]"
+                        : "text-[#01A195] "
+                      : !isSuccess
+                      ? "text-[black]"
+                      : "text-[#01A195]"
                   }
                 >
                   A senha deve ter pelo menos 8 dígitos
@@ -191,7 +195,7 @@ export function Cadastro() {
                   fill={
                     errors.password
                       ? hasUppercase
-                        ? "#01A195" 
+                        ? "#01A195"
                         : "red"
                       : !isSuccess
                       ? "black"
@@ -226,8 +230,10 @@ export function Cadastro() {
                   : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem]"
               }
             />
-            <span className=" mt-[0.8rem] mb-[1rem] block  pl-[1rem] text-[1.8rem] text-red">
-              {errors.password_confirmation ? errors.password_confirmation?.message: ""}{" "}
+            <span className=" mb-[1rem] mt-[0.8rem] block  pl-[1rem] text-[1.8rem] text-red">
+              {errors.password_confirmation
+                ? errors.password_confirmation?.message
+                : ""}{" "}
             </span>
           </div>
 
@@ -251,15 +257,13 @@ export function Cadastro() {
               </p>
             </div>
           </div>
-          <button className="mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195]" onClick={handleSubmit(onSubmit)}>
-            <p
-              className="text-[2.4rem] text-[#FFFFFF] "
-            
-            >
-              Criar
-            </p>
+          <button
+            className="mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195]"
+            onClick={handleSubmit(onSubmit)}
+          >
+            <p className="text-[2.4rem] text-[#FFFFFF] ">Criar</p>
           </button>
-          <p className="mt-[2.4rem] text-[2.4rem] mb-[6rem]">
+          <p className="mb-[6rem] mt-[2.4rem] text-[2.4rem]">
             Já possui uma conta?{" "}
             <Link to="/login" className="text-[#01A195]">
               {" "}

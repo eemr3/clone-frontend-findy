@@ -67,7 +67,7 @@ export function CategoryCard({
 
   return (
     <div
-      className={`flex h-[33.9rem] w-[33.4rem] flex-col rounded-[0.8rem] pl-[4.9rem] ${cardBackground} border-[0.1rem] border-blue-dark shadow-shadow-#2-card`}
+      className={`flex h-[33.9rem] w-[33.4rem] flex-col rounded-[0.8rem] pl-[4.9rem] ${cardBackground} shadow-shadow-#2-card border-[0.1rem] border-blue-dark`}
     >
       <div className="mt-[5.96rem] flex h-[9.5rem] ">
         {cloneElement(icon as JSX.Element, {

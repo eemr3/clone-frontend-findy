@@ -18,7 +18,7 @@ export function Tag({ label, tagColor, closeButtonEnabled = false }: TagProps) {
 
   return (
     <div
-      className={`flex items-center gap-[0.711rem] rounded-[2.844rem] px-[1.422rem] py-[0.355rem] shadow-shadow-tag ${
+      className={`shadow-shadow-tag flex items-center gap-[0.711rem] rounded-[2.844rem] px-[1.422rem] py-[0.355rem] ${
         listTagColor[listTagColor.indexOf(`bg-tag-${tagColor}`)]
       }`}
     >

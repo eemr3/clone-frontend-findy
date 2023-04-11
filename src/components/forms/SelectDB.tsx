@@ -5,7 +5,7 @@ import {
   forwardRef,
   useImperativeHandle,
   useRef,
-  useState
+  useState,
 } from "react";
 
 import { SVGIcon } from "../../types/SVGIcon";
@@ -15,9 +15,13 @@ import { Spinner } from "../Spinner";
 export type ValueLabel = {
   value: string;
   label: string;
-}
+};
 
-interface SelectDBProps extends DetailedHTMLProps<SelectHTMLAttributes<HTMLSelectElement>, HTMLSelectElement> {
+interface SelectDBProps
+  extends DetailedHTMLProps<
+    SelectHTMLAttributes<HTMLSelectElement>,
+    HTMLSelectElement
+  > {
   options: ValueLabel[] | string[];
   name?: string;
   label?: string;
@@ -25,127 +29,114 @@ interface SelectDBProps extends DetailedHTMLProps<SelectHTMLAttributes<HTMLSelec
   icon?: SVGIcon;
   error?: string | null;
   fieldSetClassName?: string;
-  whenListIsEmpty?: 'Spinner' | 'disabled';
+  whenListIsEmpty?: "Spinner" | "disabled";
 }
 
-const SelectBase: ForwardRefRenderFunction<HTMLSelectElement, SelectDBProps>
-  = ({
+const SelectBase: ForwardRefRenderFunction<HTMLSelectElement, SelectDBProps> = (
+  {
     options,
-    name = '',
+    name = "",
     label,
     placeholder,
     icon = undefined,
     error = null,
-    whenListIsEmpty = 'Spinner',
-    fieldSetClassName = '',
+    whenListIsEmpty = "Spinner",
+    fieldSetClassName = "",
     className = "",
     defaultValue = "",
-    ...rest }, ref) => {
+    ...rest
+  },
+  ref
+) => {
+  const selectRef = useRef<HTMLSelectElement>(null);
+  useImperativeHandle<HTMLSelectElement | null, HTMLSelectElement | null>(
+    ref,
+    () => selectRef.current
+  );
 
-    const selectRef = useRef<HTMLSelectElement>(null);
-    useImperativeHandle<HTMLSelectElement | null, HTMLSelectElement | null>(
-      ref,
-      () => selectRef.current
-    );
+  const [selectValue, setSelectValue] = useState(
+    ref ? "" : !!rest.value ? rest.value : defaultValue
+  );
 
-    const [selectValue, setSelectValue] = useState(
-      ref ? "" :
-        !!rest.value ? rest.value : defaultValue
-    );
+  return (
+    <fieldset
+      className={`flex w-fit flex-col gap-[1.2rem] ${fieldSetClassName}`}
+      onClick={() => {
+        if (selectRef.current) selectRef.current.focus();
+      }}
+    >
+      {!!label && (
+        <label
+          htmlFor={name}
+          className="text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1"
+        >
+          {label}
+        </label>
+      )}
 
-    return (
+      <div className="flex h-[6.631rem] w-[42.5rem] rounded-[0.8rem] border-[0.1rem] border-grey-#1 bg-white">
+        {icon && (
+          <div className="flex w-[5.3rem] items-center justify-center rounded-bl-[0.6rem] rounded-tl-[0.6rem] bg-blue-dark-#1">
+            <>{icon}</>
+          </div>
+        )}
 
-      <fieldset
-        className={`w-fit flex flex-col gap-[1.2rem] ${fieldSetClassName}`}
-        onClick={() => {
-          if (selectRef.current)
-            selectRef.current.focus()
-        }}
-      >
-        {!!label &&
-          <label
-            htmlFor={name}
-            className="text-[2.4rem] leading-[2.813rem] tracking-[-0.5%] font-medium text-grey-#1">
-            {label}
-          </label>
-        }
+        {!options.length && whenListIsEmpty === "Spinner" ? (
+          <div className="flex w-[33.2rem] flex-col items-center justify-center">
+            <Spinner />
+          </div>
+        ) : (
+          <select
+            name={name}
+            id={name}
+            disabled={!options.length && whenListIsEmpty === "disabled"}
+            ref={ref}
+            className={`${className} ml-[2rem] w-[33.2rem] border-none bg-white text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2`}
+            value={!ref ? selectValue : rest.value}
+            onChange={(e) => setSelectValue(e.currentTarget.value)}
+            {...rest}
+          >
+            {placeholder && (
+              <option key="placeholder" value="" disabled>
+                {placeholder}
+              </option>
+            )}
 
-        <div className="w-[42.5rem] h-[6.631rem] rounded-[0.8rem] flex bg-white border-[0.1rem] border-grey-#1">
-
-          {icon &&
-            <div className="w-[5.3rem] rounded-tl-[0.6rem] rounded-bl-[0.6rem] flex items-center justify-center bg-blue-dark-#1">
-              <>
-                {icon}
-              </>
-            </div>
-          }
-
-
-          {(!options.length &&
-            whenListIsEmpty === 'Spinner') ? (
-
-            <div className="w-[33.2rem] flex flex-col items-center justify-center">
-              <Spinner />
-            </div>
-          ) : (
-
-            <select
-              name={name}
-              id={name}
-              disabled={!options.length && whenListIsEmpty === 'disabled'}
-              ref={ref}
-              className={`${className} w-[33.2rem] text-[2.4rem] leading-[2.831rem] tracking-[-0.5%] ml-[2rem] font-medium bg-white text-grey-#1 placeholder:text-grey-#2 border-none outline-none`}
-              value={!ref ? selectValue : rest.value}
-              onChange={(e) => setSelectValue(e.currentTarget.value)}
-              {...rest}
-            >
-              {placeholder &&
-                <option
-                  key="placeholder"
-                  value=""
-                  disabled
-                >
-                  {placeholder}
-                </option>
-              }
-
-              {options &&
-                options.sort().map((newOption: string | ValueLabel, index: number) => {
-                  return (typeof newOption === "string") ?
+            {options &&
+              options
+                .sort()
+                .map((newOption: string | ValueLabel, index: number) => {
+                  return typeof newOption === "string" ? (
                     <option
-                      key={`${name}${newOption ? newOption : Date.now() + index}`}
+                      key={`${name}${
+                        newOption ? newOption : Date.now() + index
+                      }`}
                       value={newOption}
                     >
                       {newOption}
-                    </option> :
+                    </option>
+                  ) : (
                     <option
-                      key={`${name}${newOption.value ? newOption.value : Date.now() + index}`}
+                      key={`${name}${
+                        newOption.value ? newOption.value : Date.now() + index
+                      }`}
                       value={newOption.value}
                     >
                       {newOption.label}
                     </option>
-                })
-              }
+                  );
+                })}
+          </select>
+        )}
+      </div>
 
-            </select>
-          )}
-
-        </div>
-
-        {!!error &&
-          <Text
-            type="sm"
-            className="text-red font-semibold leading-[1.924rem]"
-          >
-            {`Erro (${error})`}
-          </Text>
-        }
-
-
-      </fieldset>
-
-    )
-  }
+      {!!error && (
+        <Text type="sm" className="font-semibold leading-[1.924rem] text-red">
+          {`Erro (${error})`}
+        </Text>
+      )}
+    </fieldset>
+  );
+};
 
 export const SelectDB = forwardRef(SelectBase);
-

@@ -48,6 +48,10 @@ module.exports = {
         'frame-one': 'url(/assets/bg-frame1.png)'
       }
     },
+    boxShadow: {
+      'shadow-#1': '0px 10px 30px 5px rgba(1, 161, 149, 0.24)',
+      
+    },
     screens: {
       '4xl': {'max': '2170px'},
        // => @media (max-width: 2170px) { ... }
