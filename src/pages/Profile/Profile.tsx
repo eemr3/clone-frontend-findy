@@ -23,29 +23,28 @@ const schema = yup
   .object()
   .shape({
     nome: yup.string().required("Nome obrigatório"),
-    link_selecao_equipe: yup.string().required("Link seleção equipe obrigatório"),
-    escopo_project: yup.string().required("Escopo do projeto obrigatório"),
-    farramentas: yup.string().required("Ferramentas obrigatórias"),
-    data_inicio: yup.string().required("Data de início obrigatória"),
-    responsavel_project: yup.string().required("nome do responsável pelo projeto obrigatório"),
-    contato_responsavel: yup.string().required("Contato do responsável obrigatório"),
+    whatsapp: yup.string().required("Número do Whatsapp obrigatório"),
+    linkedin: yup.string().required("Endereço do Linkedin obrigatório"),
+    github: yup.string().required("Endereço do Github obrigatório"),
+    email: yup.string().required("Endereço de e-mail obrigatório").email("Endereço de e-mail inválido"),
+    disponibilidadeSemanal: yup.string().required("Tempo de disponibilidade obrigatório"),
+    areaAtuacao: yup.array(),
     linkedin_responsavel: yup.string().url("URL do LinkedIn inválida").required("Linkedin do responsável obrigatório!"),
     contato_outros_responsaveis: yup.string(),
     ajuda_findy: yup.string()
   })
   .required();
 
-interface FormValues {
+interface ProfileFormValues {
   nome: string;
-  link_selecao_equipe: string;
-  escopo_project: string;
-  farramentas: string;
-  data_inicio: string;
-  responsavel_project: string;
-  contato_responsavel: string;
-  linkedin_responsavel: string;
-  contato_outros_responsaveis: string;
-  ajuda_findy: string;
+  whatsapp: string;
+  linkedin: string;
+  github: string;
+  email: string;
+  disponibilidadeSemanal: string;
+  areaAtuacao: string[];
+  areaOutroCargo: string;
+  interesseAreaAtuacao: string;
 }
 
 export function Profile() {
@@ -58,7 +57,7 @@ export function Profile() {
     watch,
     setError,
     formState: { errors }, // Adicione essa propriedade na desestruturação
-  } = useForm<FormValues>({
+  } = useForm<ProfileFormValues>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
   });
@@ -240,10 +239,10 @@ export function Profile() {
                 label="Outro: "
               />
 
-              <InputDB
+              {/* <InputDB
                 placeholder="Cargo"
                 fieldSetClassName="h-[6rem]"
-              />
+              /> */}
             </div>
 
           </fieldset>
