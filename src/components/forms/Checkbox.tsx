@@ -2,15 +2,21 @@ import {
   DetailedHTMLProps,
   ForwardRefRenderFunction,
   InputHTMLAttributes,
-  forwardRef, useState
+  forwardRef,
+  useState,
 } from "react";
-interface CheckboxProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
+
+interface CheckboxProps
+  extends DetailedHTMLProps<
+    InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  > {
   name: string;
   id: string;
   label: string;
   labelClassName?: string;
-  optimus?: any;
 }
+
 type CheckboxStates = { [key: string]: boolean };
 
 const CheckboxBase: ForwardRefRenderFunction<
@@ -41,7 +47,6 @@ const CheckboxBase: ForwardRefRenderFunction<
           id={id}
           checked={isChecked}
           onChange={handleOnChange}
-          optinus={optinus}
           ref={ref}
           {...rest}
         />

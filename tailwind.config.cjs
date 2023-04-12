@@ -72,6 +72,9 @@ module.exports = {
 
       'sm': {'max': '639px'},
       // => @media (max-width: 639px) { ... }
+      
+      'mbl': {'max': '500px'},
+      // => @media (max-width: 500px) { ... }
       'md-h': { 'raw': '(max-height: 1110px)' },
       // => @media (min-height: 800px) { ... }
     },

@@ -43,7 +43,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
 
     return (
       <fieldset
-        className={`w-fit flex flex-col gap-[1.2rem] max-w-[10rem] ${fieldSetClassName}`}
+        className={`w-fit flex flex-col gap-[1.2rem] max-w-[10rem]  sm:max-w-[100%] ${fieldSetClassName}`}
         onClick={() => {
           if (inputRef.current)
             inputRef.current.focus()
@@ -51,12 +51,12 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
       >
 
         {!!label &&
-          <label htmlFor={name} className="text-[2.4rem] leading-[2.813rem] tracking-[-0.5%] font-medium text-grey-#1">
+          <label htmlFor={name} className="mbl:text-[2rem] mbl:font-bold text-[2.4rem] leading-[2.813rem] tracking-[-0.5%] font-medium text-grey-#1">
             {label}
           </label>
         }
 
-        <div className={`w-[42.5rem] h-[6.631rem] rounded-[0.8rem] flex bg-white border-[0.1rem] border-grey-#1 ${wantInputWidthFull ? "w-full" : ""}`}>
+        <div className={`w-[42.5rem] sm:w-[32rem] sm:max-w-[100%] mbl:h-[4rem]  h-[6.631rem] mbl:max-w-[100%] sm:h-[5.6rem]  rounded-[0.8rem] flex bg-white border-[0.1rem] border-grey-#1 ${wantInputWidthFull ? "w-full" : ""}`}>
 
           {icon &&
             <div className="w-[5.3rem] rounded-tl-[0.6rem] rounded-bl-[0.6rem] flex items-center justify-center bg-blue-dark-#1">
@@ -70,7 +70,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
             ref={inputRef}
             type={type}
             placeholder={placeholder}
-            className={`w-[33.2rem] text-[2.4rem] leading-[2.831rem] tracking-[-0.5%] ml-[2rem] font-medium text-grey-#1 placeholder:text-grey-#2 border-none outline-none ${className} ${wantInputWidthFull ? "w-[96%]" : ""}`}
+            className={`w-[32.2rem] md:w-[80%]   sm:w-[70%] text-[2.4rem] leading-[2.831rem] tracking-[-0.5%] ml-[2rem] font-medium text-grey-#1 placeholder:text-grey-#2 border-none outline-none ${className} ${wantInputWidthFull ? "w-[96%]" : ""}`}
             {...rest}
           />
         </div>
