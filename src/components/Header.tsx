@@ -4,7 +4,7 @@ import { Logo } from "./Logo";
 
 export function Header(props: { showJustify: boolean }) {
   return (
-    <header className="flex h-[9.977rem] items-center bg-blue-dark overflow-x-hidden" >
+    <header className="flex h-[9.977rem] items-center overflow-x-hidden bg-blue-dark">
       <div
         className={`flex w-full items-center md:mx-[0] ${
           props.showJustify ? "justify-between" : ""

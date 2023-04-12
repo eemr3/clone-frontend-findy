@@ -49,19 +49,19 @@ export function Login() {
     <div className="w-max-[144rem] flex h-[100%] flex-col bg-blue-dark">
       <Header showJustify={false} />
 
-      <div className="flex w-[55%] items-center justify-end pb-[12rem] pt-[8rem] xl:w-[100%] xl:justify-center ">
+      <div className="my-auto flex w-[55%] items-center justify-end  xl:w-[100%] xl:justify-center md:px-[2rem] ">
         <img
           src={mulherPagePrincipal}
           alt="mulher"
           className="absolute right-[0]  top-[0] h-[100%] w-[54.6rem] object-cover xl:hidden "
         />
 
-        <div className="flex h-[78.4rem]  w-[63.5rem] flex-col items-center rounded-[2.6rem] bg-[#FFFFFF]">
-          <h2 className="mb-[6.4rem] mt-[6.4rem] text-[4.8rem] font-[700]">
+        <div className="flex w-[100%]  max-w-[63.5rem] flex-col items-center rounded-[2.6rem] bg-[#FFFFFF] pb-[4rem] ">
+          <h2 className="mb-[6.4rem] mt-[6.4rem] text-[4.8rem] font-[700] md:text-[4rem] mbl:text-[3.2rem]">
             Acesse a sua Conta
           </h2>
 
-          <div className="w-[70%]  ">
+          <div className="w-[70%] mbl:w-[85%]  ">
             <input
               type="email"
               placeholder="insira seu email"
@@ -81,7 +81,7 @@ export function Login() {
             </span>
           </div>
 
-          <div className="w-[70%]  ">
+          <div className="w-[70%]  mbl:w-[85%] ">
             <input
               type="password"
               placeholder="Confirme sua senha"
@@ -97,25 +97,30 @@ export function Login() {
             </span>
           </div>
 
-          <div className="mt-[2rem] flex w-[70%] justify-between">
+          <div className="mt-[2rem] flex w-[70%] justify-between mbl:w-[80%] ">
             <div className="flex">
               <input
                 className="mr-[1.2rem] h-[2.9rem] w-[2.8rem] border-green-medium"
                 type="checkbox"
               />
-              <p className="text-[1.6rem]">Matenha-me logado</p>
+              <p className="text-[1.6rem]  mbl:text-[1.3rem]">
+                Matenha-me logado
+              </p>
             </div>
-            <Link to="#" className="text-[1.6rem] text-green-medium ">
+            <Link
+              to="#"
+              className="text-[1.6rem] text-green-medium  mbl:text-[1.3rem] "
+            >
               Esqueceu a senha?
             </Link>
           </div>
           <button
-            className="mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195]"
+            className="mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195] mbl:h-[4rem]  mbl:max-w-[100%]"
             onClick={handleSubmit(onSubmit)}
           >
-            <p className="text-[2.4rem] text-[#FFFFFF] ">Entrar</p>
+            <p className="text-[2.4rem] text-[#FFFFFF]  ">Logar</p>
           </button>
-          <p className="mt-[6.4rem] text-[2.4rem]">
+          <p className="mt-[6.4rem] text-[2.4rem]  mbl:text-[1.6rem]">
             Você é novo na Findy?{" "}
             <Link to="#" className="text-[#01A195]">
               {" "}

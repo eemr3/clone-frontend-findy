@@ -48,7 +48,6 @@ export const loginUser = async (email: string, password: string) => {
 
 export const formProject = async (body: any) => {
   try {
-    
     return await api.post("/api/candidate-projects", body);
   } catch (error: any) {
     console.log(error);
@@ -61,7 +60,7 @@ export const getProjects = async () => {
       Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIwLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5kb2VAZW1haWwuY29tIiwicm9sZXMiOiJjYW5kaWRhdGUiLCJpYXQiOjE2ODEzMjQ4MzgsImV4cCI6MTY4MTMzMjgzOH0.Q_QYUqHig7gbE-JFoLVdc1KKgmBz3sCtpGW6XEfvgRo`, // O token é uma string que representa o token de autenticação
     },
   };
-  return await api.get("/api/candidate-projects",options);
+  return await api.get("/api/candidate-projects", options);
 };
 export const getPositions = async () => {
   const options = {

@@ -56,14 +56,14 @@ export function Project() {
   const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>(
     {}
   );
-/*   const [ferramentas, setFerramentas] = useState<string[]>([]); */
+  /*   const [ferramentas, setFerramentas] = useState<string[]>([]); */
   const [positions, setPositions] = useState<any>([]);
   const [languages, setLanguages] = useState<any>([]);
   const handleOnChange = (event: any) => {
     const { id, checked } = event.target;
     setCheckedItems({ ...checkedItems, [id]: checked });
   };
-/*   const handleFerramentasChange = (
+  /*   const handleFerramentasChange = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const ferramentasStr = event.target.value;
@@ -145,11 +145,13 @@ export function Project() {
   }, [selectedLanguageNames]);
 
   return (
-    <div className="w-max-[144rem] flex flex-col bg-blue-dark overflow-x-hidden ">
+    <div className="w-max-[144rem] flex flex-col overflow-x-hidden bg-blue-dark ">
       <HeaderProfile />
 
-      <article className="ml-[15.9rem] mt-[6.414rem] text-grey-#5 overflow-x-hidden mbl:ml-[2rem] lg:ml-[4rem]">
-        <Heading type="lg-leading58" className=" mbl:text-[4rem]">Novo projeto</Heading>
+      <article className="ml-[15.9rem] mt-[6.414rem] overflow-x-hidden text-grey-#5 lg:ml-[4rem] mbl:ml-[2rem]">
+        <Heading type="lg-leading58" className=" mbl:text-[4rem]">
+          Novo projeto
+        </Heading>
 
         <Text type="md" className="mt-[6.4rem] inline-block mbl:text-[2rem]">
           Preencha o formulário abaixo com todas as informações relevantes
@@ -160,9 +162,9 @@ export function Project() {
         </Text>
       </article>
 
-      <section className="xl:px-[3rem] mbl:px-[1rem] mt-[10.2rem] bg-grey-#5 overflow-x-hidden">
+      <section className="mt-[10.2rem] overflow-x-hidden bg-grey-#5 xl:px-[3rem] mbl:px-[1rem]">
         <div className="mx-auto mb-[16rem] mt-[7.4rem] w-[100%] max-w-[112.4rem]">
-          <div className="grid grid-cols-2 gap-y-[6.469rem] lg:flex flex-col items-start justify-center">
+          <div className="grid grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] lg:flex">
             <InputDB
               icon={<PencilIcon />}
               {...register("nome")}
@@ -200,7 +202,7 @@ export function Project() {
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-y-[6.469rem] lg:flex flex-col items-start justify-center overflow-x-hidden  sm:w-[32rem] sm:max-w-[100%]  h-[100%]  mbl:max-w-[100%] ">
+          <div className="grid h-[100%] grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] overflow-x-hidden  lg:flex sm:w-[32rem]  sm:max-w-[100%]  mbl:max-w-[100%] ">
             <SelectDB
               icon={<CodeIcon />}
               label="Selecione as linguagens de programação"
@@ -252,10 +254,10 @@ export function Project() {
 
           <fieldset className="mb-[6.8rem] mt-[8rem]">
             <legend className="text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1">
-            Quais cargos serão oferecidos à equipe do projeto?
+              Quais cargos serão oferecidos à equipe do projeto?
             </legend>
 
-            <div className="mt-[3.8rem] grid grid-cols-2 gap-y-[2.5rem] mbl:w-[86%] mbl: grid-cols-1">
+            <div className="mbl: mt-[3.8rem] grid grid-cols-1 grid-cols-2 gap-y-[2.5rem] mbl:w-[86%]">
               {positions?.map((pos: any) => (
                 <Checkbox
                   key={pos.id}
@@ -267,14 +269,14 @@ export function Project() {
                 />
               ))}
             </div>
-            <div className="mt-[2.5rem] flex items-center gap-16 mbl:flex-col items-start items-baseline">
+            <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col">
               <Checkbox name="area" id="Outro" label="Outro: " />
 
               <InputDB placeholder="Cargo" fieldSetClassName="h-[6rem]" />
             </div>
           </fieldset>
 
-          <div className="grid grid-cols-2 gap-y-[6.469rem] lg:flex flex-col items-start justify-center ">
+          <div className="grid grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] lg:flex ">
             <InputDB
               icon={<PencilIcon />}
               label="Insira o nome da pessoa responsável pelo projeto"
