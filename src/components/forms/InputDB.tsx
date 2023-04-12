@@ -18,6 +18,7 @@ interface InputDBProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputEl
   error?: string;
   fieldSetClassName?: string;
   wantInputWidthFull?: boolean;
+  
 }
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
@@ -31,6 +32,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
     fieldSetClassName = '',
     wantInputWidthFull = false,
     className = "",
+  
     ...rest }, ref) => {
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -41,7 +43,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
 
     return (
       <fieldset
-        className={`w-fit flex flex-col gap-[1.2rem] ${fieldSetClassName}`}
+        className={`w-fit flex flex-col gap-[1.2rem] max-w-[10rem] ${fieldSetClassName}`}
         onClick={() => {
           if (inputRef.current)
             inputRef.current.focus()
@@ -75,10 +77,10 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
 
         {!!error &&
           <Text
-            type="sm"
-            className="text-red font-semibold leading-[1.924rem]"
+            type="md"
+            className="text-[1.8rem] text-red font-bold leading-[1.924rem]"
           >
-            {`Erro (${error})`}
+            {`${error}`}
           </Text>
         }
       </fieldset>
@@ -87,4 +89,3 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
   }
 
 export const InputDB = forwardRef(InputBase);
-

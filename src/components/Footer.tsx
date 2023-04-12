@@ -8,6 +8,7 @@ export function Footer() {
   return (
     <>
       <div className=" absolute bottom-0 h-[36rem] w-full items-center bg-blue-dark">
+        {/* <div className="relative bottom-0 h-[36rem] w-full items-center bg-blue-dark"> */}
         <div className="w-full py-8 ">
           <div className="mb-[4rem] ml-[8rem] mt-[3rem] flex gap-x-4 ">
             <div className="flex h-[4rem] w-[4rem]  items-center justify-center rounded-full bg-green-medium">

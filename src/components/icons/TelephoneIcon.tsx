@@ -17,5 +17,3 @@ export function TelephoneIcon({ color = "#fff", ...rest }: SVGIconProps) {
     </svg>
   );
 }
-
-

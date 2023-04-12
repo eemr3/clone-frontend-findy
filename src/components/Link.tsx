@@ -18,11 +18,10 @@ export function Link({
 
   return (
     <a
-      className={`${typeClassName} ${className} ${
-        disabled
+      className={`${typeClassName} ${className} ${disabled
           ? "pointer-events-none disabled:text-grey-#2"
           : "text-green-medium hover:text-green-dark"
-      }`}
+        }`}
       {...rest}
     >
       {children}

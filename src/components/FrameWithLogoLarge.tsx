@@ -14,7 +14,7 @@ export function FrameWithLogoLarge({
 }: FrameWithLogoLargeProps) {
   return (
     <article className={`bg-blue-dark`} style={{ height: frameHeight }}>
-      <LogoLarge className="absolute mt-[1.533rem]  ml-[2.891rem]" />
+      <LogoLarge className="absolute ml-[2.891rem]  mt-[1.533rem]" />
 
       <section className={`relative z-10 ${sectionClassName}`}>
         {children}
