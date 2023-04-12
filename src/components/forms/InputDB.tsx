@@ -64,6 +64,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
             </div>
           }
           <input
+            name={name}
             ref={inputRef}
             type={type}
             placeholder={placeholder}

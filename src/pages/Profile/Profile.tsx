@@ -1,26 +1,71 @@
 import { useState } from "react";
 
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
 import { HeaderProfile } from "../../components/HeaderProfile";
 import { Heading } from "../../components/Heading";
 import { Text } from "../../components/Text";
+import { Button } from "../../components/Button";
 
 import { InputDB } from "../../components/forms/InputDB";
 import { SelectDB } from "../../components/forms/SelectDB";
+import { Checkbox } from "../../components/forms/Checkbox";
 
 import { EnvelopeIcon } from "../../components/icons/EnvelopeIcon";
 import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
 import { TelephoneIcon } from "../../components/icons/TelephoneIcon";
 import { ClockIcon } from "../../components/icons/ClockIcon";
-import { Checkbox } from "../../components/forms/Checkbox";
-import { Button } from "../../components/Button";
 
+const schema = yup
+  .object()
+  .shape({
+    nome: yup.string().required("Nome obrigatório"),
+    link_selecao_equipe: yup.string().required("Link seleção equipe obrigatório"),
+    escopo_project: yup.string().required("Escopo do projeto obrigatório"),
+    farramentas: yup.string().required("Ferramentas obrigatórias"),
+    data_inicio: yup.string().required("Data de início obrigatória"),
+    responsavel_project: yup.string().required("nome do responsável pelo projeto obrigatório"),
+    contato_responsavel: yup.string().required("Contato do responsável obrigatório"),
+    linkedin_responsavel: yup.string().url("URL do LinkedIn inválida").required("Linkedin do responsável obrigatório!"),
+    contato_outros_responsaveis: yup.string(),
+    ajuda_findy: yup.string()
+  })
+  .required();
 
+interface FormValues {
+  nome: string;
+  link_selecao_equipe: string;
+  escopo_project: string;
+  farramentas: string;
+  data_inicio: string;
+  responsavel_project: string;
+  contato_responsavel: string;
+  linkedin_responsavel: string;
+  contato_outros_responsaveis: string;
+  ajuda_findy: string;
+}
 
 export function Profile() {
   // Teste de Error no nome e e-mail
-  const [errorName, setErrorName] = useState('');
+
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setError,
+    formState: { errors }, // Adicione essa propriedade na desestruturação
+  } = useForm<FormValues>({
+    resolver: yupResolver(schema),
+    shouldFocusError: true,
+  });
+
+  /* const [errorName, setErrorName] = useState('');
   const [errorEmail, setErrorEmail] = useState('');
+ */
 
   const timeToWeek = new Array(20).fill(null).map((item, index) => `${String((index + 1) * 2).padStart(2, "0")} horas`);
 
@@ -56,6 +101,7 @@ export function Profile() {
         >
           <div className="grid grid-cols-2 gap-y-[6.469rem]">
             <InputDB
+              name="name"
               icon={<PencilIcon />}
               label="Nome completo"
               placeholder="Nome"
@@ -69,6 +115,7 @@ export function Profile() {
             />
 
             <InputDB
+              name="whatsapp"
               icon={<TelephoneIcon />}
               label="Insira o seu número do WhatsApp"
               placeholder="Ex: (99) 99999-9999"
@@ -76,6 +123,7 @@ export function Profile() {
             />
 
             <InputDB
+              name="linkedin"
               icon={<SocialMediaIcon />}
               label="Insira o seu LinkedIn"
               placeholder="LinkedIn"
@@ -83,6 +131,7 @@ export function Profile() {
             />
 
             <InputDB
+              name="github"
               icon={<SocialMediaIcon />}
               label="Insira o seu GitHub"
               placeholder="GitHub"

@@ -9,7 +9,10 @@ export function Header() {
         <Logo className="ml-[4.624rem]" />
 
         <nav className="flex items-center gap-5">
-          <Link href="#" className="mr-[6.4rem] text-[1.557rem] leading-[1.824rem] tracking-[0.126rem] ">
+          <Link
+            href="#"
+            className="mr-[6.4rem] text-[1.557rem] leading-[1.824rem] tracking-[0.126rem] "
+          >
             Sobre Nós
           </Link>
 
