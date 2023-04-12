@@ -34,12 +34,7 @@ export const loginUser = async (email: string, password: string) => {
   try {
     const response = await api.post(
       "/api/login",
-      { email, password },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
+      { email, password }
     );
     if (response.status === 200) {
       return {
@@ -54,8 +49,34 @@ export const loginUser = async (email: string, password: string) => {
   } catch (error: any) {}
 };
 
-export const getTest = async () => {
+export const formProject = async (body: any) => {
+  try {
+   
+    return await api.post("/api/candidate-projects",body);
+  } catch (error: any) {
+    console.log(error);
+  }
+};
+
+export const getProjects = async () => {
   return await api.get("/api/candidate-projects");
+};
+export const getPositions = async () => {
+  const options = {
+    headers: {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImwyQGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxMzA3NTk5LCJleHAiOjE2ODEzMTU1OTl9.j4BGnuvEux8DB5ytyvXJOUE2IxAZnNPdFPSuLqkVNhY` // O token é uma string que representa o token de autenticação
+    }
+  };
+  return await api.get("/api/candidate-projects/roles",options);
+};
+
+export const getLanguages = async () => {
+  const options = {
+    headers: {
+      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImwyQGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxMzA3NTk5LCJleHAiOjE2ODEzMTU1OTl9.j4BGnuvEux8DB5ytyvXJOUE2IxAZnNPdFPSuLqkVNhY` // O token é uma string que representa o token de autenticação
+    }
+  };
+  return await api.get("/api/candidate-projects/skills",options);
 };
 
 export default api;

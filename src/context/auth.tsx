@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import api, { getTest } from "../services/api";
+import api from "../services/api";
 
 interface User {
   email?: string;
@@ -55,8 +55,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setAuthenticated(true);
     setUser(loggedUser);
 
-    const respTest = getTest();
-    console.log(respTest);
+
   };
 
   const logout = () => {

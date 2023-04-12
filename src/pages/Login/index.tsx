@@ -28,8 +28,6 @@ export function Login() {
   const {
     register,
     handleSubmit,
-    watch,
-    setError,
     formState: { errors }, // Adicione essa propriedade na desestruturação
   } = useForm<FormValues>({
     resolver: yupResolver(schema),

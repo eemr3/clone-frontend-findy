@@ -42,6 +42,7 @@ export function Cadastro() {
     shouldFocusError: true,
   });
   const password = watch("password");
+
   const hasNumber = /\d/.test(password);
   const hasUppercase = /.*[A-Z].*/.test(password);
 
