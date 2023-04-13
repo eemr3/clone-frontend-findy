@@ -25,7 +25,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | any>(null);
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
- 
 
   useEffect(() => {
     const recoveredUser = localStorage.getItem("user");
@@ -54,9 +53,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     setAuthenticated(true);
     setUser(loggedUser);
- 
- 
-  
   };
 
   const logout = () => {

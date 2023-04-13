@@ -42,7 +42,7 @@ export function Login() {
         login(result);
 
         setTimeout(() => {
-          navigate('/project')
+          navigate("/project");
         }, 1000);
       }
     }
@@ -53,7 +53,7 @@ export function Login() {
     <div className="w-max-[144rem] flex h-[100%] flex-col bg-blue-dark">
       <Header showJustify={false} />
 
-      <div className="my-auto flex w-[55%] items-center justify-end  xl:w-[100%] xl:justify-center md:px-[2rem] ">
+      <div className="my-auto flex w-[55%] items-center justify-end  xl:w-[50%] xl:justify-center md:px-[2rem] ">
         <img
           src={mulherPagePrincipal}
           alt="mulher"
@@ -65,15 +65,15 @@ export function Login() {
             Acesse a sua Conta
           </h2>
 
-          <div className="w-[70%] mbl:w-[85%] mbl:flex sm:justify-center">
+          <div className="w-[70%] sm:justify-center mbl:flex mbl:w-[85%]">
             <input
               type="email"
               placeholder="insira seu email"
               {...register("email")}
               className={
                 errors.email
-                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.5rem] mbl:text-[1.3rem] mbl:w-[90%] "
-                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.5rem]  mbl:text-[1.3rem] mbl:mb-[1.5rem] mbl:w-[90%] "
+                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem] "
+                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:mb-[1.5rem]  mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem] "
               }
             />
             <span className=" mb-[1rem] mt-[0.8rem] block  pl-[1rem] text-[1.8rem] text-red">
@@ -85,15 +85,15 @@ export function Login() {
             </span>
           </div>
 
-          <div className="w-[70%]  mbl:w-[85%]  mbl:flex mbl:justify-center">
+          <div className="w-[70%]  mbl:flex  mbl:w-[85%] mbl:justify-center">
             <input
               type="password"
               placeholder="Confirme sua senha"
               {...register("password")}
               className={
                 errors.password
-                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.5rem] mbl:text-[1.3rem] mbl:w-[90%] "
-                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.5rem] mbl:text-[1.3rem] mbl:w-[90%] "
+                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem] "
+                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem] "
               }
             />
             <span className=" mb-[1rem] mt-[0.8rem] block  pl-[1rem] text-[1.8rem] text-red">
@@ -101,10 +101,10 @@ export function Login() {
             </span>
           </div>
 
-          <div className="mt-[2rem] flex w-[70%] justify-between mbl:w-[80%] mbl:mt-[0]">
+          <div className="mt-[2rem] flex w-[70%] justify-between mbl:mt-[0] mbl:w-[80%]">
             <div className="flex">
               <input
-                className="mr-[1.2rem] h-[2.5rem] w-[2.8rem] border-green-medium mbl:h-[2.2rem] mbl:mr-[0.5rem] "
+                className="mr-[1.2rem] h-[2.5rem] w-[2.8rem] border-green-medium mbl:mr-[0.5rem] mbl:h-[2.2rem] "
                 type="checkbox"
               />
               <p className="text-[1.6rem]  mbl:text-[1.3rem] mbl:text-[1rem]">
@@ -119,12 +119,14 @@ export function Login() {
             </Link>
           </div>
           <button
-            className="mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195] mbl:h-[4rem]  mbl:max-w-[100%] mbl:mt-[4.5rem]"
+            className="mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195] mbl:mt-[4.5rem]  mbl:h-[4rem] mbl:max-w-[100%]"
             onClick={handleSubmit(onSubmit)}
           >
-            <p className="text-[2.4rem] text-[#FFFFFF] mbl:text-[2.2rem] ">Logar</p>
+            <p className="text-[2.4rem] text-[#FFFFFF] mbl:text-[2.2rem] ">
+              Logar
+            </p>
           </button>
-          <p className="mt-[6.4rem] text-[2.4rem]  mbl:text-[1.4rem] mbl:mt-[4.4rem]">
+          <p className="mt-[6.4rem] text-[2.4rem]  mbl:mt-[4.4rem] mbl:text-[1.4rem]">
             Você é novo na Findy?{" "}
             <Link to="/cadastro" className="text-[#01A195]">
               {" "}

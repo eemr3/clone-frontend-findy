@@ -3,7 +3,6 @@ import {
   ForwardRefRenderFunction,
   InputHTMLAttributes,
   forwardRef,
-  useState,
 } from "react";
 
 interface CheckboxProps
@@ -11,10 +10,11 @@ interface CheckboxProps
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
-  name: string;
+  /* name: string; */
   id: string;
   label: string;
   labelClassName?: string;
+  /*   optimus?: any; */
 }
 
 type CheckboxStates = { [key: string]: boolean };
@@ -23,18 +23,15 @@ const CheckboxBase: ForwardRefRenderFunction<
   HTMLInputElement,
   CheckboxProps
 > = (
-  { name, id, label, labelClassName = "", className = "", onChange, ...rest },
+  {
+    /* name, */ id,
+    label,
+    labelClassName = "",
+    className = "" /* , onChange */,
+    ...rest
+  },
   ref
 ) => {
-  const [isChecked, setIsChecked] = useState<boolean>(false);
-
-  const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setIsChecked(event.target.checked);
-    if (onChange) {
-      onChange(event);
-    }
-  };
-
   return (
     <label
       className={`flex w-fit items-center gap-8 text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1 ${labelClassName}`}
@@ -43,10 +40,11 @@ const CheckboxBase: ForwardRefRenderFunction<
         <input
           className={`h-[3.6rem] w-[3.6rem] accent-green-medium ${className}`}
           type="checkbox"
-          name={name}
+          /* name={name} */
           id={id}
-          checked={isChecked}
-          onChange={handleOnChange}
+          /* checked={isChecked}
+            onChange={handleOnChange} */
+          /*           optinus={optinus} */
           ref={ref}
           {...rest}
         />

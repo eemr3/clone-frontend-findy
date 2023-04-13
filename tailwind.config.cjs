@@ -54,24 +54,24 @@ module.exports = {
       
     },
     screens: {
-      '4xl': {'max': '2170px'},
-       // => @media (max-width: 2170px) { ... }
-       // => @media (max-width: 2170px) { ... }
-      '3xl': {'max': '1770px'},
-       // => @media (max-width: 1870px) { ... }
-      '2xl': {'max': '1600px'},
+      '4xl': { 'max': '2170px' },
+      // => @media (max-width: 2170px) { ... }
+      // => @media (max-width: 2170px) { ... }
+      '3xl': { 'max': '1770px' },
+      // => @media (max-width: 1870px) { ... }
+      '2xl': { 'max': '1600px' },
       // => @media (max-width: 1670px) { ... }
 
-      'xl': {'max': '1350px'},
+      'xl': { 'max': '1350px' },
       // => @media (max-width: 1279px) and (max-height: 1350px) { ... }
 
       'lg': {'max': '1200px'},
       // => @media (max-width: 1023px) { ... }
 
-      'md': {'max': '767px'},
+      'md': { 'max': '767px' },
       // => @media (max-width: 767px)  { ... }
 
-      'sm': {'max': '639px'},
+      'sm': { 'max': '639px' },
       // => @media (max-width: 639px) { ... }
       
       'mbl': {'max': '500px'},
@@ -80,6 +80,6 @@ module.exports = {
       // => @media (min-height: 800px) { ... }
     },
   },
-  
+
   plugins: [],
 }

@@ -20,7 +20,13 @@ const schema = yup
   .shape({
     nome: yup.string().required("Nome obrigatório"),
     email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
-    password: yup.string().required().min(8).matches(/[0-9]/).matches(/[A-Z]/).matches(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/),
+    password: yup
+      .string()
+      .required()
+      .min(8)
+      .matches(/[0-9]/)
+      .matches(/[A-Z]/)
+      .matches(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/),
     password_confirmation: yup
       .string()
       .oneOf([undefined, yup.ref("password")], "As senhas precisam ser iguais"),
@@ -45,7 +51,9 @@ export function Cadastro() {
 
   const hasNumber = /\d/.test(password);
   const hasUppercase = /.*[A-Z].*/.test(password);
-  const hasSpecialChar = /.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?].*/.test(password);
+  const hasSpecialChar = /.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?].*/.test(
+    password
+  );
 
   const onSubmit = async (data: any) => {
     const body = {
@@ -81,19 +89,19 @@ export function Cadastro() {
         />
 
         <div className="flex  w-[100%] max-w-[63.5rem] flex-col items-center rounded-[2.6rem] bg-[#FFFFFF]">
-          <h2 className="mb-[6.4rem] mt-[6.4rem] text-[4.8rem] font-[700] md:text-[4rem] mbl:mb-[4rem] mbl:mt-[4rem] mbl:text-[2.2rem]  mbl:mb-[2.8rem] mbl:mt-[4.1rem] mbl:text-[2.5rem]">
+          <h2 className="mb-[6.4rem] mt-[6.4rem] text-[4.8rem] font-[700] md:text-[4rem] mbl:mb-[2.8rem] mbl:mb-[4rem] mbl:mt-[4.1rem]  mbl:mt-[4rem] mbl:text-[2.2rem] mbl:text-[2.5rem]">
             Crie uma Conta
           </h2>
 
-          <div className="w-[70%] mbl:w-[85%] mbl:flex sm:justify-center  ">
+          <div className="w-[70%] sm:justify-center mbl:flex mbl:w-[85%]  ">
             <input
               type="name"
               placeholder="insira seu Nome"
               {...register("nome")}
               className={
                 errors.nome
-                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:text-[1.3rem] mbl:w-[90%]"
-                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:text-[1.3rem] mbl:w-[90%]"
+                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
+                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
               }
             />
             <span className=" mb-[1rem] mt-[0.8rem] block  pl-[1rem] text-[1.8rem] text-red">
@@ -101,15 +109,15 @@ export function Cadastro() {
             </span>
           </div>
 
-          <div className="w-[70%]  mbl:w-[85%] mbl:flex sm:justify-center  ">
+          <div className="w-[70%]  sm:justify-center mbl:flex mbl:w-[85%]  ">
             <input
               type="email"
               placeholder="insira seu email"
               {...register("email")}
               className={
                 errors.email
-                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:text-[1.3rem] mbl:w-[90%]"
-                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:text-[1.3rem] mbl:w-[90%]"
+                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
+                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
               }
             />
             <span className=" mb-[1rem] mt-[0.8rem] block  pl-[1rem] text-[1.8rem] text-red">
@@ -121,15 +129,15 @@ export function Cadastro() {
             </span>
           </div>
 
-          <div className="w-[70%] mbl:w-[85%] mbl:flex mbl:flex-col sm:justify-center mbl:items-center ">
+          <div className="w-[70%] sm:justify-center mbl:flex mbl:w-[85%] mbl:flex-col mbl:items-center ">
             <input
               type="password"
               placeholder="insira sua senha"
               {...register("password")}
               className={
                 errors.password
-                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:text-[1.3rem] mbl:w-[90%] mbl:mr-[1rem]"
-                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:text-[1.3rem] mbl:w-[90%] mbl:mr-[1rem]" 
+                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:mr-[1rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
+                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:mr-[1rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
               }
             />
 
@@ -245,21 +253,18 @@ export function Cadastro() {
                   A senha deve ter pelo menos um caracter especial
                 </p>
               </div>
-
-
-
             </div>
           </div>
 
-          <div className="w-[70%] mbl:w-[85%] mbl:flex sm:justify-center">
+          <div className="w-[70%] sm:justify-center mbl:flex mbl:w-[85%]">
             <input
               type="password"
               placeholder="Confirme sua senha"
               {...register("password_confirmation")}
               className={
                 errors.password_confirmation
-                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:text-[1.3rem] mbl:w-[90%]"
-                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:text-[1.3rem] mbl:w-[90%]"
+                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
+                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
               }
             />
             <span className=" mb-[1rem] mt-[0.8rem] block  pl-[1rem] text-[1.8rem] text-red">
@@ -269,7 +274,7 @@ export function Cadastro() {
             </span>
           </div>
 
-          <div className="mt-[2rem] flex w-[70%] justify-between ">
+          <div className="mt-[2rem] flex w-[70%] justify-between mbl:w-[76%]">
             <div className="flex">
               <input
                 className="mr-[1.2rem] h-[2.9rem] w-[2.8rem]"
@@ -277,7 +282,7 @@ export function Cadastro() {
                 checked={isChecked}
                 onChange={(e) => setIsChecked(e.target.checked)}
               />
-              <p className="mdl:text-[2rem] mdl:text-[1rem] text-[1.7rem]">
+              <p className="text-[1.7rem] mbl:text-[1.3rem]">
                 Eu concordo com os{" "}
                 <Link to="#" className="mdl:text-[2rem] text-[#01A195]">
                   Termos de Uso
@@ -290,10 +295,10 @@ export function Cadastro() {
             </div>
           </div>
           <button
-            className="mdl:mt-[3rem] mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195]"
+            className="mdl:mt-[3rem] mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195] mbl:h-[4rem]"
             onClick={handleSubmit(onSubmit)}
           >
-            <p className="text-[2.4rem] text-[#FFFFFF] ">Criar</p>
+            <p className="text-[2.4rem] text-[#FFFFFF]  ">Criar</p>
           </button>
           <p className="mdl:mb-[3rem] mb-[6rem] mt-[2.4rem] text-[2.4rem]">
             Já possui uma conta?{" "}

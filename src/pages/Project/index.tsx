@@ -24,6 +24,7 @@ interface FormValues {
   linkedin_responsavel: string;
   contato_outros_responsaveis: string;
   ajuda_findy: string;
+  areaAtuacao: string[];
 }
 
 const schema = yup
@@ -45,6 +46,9 @@ const schema = yup
     linkedin_responsavel: yup.string().url("URL do LinkedIn inválida"),
     contato_outros_responsaveis: yup.string(),
     ajuda_findy: yup.string(),
+    areaAtuacao: yup
+      .array(yup.string())
+      .min(1, "Precisa escolher pelo menos uma área de atuação."),
   })
   .required();
 
@@ -59,18 +63,6 @@ export function Project() {
   /*   const [ferramentas, setFerramentas] = useState<string[]>([]); */
   const [positions, setPositions] = useState<any>([]);
   const [languages, setLanguages] = useState<any>([]);
-  const handleOnChange = (event: any) => {
-    const { id, checked } = event.target;
-    setCheckedItems({ ...checkedItems, [id]: checked });
-  };
-  /*   const handleFerramentasChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const ferramentasStr = event.target.value;
-    const ferramentasArr = ferramentasStr.split(",");
-    setFerramentas(ferramentasArr.map((f) => f.trim()));
-  };
- */
   const {
     register,
     handleSubmit,
@@ -161,7 +153,7 @@ export function Project() {
 
       <section className="mt-[10.2rem] overflow-x-hidden bg-grey-#5 xl:px-[3rem] mbl:px-[1rem]">
         <div className="mx-auto mb-[16rem] mt-[7.4rem] w-[100%] max-w-[112.4rem]">
-          <div className="grid grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] lg:flex">
+          <div className="grid grid-cols-2 lg:flex lg:flex-col lg:items-start lg:justify-center lg:gap-y-[6.469rem]">
             <InputDB
               icon={<PencilIcon />}
               {...register("nome")}
@@ -176,7 +168,7 @@ export function Project() {
               label="Link para seleção da equipe"
               {...register("link_selecao_equipe")}
               placeholder="Link"
-              fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
+              fieldSetClassName={"ml-auto"}
               error={errors ? errors.link_selecao_equipe?.message : ""}
             />
           </div>
@@ -254,15 +246,14 @@ export function Project() {
               Quais cargos serão oferecidos à equipe do projeto?
             </legend>
 
-            <div className="mbl: mt-[3.8rem] grid grid-cols-1 grid-cols-2 gap-y-[2.5rem] mbl:w-[86%]">
-              {positions?.map((pos: any) => (
+            <div className="grid grid-cols-1 grid-cols-2 gap-y-[2.5rem] mbl:mt-[3.8rem] mbl:w-[86%]">
+              {positions?.map((occupation: any) => (
                 <Checkbox
-                  key={pos.id}
-                  name="area"
-                  id={pos.id}
-                  label={pos.title}
-                  checked={checkedItems[pos.id]}
-                  onChange={handleOnChange}
+                  key={occupation.id}
+                  id={String(occupation.id)}
+                  label={occupation.title}
+                  value={occupation.title}
+                  {...register("areaAtuacao")}
                 />
               ))}
             </div>

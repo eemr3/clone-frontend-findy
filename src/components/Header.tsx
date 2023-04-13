@@ -15,7 +15,7 @@ export const Header = (props: { showJustify: boolean }) => {
     <>
       <div className="bg-gray-800 py-3 pt-[2rem]">
         <div
-          className={`flex w-full items-center lg:justify-between  md:mx-[0] ${
+          className={`flex w-[51%] items-center  justify-between 4xl:w-[49%] 3xl:w-[41%] 2xl:w-[51%] xl:w-full lg:justify-between  md:mx-[0] ${
             props.showJustify ? "justify-between" : ""
           }`}
         >
@@ -26,10 +26,10 @@ export const Header = (props: { showJustify: boolean }) => {
               }`}
             />
           </Link>
-          <button className="hidden pr-[4rem] lg:block" onClick={handleMenu}>
+          <button className="hidden pr-[4rem] xl:block" onClick={handleMenu}>
             <img src={IconMenu} alt="Menu" className="  h-[4rem] w-[4rem]" />
           </button>
-          <nav className={"mt-5 flex gap-[2rem] lg:hidden "}>
+          <nav className={"mt-5 flex gap-[2rem] pl-[5rem] xl:hidden"}>
             <Button>
               <Link to="/login">Login</Link>
             </Button>

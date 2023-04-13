@@ -48,7 +48,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
 
   return (
     <fieldset
-      className={`flex w-fit max-w-[10rem] flex-col gap-[1.2rem]  sm:max-w-[100%] ${fieldSetClassName}`}
+      className={`flex w-fit max-w-[10rem] flex-col gap-[1.2rem] lg:ml-[0] sm:max-w-[100%]  ${fieldSetClassName}`}
       onClick={() => {
         if (inputRef.current) inputRef.current.focus();
       }}
