@@ -1,5 +1,8 @@
+
+import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
-import { HeaderProfile } from "../../components/HeaderProfile";
+import { Link } from "react-router-dom";
+import { Header } from "../../components/Header";
 import { Heading } from "../../components/Heading";
 import { Text } from "../../components/Text";
 import { getProjects } from "../../services/api";
@@ -14,33 +17,41 @@ interface Projects {
 export function ProjectRegistred() {
   // Teste de Error no nome e e-mail
   const [projects, setProjects] = useState<any[]>([]);
-
+  const [nameUser,setNameUser] = useState("")
   const timeToWeek = new Array(20)
     .fill(null)
     .map((item, index) => `${String((index + 1) * 2).padStart(2, "0")} horas`);
+
+  
 
   useEffect(() => {
     async function fetchData() {
       const response = await getProjects();
       setProjects(response.data);
     }
-
+    const token: string | any = localStorage.getItem("token");
+     const {name}:any =jwt_decode(token)
+     setNameUser(name) 
+    
     fetchData();
   }, []);
 
   return (
-    <section className="w-max-[144rem] flex  flex-col bg-[#FFFFFF] ">
-      <HeaderProfile />
+    <section className="w-max-[144rem] flex  flex-col  bg-blue-dark">
+      <Header showJustify={false} />
 
       <article className="flex min-h-[62rem] flex-col bg-blue-dark pl-[15.9rem] pt-[6.414rem] text-grey-#5 lg:px-[3rem] mbl:pb-[5rem]">
         <Heading
           type="lg-leading58"
           className="xl:text-[5rem] lg:text-[3.5rem]"
         >
-          Bem vindo(a) à Findy, (Nome do Usuário)!
+          Bem vindo(a) à Findy, ({nameUser.toUpperCase()})!
         </Heading>
 
-        <Heading type="lg-leading58" className="mt-[8rem] lg:text-[3rem]">
+        <Heading
+          type="lg-leading58"
+          className="mt-[8rem] lg:text-[3rem] mbl:mt-[5rem]"
+        >
           Projetos cadastrados
         </Heading>
 
@@ -48,9 +59,9 @@ export function ProjectRegistred() {
           Visualize os projetos disponíveis na Findy.
         </Text>
         <button className="mt-[5rem] h-[6rem] w-[60%] max-w-[40.6rem] rounded-[3.2rem] bg-[#01A195] px-[2.5rem]  mbl:h-[4rem] mbl:w-[75%] mbl:px-[0.1rem]">
-          <p className="text-[2.4rem] text-[#FFFFFF]  mbl:text-[1.5rem] ">
+          <Link to="/project" className="text-[2.4rem] text-[#FFFFFF]  mbl:text-[1.5rem] ">
             ADICIONAR NOVO PROJETO
-          </p>
+          </Link>
         </button>
       </article>
 

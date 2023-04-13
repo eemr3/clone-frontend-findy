@@ -5,13 +5,13 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 
 import { Button } from "../../components/Button";
-import { HeaderProfile } from "../../components/HeaderProfile";
 import { Heading } from "../../components/Heading";
 import { Text } from "../../components/Text";
 
 import { Checkbox } from "../../components/forms/Checkbox";
 import { InputDB } from "../../components/forms/InputDB";
 
+import { Header } from "../../components/Header";
 import { TextErrorMessage } from "../../components/forms/TextErrorMessage";
 import { ClockIcon } from "../../components/icons/ClockIcon";
 import { EnvelopeIcon } from "../../components/icons/EnvelopeIcon";
@@ -122,10 +122,12 @@ export function Profile() {
 
   return (
     <div className="w-max-[144rem] flex flex-col bg-blue-dark">
-      <HeaderProfile />
+      <Header showJustify={false} />
 
       <article className="ml-[15.9rem] mt-[6.414rem] text-grey-#5 lg:ml-[4rem] mbl:ml-[2rem]">
-        <Heading type="lg-leading58" className="mbl:text-[4rem]">Seu perfil</Heading>
+        <Heading type="lg-leading58" className="mbl:text-[4rem]">
+          Seu perfil
+        </Heading>
 
         <Text type="md" className="mt-[6.4rem] inline-block mbl:text-[1.8rem]">
           Destaque suas habilidades, experiências e interesses profissionais:
@@ -226,8 +228,8 @@ export function Profile() {
                 className="mt-[1.2rem] inline-block"
               />
             )}
-            
-            <div className="mt-[4rem] grid  grid-cols-2 gap-y-[2.5rem] mbl:mt-[3.8rem] mbl:w-[86%] md:grid-cols-1">
+
+            <div className="mt-[4rem] grid  grid-cols-2 gap-y-[2.5rem] md:grid-cols-1 mbl:mt-[3.8rem] mbl:w-[86%]">
               {occupations?.map((occupation: any) => (
                 <Checkbox
                   key={occupation.id}
@@ -238,13 +240,12 @@ export function Profile() {
                 />
               ))}
             </div>
-            <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col">
+            <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 sm:flex-col">
               <Checkbox name="area" id="Outro" label="Outro: " />
 
               <InputDB placeholder="Cargo" fieldSetClassName="h-[6rem]" />
             </div>
           </fieldset>
-
 
           <InputDB
             label="Quais seus interesses na sua área de atuação?"

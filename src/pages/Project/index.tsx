@@ -8,6 +8,7 @@ import { Text } from "../../components/Text";
 import { Checkbox } from "../../components/forms/Checkbox";
 import { InputDB } from "../../components/forms/InputDB";
 import { SelectDB } from "../../components/forms/SelectDB";
+import { TextErrorMessage } from "../../components/forms/TextErrorMessage";
 import { CodeIcon } from "../../components/icons/CodeIcon";
 import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
@@ -25,6 +26,7 @@ interface FormValues {
   contato_outros_responsaveis: string;
   ajuda_findy: string;
   areaAtuacao: string[];
+  areaOutroCargo: string;
 }
 
 const schema = yup
@@ -49,6 +51,10 @@ const schema = yup
     areaAtuacao: yup
       .array(yup.string())
       .min(1, "Precisa escolher pelo menos uma área de atuação."),
+      areaOutroCargo: yup.string().when("areaAtuacao", {
+        is: (area: string[]) => !!area && area.indexOf("Outro") > -1,
+        then: (schema) => schema.required("Cargo obrigatório"),
+      })
   })
   .required();
 
@@ -241,12 +247,19 @@ export function Project() {
             </div>
           </div>
 
-          <fieldset className="mb-[6.8rem] mt-[8rem]">
+          <fieldset className="max-[80%] mb-[6.8rem] mt-[8rem] ">
             <legend className="text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1">
               Quais cargos serão oferecidos à equipe do projeto?
             </legend>
 
-            <div className="grid grid-cols-1 grid-cols-2 gap-y-[2.5rem] mbl:mt-[3.8rem] mbl:w-[86%]">
+            {!!errors.areaAtuacao?.message && (
+              <TextErrorMessage
+                errorMessage={errors.areaAtuacao?.message}
+                className="mt-[1.2rem] inline-block"
+              />
+            )}
+
+            <div className="mt-[4rem] grid  grid-cols-2 gap-y-[2.5rem] md:grid-cols-1 mbl:mt-[3.8rem] mbl:w-[86%]">
               {positions?.map((occupation: any) => (
                 <Checkbox
                   key={occupation.id}
@@ -257,13 +270,13 @@ export function Project() {
                 />
               ))}
             </div>
-            <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col">
+            <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col ">
               <Checkbox name="area" id="Outro" label="Outro: " />
 
               <InputDB placeholder="Cargo" fieldSetClassName="h-[6rem]" />
             </div>
           </fieldset>
-
+          
           <div className="grid grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] lg:flex ">
             <InputDB
               icon={<PencilIcon />}
