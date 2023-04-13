@@ -137,7 +137,6 @@ export function Project() {
       const lan = await getLanguages();
       setPositions(pos.data);
       setLanguages(lan.data);
-    
     }
     fetchData();
   }, [selectedLanguageNames]);

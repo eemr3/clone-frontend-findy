@@ -1,12 +1,8 @@
 import axios from "axios";
 
-
-
-
 export const api = axios.create({
   baseURL: "https://findybackend-development.up.railway.app",
 });
-
 
 export const createUser = async (body: any) => {
   try {
@@ -54,13 +50,10 @@ export const loginUser = async (email: string, password: string) => {
 export const formProject = async (body: any) => {
   try {
     return await api.post("/api/candidate-projects", body);
-  } catch (error: any) {
-    
-  }
+  } catch (error: any) {}
 };
 
 export const getProjects = async () => {
- 
   return await api.get("/api/candidate-projects");
 };
 export const getPositions = async () => {

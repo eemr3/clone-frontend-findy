@@ -245,7 +245,7 @@ export function Cadastro() {
                 checked={isChecked}
                 onChange={(e) => setIsChecked(e.target.checked)}
               />
-              <p className="mdl:text-[2rem] text-[1.7rem] mdl:text-[1rem]">
+              <p className="mdl:text-[2rem] mdl:text-[1rem] text-[1.7rem]">
                 Eu concordo com os{" "}
                 <Link to="#" className="mdl:text-[2rem] text-[#01A195]">
                   Termos de Uso

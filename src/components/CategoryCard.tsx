@@ -83,7 +83,10 @@ export function CategoryCard({
         {title}
       </Heading>
 
-      <CustomerLink type="card" className={`group mt-[3.04rem] flex items-center`}>
+      <CustomerLink
+        type="card"
+        className={`group mt-[3.04rem] flex items-center`}
+      >
         <Text
           type="md"
           className={`w-[19.2rem] ${linkColor} ${linkColorHover}`}
