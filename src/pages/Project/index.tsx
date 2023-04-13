@@ -197,7 +197,7 @@ export function Project() {
             </span>
           </div>
 
-          <div className="grid h-[100%] grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] overflow-x-hidden  lg:flex sm:w-[32rem]  sm:max-w-[100%]  mbl:max-w-[100%] ">
+          <div className="grid h-[100%] grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] overflow-x-hidden  overflow-y-hidden  lg:flex sm:w-[32rem]  sm:max-w-[100%]  mbl:max-w-[100%]  ">
             <SelectDB
               icon={<CodeIcon />}
               label="Selecione as linguagens de programação"
