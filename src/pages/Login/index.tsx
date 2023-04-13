@@ -53,7 +53,7 @@ export function Login() {
     <div className="w-max-[144rem] flex h-[100%] flex-col bg-blue-dark">
       <Header showJustify={false} />
 
-      <div className="my-auto flex w-[55%] items-center justify-end  xl:w-[50%] xl:justify-center md:px-[2rem] ">
+      <div className="my-auto  flex w-[55%] items-center justify-end  xl:w-[50%] xl:justify-center md:px-[2rem] mbl:w-[100%] ">
         <img
           src={mulherPagePrincipal}
           alt="mulher"
