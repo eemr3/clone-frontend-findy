@@ -26,11 +26,11 @@ export function Home() {
         {larguraTela > 1200 ? (
           <div className=" flex h-[90%] items-center xl:flex xl:flex-col-reverse xl:items-start ">
             <div className="ml-[12.909rem] flex w-[53rem] flex-col 4xl:ml-[25rem] 4xl:w-[70%] 3xl:ml-[17rem]   2xl:w-[40%] md:ml-[0] md:w-[80%]" >
-              <h1 className="mt-[9.9rem] w-[100%] text-[6.4rem] font-bold leading-[7.25rem] tracking-[-0.018em] text-grey-#5">
+              <h1 className="mt-[9.9rem] w-[100%] text-[6.4rem] font-bold leading-[7.25rem] tracking-[-0.018em] text-grey-#5 mbl:text-[3.2rem]">
                 Seja um voluntário tech!
               </h1>
 
-              <span className="mt-[3.2rem] inline-block w-[45.8rem] text-[2.4rem] font-medium text-grey-#5 md:w-[100%]">
+              <span className="mt-[3.2rem] inline-block w-[45.8rem] text-[2.4rem] font-medium text-grey-#5 md:w-[100%]  mbl:text-[1.6rem]">
                 Você é um jovem talento em busca de experiências na área de
                 tecnologia? Então conheça a Findy!
               </span>
@@ -66,7 +66,7 @@ export function Home() {
               <img
                 src={mulherPagePrincipal3}
                 alt="mulher"
-                className="right-[4rem] top-[-1rem] mt-[2.4rem]  object-cover md-h:h-[80rem]"
+                className="right-[4rem] top-[-1rem] mt-[2.4rem]  object-cover "
               />
 
               <Button

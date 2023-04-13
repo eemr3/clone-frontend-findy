@@ -1,11 +1,12 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
+import IconMenu from "../assets/hamburger.svg";
 import { Button } from "./Button";
 import { Logo } from "./Logo";
 
 export const Header = (props: { showJustify: boolean }) => {
-  const [showContent, setShowContent] = React.useState<boolean>(true);
+  const [showContent, setShowContent] = React.useState<boolean>(false);
 
   function handleMenu() {
     setShowContent(!showContent);
@@ -20,14 +21,14 @@ export const Header = (props: { showJustify: boolean }) => {
         
         <Link to="/" className="pointer">
           <Logo
-            className={`ml-[4.624rem] ${
+            className={`ml-[4.624rem] sm:max-w-[8.1rem] sm:h-[2.3rem] ${
               props.showJustify ? "" : "mr-[12.3rem] sm:mr-[6rem]"
             }`}
           />
         </Link>
           <button className="hidden lg:block pr-[4rem]" onClick={handleMenu}>
             <img
-              src="/src/assets/hamburger.svg"
+              src={IconMenu}
               alt="Menu"
               className="  w-[4rem] h-[4rem]"
             />
