@@ -81,27 +81,27 @@ export function Cadastro() {
     <div className="w-max-[144rem] flex h-[100%] flex-col overflow-x-hidden bg-blue-dark">
       <Header showJustify={false} />
 
-      <div className="my-auto flex w-[55%] items-center justify-end  xl:w-[100%] xl:justify-center  md:px-[2rem] mbl:px-[1.5rem] ">
+      <div className="my-auto flex w-[55%] items-center justify-end  xl:w-[100%] xl:justify-center  md:px-[2rem] mbl:px-[1.5rem] mbl:my-[10rem] ">
         <img
           src={mulherPagePrincipal}
           alt="mulher"
           className="absolute right-[0]  top-[0] h-[100%]  w-[100%] max-w-[54.6rem] object-cover xl:hidden "
         />
 
-        <div className="flex  w-[100%] max-w-[63.5rem] flex-col items-center rounded-[2.6rem] bg-[#FFFFFF]">
+        <div className="flex  w-[100%] max-w-[63.5rem] flex-col items-center rounded-[2.6rem] bg-[#FFFFFF] ">
           <h2 className="mb-[6.4rem] mt-[6.4rem] text-[4.8rem] font-[700] md:text-[4rem] mbl:mb-[2.8rem] mbl:mb-[4rem] mbl:mt-[4.1rem]  mbl:mt-[4rem] mbl:text-[2.2rem] mbl:text-[2.5rem]">
             Crie uma Conta
           </h2>
 
-          <div className="w-[70%] sm:justify-center mbl:flex mbl:w-[85%]  ">
+          <div className="w-[60%] sm:justify-center  mbl:w-[85%]  ">
             <input
               type="name"
               placeholder="insira seu Nome"
               {...register("nome")}
               className={
                 errors.nome
-                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
-                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
+                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[100%] mbl:text-[1.3rem]"
+                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[100%] mbl:text-[1.3rem]"
               }
             />
             <span className=" mb-[1rem] mt-[0.8rem] block  pl-[1rem] text-[1.8rem] text-red">
@@ -109,15 +109,15 @@ export function Cadastro() {
             </span>
           </div>
 
-          <div className="w-[70%]  sm:justify-center mbl:flex mbl:w-[85%]  ">
+          <div className="w-[100%]  sm:justify-center  mbl:w-[85%]  ">
             <input
               type="email"
               placeholder="insira seu email"
               {...register("email")}
               className={
                 errors.email
-                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
-                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
+                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[100%] mbl:text-[1.3rem]"
+                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[100%] mbl:text-[1.3rem]"
               }
             />
             <span className=" mb-[1rem] mt-[0.8rem] block  pl-[1rem] text-[1.8rem] text-red">
@@ -129,15 +129,15 @@ export function Cadastro() {
             </span>
           </div>
 
-          <div className="w-[70%] sm:justify-center mbl:flex mbl:w-[85%] mbl:flex-col mbl:items-center ">
+          <div className="w-[70%] sm:justify-center mbl:w-[85%] mbl:flex-col mbl:items-center ">
             <input
               type="password"
               placeholder="insira sua senha"
               {...register("password")}
               className={
                 errors.password
-                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:mr-[1rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
-                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:mr-[1rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
+                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:mr-[1rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[100%] mbl:text-[1.3rem]"
+                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:mr-[1rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[100%] mbl:text-[1.3rem]"
               }
             />
 
@@ -226,7 +226,7 @@ export function Cadastro() {
                 </p>
               </div>
 
-              <div className="mt-[1rem] flex w-[39.7rem] mbl:text-[1.3rem]">
+              <div className="mt-[1rem] flex  w-[39.7rem] mbl:text-[1.3rem]">
                 <IconLock
                   className={"mr-[1rem] h-[1.6rem] w-[1.6rem]"}
                   fill={
@@ -263,8 +263,8 @@ export function Cadastro() {
               {...register("password_confirmation")}
               className={
                 errors.password_confirmation
-                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
-                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]"
+                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[100%] mbl:text-[1.3rem]"
+                  : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[100%] mbl:text-[1.3rem]"
               }
             />
             <span className=" mb-[1rem] mt-[0.8rem] block  pl-[1rem] text-[1.8rem] text-red">
@@ -300,7 +300,7 @@ export function Cadastro() {
           >
             <p className="text-[2.4rem] text-[#FFFFFF]  ">Criar</p>
           </button>
-          <p className="mdl:mb-[3rem] mb-[6rem] mt-[2.4rem] text-[2.4rem]">
+          <p className="mdl:mb-[3rem] mb-[6rem] mt-[2.4rem] text-[2.4rem] mbl:text-[2rem]">
             Já possui uma conta?{" "}
             <Link to="/login" className="text-[#01A195]">
               {" "}
