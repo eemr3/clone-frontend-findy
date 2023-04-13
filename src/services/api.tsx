@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "https://findybackend-development.up.railway.app",
+  baseURL: "https://findybackend-production-production.up.railway.app",
 });
 
 export const createUser = async (body: any) => {
