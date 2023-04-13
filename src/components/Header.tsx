@@ -75,6 +75,13 @@ export const Header = (props: { showJustify: boolean }) => {
                     </Link>
                   </button>
                 </li>
+                <li className="border-b border-black p-[1rem] p-[1rem]">
+                  <button className="bg">
+                    <Link to="/project_registered" className="hover:text-green-dark">
+                      Projetos Registrados
+                    </Link>
+                  </button>
+                </li>
               </>
             ) : (
               ""

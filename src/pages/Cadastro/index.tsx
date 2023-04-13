@@ -65,7 +65,7 @@ export function Cadastro() {
 
     if (data != null && isChecked) {
       let result = await createUser(body);
-      if (result.status === 201) {
+      if (result.status === 201 || result.status === 200) {
         toast.success(result.message);
       }
       if (result.status === 409) {
