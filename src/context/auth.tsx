@@ -25,6 +25,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | any>(null);
   const [loading, setLoading] = useState(true);
   const [authenticated, setAuthenticated] = useState(false);
+ 
 
   useEffect(() => {
     const recoveredUser = localStorage.getItem("user");
@@ -46,7 +47,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const token = data.data.access_token;
 
-    console.log(data);
     localStorage.setItem("user", JSON.stringify(loggedUser));
     localStorage.setItem("token", token);
 
@@ -54,6 +54,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     setAuthenticated(true);
     setUser(loggedUser);
+ 
+ 
+  
   };
 
   const logout = () => {

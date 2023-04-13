@@ -52,7 +52,7 @@ export const Header = (props: { showJustify: boolean }) => {
             </li>
             <li className="p-[1rem]">
               <button className="bg">
-                <Link to="/cadastro" className="">
+                <Link to="/cadastro" className="hover:text-green-dark">
                   Cadastro
                 </Link>
               </button>

@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 
 import { useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import mulherPagePrincipal from "../../assets/mulher-page-principal2.svg";
 import { Header } from "../../components/Header";
 import { AuthContext } from "../../context/auth";
@@ -25,6 +25,7 @@ const schema = yup
 export function Login() {
   const [isSuccess, setIsSuccess] = useState(false);
   const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -39,6 +40,10 @@ export function Login() {
       let result = await loginUser(data.email, data.password);
       if (result?.status === 200) {
         login(result);
+
+        setTimeout(() => {
+          navigate('/project')
+        }, 1000);
       }
     }
     setIsSuccess(true);
@@ -56,7 +61,7 @@ export function Login() {
         />
 
         <div className="flex w-[100%]  max-w-[63.5rem] flex-col items-center rounded-[2.6rem] bg-[#FFFFFF] pb-[4rem]  ">
-          <h2 className="mb-[6.4rem] mt-[6.4rem] text-[4.8rem] font-[700] md:text-[4rem] mbl:text-[3.2rem] mbl:text-[1.7rem] mbl:mb-[2.8rem]">
+          <h2 className="mb-[6.4rem] mt-[6.4rem] text-[4.8rem] font-[700] md:text-[4rem]  mbl:mb-[2.8rem] mbl:mt-[4.1rem] mbl:text-[2.5rem]">
             Acesse a sua Conta
           </h2>
 
@@ -114,14 +119,14 @@ export function Login() {
             </Link>
           </div>
           <button
-            className="mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195] mbl:h-[4rem]  mbl:max-w-[100%]"
+            className="mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195] mbl:h-[4rem]  mbl:max-w-[100%] mbl:mt-[4.5rem]"
             onClick={handleSubmit(onSubmit)}
           >
             <p className="text-[2.4rem] text-[#FFFFFF] mbl:text-[2.2rem] ">Logar</p>
           </button>
           <p className="mt-[6.4rem] text-[2.4rem]  mbl:text-[1.4rem] mbl:mt-[4.4rem]">
             Você é novo na Findy?{" "}
-            <Link to="#" className="text-[#01A195]">
+            <Link to="/cadastro" className="text-[#01A195]">
               {" "}
               Crie sua conta aqui
             </Link>{" "}

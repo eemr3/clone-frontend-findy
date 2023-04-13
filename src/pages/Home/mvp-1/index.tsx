@@ -27,12 +27,12 @@ export function Home() {
       <div className="w-max-[144rem]  h-[calc(100vh - 10rem)]  bg-blue-dark">
         {larguraTela > 1200 ? (
           <div className=" flex h-[90%] items-center xl:flex xl:flex-col-reverse xl:items-start ">
-            <div className="ml-[12.909rem] flex w-[53rem] flex-col 4xl:ml-[25rem] 4xl:w-[70%] 3xl:ml-[17rem]   2xl:w-[40%] md:ml-[0] md:w-[80%]">
-              <h1 className="mt-[9.9rem] w-[100%] text-[1.4rem] font-bold leading-[7.25rem] tracking-[-0.018em] text-grey-#5 ">
+            <div className="ml-[12.909rem] flex w-[53rem] flex-col 4xl:ml-[25rem] 4xl:w-[70%] 3xl:ml-[17rem]   2xl:w-[40%] md:ml-[0] md:w-[80%] xl:ml-[5rem]">
+              <h1 className="mt-[9.9rem] w-[100%] text-[5.4rem] font-bold leading-[7.25rem] tracking-[-0.018em] text-grey-#5 ">
                 Seja um voluntário tech!
               </h1>
 
-              <span className="mt-[3.2rem] inline-block w-[45.8rem] text-[2.4rem] font-medium text-grey-#5 md:w-[100%]  ">
+              <span className="mt-[3.2rem] inline-block w-[45.8rem] text-[3.4rem] font-medium text-grey-#5 md:w-[100%]  ">
                 Você é um jovem talento em busca de experiências na área de
                 tecnologia? Então conheça a Findy!
               </span>
