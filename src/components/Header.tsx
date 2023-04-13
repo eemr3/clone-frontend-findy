@@ -1,24 +1,40 @@
+
+import React from "react";
 import { Link } from "react-router-dom";
 import { Button } from "./Button";
 import { Logo } from "./Logo";
 
-export function Header(props: { showJustify: boolean }) {
+export const Header = (props: { showJustify: boolean }) => {
+  const [showContent, setShowContent] = React.useState<boolean>(true);
+
+  function handleMenu() {
+    setShowContent(!showContent);
+  }
+
   return (
-    <header className="flex h-[9.977rem] items-center overflow-x-hidden bg-blue-dark">
-      <div
-        className={`flex w-full items-center md:mx-[0] ${
+    <>
+      <div className="bg-gray-800 py-3 pt-[2rem]">
+        <div className={`flex w-full items-center md:mx-[0]  lg:justify-between ${
           props.showJustify ? "justify-between" : ""
-        }`}
-      >
-        <Link to="/">
+        }`}>
+        
+        <Link to="/" className="pointer">
           <Logo
             className={`ml-[4.624rem] ${
               props.showJustify ? "" : "mr-[12.3rem] sm:mr-[6rem]"
             }`}
           />
         </Link>
-
-        <nav className="flex items-center gap-5 ">
+          <button className="hidden lg:block pr-[4rem]" onClick={handleMenu}>
+            <img
+              src="/src/assets/hamburger.svg"
+              alt="Menu"
+              className="  w-[4rem] h-[4rem]"
+            />
+          </button>
+          <nav
+          className={ "lg:hidden flex gap-[2rem] mt-5 "}
+        >
           <Button>
             <Link to="/login">Login</Link>
           </Button>
@@ -27,7 +43,31 @@ export function Header(props: { showJustify: boolean }) {
             <Link to="/cadastro">Cadastre-se</Link>
           </Button>
         </nav>
+        </div>
       </div>
-    </header>
+      {showContent ? (
+      <div className=" bg-gray-800 flex justify-center items-center absolute w-[20rem] bg-blue-dark right-5 hidden top-[8rem] lg:block shadow-shadow-#2 ">
+          
+      <ul className="text-white text-3xl font-bold">
+        <li className=" p-[1rem] border-b border-black">
+        <button className="bg">
+        <Link to="/login" className="hover:text-green-dark">Login</Link>
+        </button>
+
+      
+         </li>
+         <li className="p-[1rem]">
+         <button className="bg">
+        <Link to="/cadastro" className="">Cadastro</Link>
+        </button>
+
+         </li>
+       </ul>
+     </div>
+      ) : (
+        ""
+      )}
+    </>
   );
-}
+};
+

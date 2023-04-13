@@ -50,6 +50,7 @@ module.exports = {
     },
     boxShadow: {
       'shadow-#1': '0px 10px 30px 5px rgba(1, 161, 149, 0.24)',
+      'shadow-#2': '1px 1px 2px 2px black',
       
     },
     screens: {
@@ -64,7 +65,7 @@ module.exports = {
       'xl': {'max': '1350px'},
       // => @media (max-width: 1279px) and (max-height: 1350px) { ... }
 
-      'lg': {'max': '1023px'},
+      'lg': {'max': '1200px'},
       // => @media (max-width: 1023px) { ... }
 
       'md': {'max': '767px'},

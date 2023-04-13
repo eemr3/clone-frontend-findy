@@ -2,7 +2,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { HeaderProfile } from "../../components/HeaderProfile";
+import { Header } from "../../components/Header";
 import { Heading } from "../../components/Heading";
 import { Text } from "../../components/Text";
 import { Checkbox } from "../../components/forms/Checkbox";
@@ -137,16 +137,14 @@ export function Project() {
       const lan = await getLanguages();
       setPositions(pos.data);
       setLanguages(lan.data);
-      console.log(lan);
+    
     }
     fetchData();
-
-    console.log(selectedLanguageIds);
   }, [selectedLanguageNames]);
 
   return (
     <div className="w-max-[144rem] flex flex-col overflow-x-hidden bg-blue-dark ">
-      <HeaderProfile />
+      <Header showJustify={false} />
 
       <article className="ml-[15.9rem] mt-[6.414rem] overflow-x-hidden text-grey-#5 lg:ml-[4rem] mbl:ml-[2rem]">
         <Heading type="lg-leading58" className=" mbl:text-[4rem]">

@@ -35,7 +35,6 @@ export function Login() {
   });
 
   const onSubmit = async (data: any) => {
-    console.log("ola");
     if (data != null) {
       let result = await loginUser(data.email, data.password);
       if (result?.status === 200) {
