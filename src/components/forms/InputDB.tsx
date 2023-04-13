@@ -10,7 +10,7 @@ import { SVGIcon } from "../../types/SVGIcon";
 import { Text } from "../Text";
 
 interface InputDBProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
-  name?: string;
+  /* name?: string; */
   label?: string;
   type?: string;
   placeholder?: string;
@@ -18,12 +18,11 @@ interface InputDBProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputEl
   error?: string;
   fieldSetClassName?: string;
   wantInputWidthFull?: boolean;
-  
 }
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
   = ({
-    name = '',
+    /* name = '', */
     label,
     placeholder,
     icon = undefined,
@@ -32,7 +31,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
     fieldSetClassName = '',
     wantInputWidthFull = false,
     className = "",
-  
+
     ...rest }, ref) => {
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -43,7 +42,8 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
 
     return (
       <fieldset
-        className={`w-fit flex flex-col gap-[1.2rem] max-w-[10rem] ${fieldSetClassName}`}
+        className={`flex flex-col gap-[1.2rem] ${fieldSetClassName}`}
+        /* className={`w-fit flex flex-col gap-[1.2rem] max-w-[10rem] ${fieldSetClassName}`} */
         onClick={() => {
           if (inputRef.current)
             inputRef.current.focus()
@@ -51,7 +51,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
       >
 
         {!!label &&
-          <label htmlFor={name} className="text-[2.4rem] leading-[2.813rem] tracking-[-0.5%] font-medium text-grey-#1">
+          <label htmlFor={rest.name} className={`text-[2.4rem] leading-[2.813rem] tracking-[-0.5%] font-medium text-grey-#1 text-clip overflow-hidden ${wantInputWidthFull ? "w-full" : "max-w-[42.5rem]"}`}>
             {label}
           </label>
         }
@@ -66,11 +66,11 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
             </div>
           }
           <input
-            name={name}
+            /* name={name} */
             ref={inputRef}
             type={type}
             placeholder={placeholder}
-            className={`w-[33.2rem] text-[2.4rem] leading-[2.831rem] tracking-[-0.5%] ml-[2rem] font-medium text-grey-#1 placeholder:text-grey-#2 border-none outline-none ${className} ${wantInputWidthFull ? "w-[96%]" : ""}`}
+            className={`w-[33.2rem] text-[2.4rem] leading-[2.831rem] tracking-[-0.5%] ml-[2rem] font-medium text-grey-#1 placeholder:text-grey-#2 disabled:bg-white border-none outline-none ${className} ${wantInputWidthFull ? "w-[96%]" : ""}`}
             {...rest}
           />
         </div>

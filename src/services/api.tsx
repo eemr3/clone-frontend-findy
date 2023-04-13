@@ -1,5 +1,8 @@
 import axios from "axios";
 
+const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIwLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5kb2VAZW1haWwuY29tIiwicm9sZXMiOiJjYW5kaWRhdGUiLCJpYXQiOjE2ODEzOTQxMzUsImV4cCI6MTY4MTQwMjEzNX0.BLRnrS8VF_lS3IaiF8TYQcoKg5FmQ3uoEqNXY1v_OLc";
+
+
 export const api = axios.create({
   baseURL: "https://findybackend-development.up.railway.app",
 });
@@ -46,13 +49,13 @@ export const loginUser = async (email: string, password: string) => {
     } else {
       return { success: false, message: "Erro desconhecido" };
     }
-  } catch (error: any) {}
+  } catch (error: any) { }
 };
 
 export const formProject = async (body: any) => {
   try {
-   
-    return await api.post("/api/candidate-projects",body);
+
+    return await api.post("/api/candidate-projects", body);
   } catch (error: any) {
     console.log(error);
   }
@@ -64,19 +67,19 @@ export const getProjects = async () => {
 export const getPositions = async () => {
   const options = {
     headers: {
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImwyQGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxMzA3NTk5LCJleHAiOjE2ODEzMTU1OTl9.j4BGnuvEux8DB5ytyvXJOUE2IxAZnNPdFPSuLqkVNhY` // O token é uma string que representa o token de autenticação
+      Authorization: token //`Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImwyQGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxMzA3NTk5LCJleHAiOjE2ODEzMTU1OTl9.j4BGnuvEux8DB5ytyvXJOUE2IxAZnNPdFPSuLqkVNhY` // O token é uma string que representa o token de autenticação
     }
   };
-  return await api.get("/api/candidate-projects/roles",options);
+  return await api.get("/api/candidate-projects/roles", options);
 };
 
 export const getLanguages = async () => {
   const options = {
     headers: {
-      Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImwyQGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxMzA3NTk5LCJleHAiOjE2ODEzMTU1OTl9.j4BGnuvEux8DB5ytyvXJOUE2IxAZnNPdFPSuLqkVNhY` // O token é uma string que representa o token de autenticação
+      Authorization: token // `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImwyQGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxMzA3NTk5LCJleHAiOjE2ODEzMTU1OTl9.j4BGnuvEux8DB5ytyvXJOUE2IxAZnNPdFPSuLqkVNhY` // O token é uma string que representa o token de autenticação
     }
   };
-  return await api.get("/api/candidate-projects/skills",options);
+  return await api.get("/api/candidate-projects/skills", options);
 };
 
 export default api;
