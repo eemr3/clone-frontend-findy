@@ -36,7 +36,7 @@ const CheckboxBase: ForwardRefRenderFunction<
     <label
       className={`flex w-fit items-center gap-8 text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1 mbl:text-[1.5rem] ${labelClassName}`}
     >
-      <div className="h-[4.0rem] w-[4.0rem] rounded-[0.514rem] border-[0.257rem] border-green-medium mbl:flex  mbl:h-[2.1rem] mbl:w-[2.3rem] mbl:items-center mbl:justify-center  ">
+      <div className="h-[4.0rem] w-[4.0rem] rounded-[0.514rem] border-[0.257rem] border-green-medium mbl:flex  mbl:h-[2.1rem] mbl:w-[2.24rem] mbl:items-center mbl:justify-center  ">
         <input
           className={`h-[3.6rem] w-[3.6rem] accent-green-medium ${className} mbl:h-[1.9rem] mbl:w-[1.9rem] `}
           type="checkbox"

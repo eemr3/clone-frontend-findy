@@ -63,7 +63,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
       )}
 
       <div
-        className={`flex h-[6.631rem] w-[42.5rem] rounded-[0.3rem]  border-[0.1rem] border-grey-#1 bg-white  sm:h-[5.6rem] sm:w-[32rem] sm:max-w-[100%] mbl:h-[4rem] mbl:max-h-[2.5rem] mbl:max-w-[80%] ${
+        className={`flex h-[6.631rem] w-[42.5rem] rounded-[0.3rem]  border-[0.1rem] border-grey-#1 bg-white  sm:h-[5.6rem] sm:w-[32rem] sm:max-w-[100%] mbl:h-[4rem] mbl:max-h-[3rem] mbl:max-w-[80%] ${
           wantInputWidthFull ? "w-full" : ""
         }`}
       >

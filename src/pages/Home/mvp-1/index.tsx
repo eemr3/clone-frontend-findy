@@ -48,7 +48,8 @@ export function Home() {
             <img
               src={mulherPagePrincipal}
               alt="mulher"
-              className="absolute right-[4rem] top-[-1rem] h-[110rem] object-cover 2xl:w-[60rem] md-h:h-[80rem]"
+              className="absolute right-[4rem] top-[-1rem] h-[110rem] object-cover 2xl:w-[60rem] md-h:h-[80rem] "
+              loading="lazy"
             />
           </div>
         ) : (

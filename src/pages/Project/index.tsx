@@ -171,7 +171,7 @@ export function Project() {
 
       <section className="mt-[10.2rem] overflow-x-hidden bg-grey-#5 xl:px-[3rem] mbl:px-[1rem]">
         <div className="mx-auto mb-[16rem] mt-[7.4rem] w-[100%] max-w-[112.4rem]">
-          <div className="grid grid-cols-2 lg:flex lg:flex-col lg:items-start lg:justify-center lg:gap-y-[6.469rem]">
+          <div className="grid grid-cols-2 lg:flex lg:flex-col lg:items-start lg:justify-center lg:gap-y-[6.469rem] mbl:gap-y-[4rem]">
             <InputDB
               icon={<PencilIcon className={"mbl:max-w-[2rem] "} />}
               {...register("nome")}
@@ -209,7 +209,7 @@ export function Project() {
             </span>
           </div>
 
-          <div className="grid h-[100%] grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] overflow-x-hidden  overflow-y-hidden  lg:flex sm:w-[32rem]  sm:max-w-[100%]  mbl:max-w-[100%]  ">
+          <div className="grid h-[100%] grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] overflow-x-hidden  overflow-y-hidden  lg:flex sm:w-[32rem]  sm:max-w-[100%]  mbl:max-w-[100%] mbl:gap-y-[4rem]  ">
             <SelectDB
               icon={<CodeIcon className={"mbl:max-w-[2rem] "} />}
               label="Selecione as linguagens de programação"
@@ -291,7 +291,7 @@ export function Project() {
             </div> */}
           </fieldset>
 
-          <div className="grid grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] lg:flex ">
+          <div className="grid grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] lg:flex mbl:gap-y-[4rem]">
             <InputDB
               icon={<PencilIcon className={"mbl:max-w-[2rem] "} />}
               label="Insira o nome da pessoa responsável pelo projeto"
