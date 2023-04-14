@@ -42,7 +42,7 @@ export function Login() {
         login(result);
 
         setTimeout(() => {
-          navigate("/project");
+          navigate("/");
         }, 1000);
       }
     }
@@ -51,9 +51,9 @@ export function Login() {
 
   return (
     <div className="w-max-[144rem] flex h-[100%] flex-col bg-blue-dark">
-      <Header showJustify={false} />
+      <Header showJustify={true} />
 
-      <div className="my-auto  flex w-[55%] items-center justify-end  xl:w-[50%] xl:justify-center md:px-[2rem] mbl:w-[100%] ">
+      <div className="my-auto  flex w-[55%] items-center justify-end  xl:w-[100%] xl:justify-center md:px-[2rem] mbl:w-[100%] ">
         <img
           src={mulherPagePrincipal}
           alt="mulher"

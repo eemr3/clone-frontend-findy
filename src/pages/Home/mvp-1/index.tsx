@@ -23,7 +23,7 @@ export function Home() {
 
   return (
     <section className="flex h-[100%] flex-col bg-blue-dark pb-[5rem] ">
-      <Header showJustify={false} />
+      <Header showJustify={true} />
       <div className="w-max-[144rem]  h-[calc(100vh - 10rem)]  bg-blue-dark pt-[10rem] border-none" >
         {larguraTela > 1350 ? (
           <div className=" flex h-[90%] items-center xl:flex xl:flex-col-reverse xl:items-start ">
@@ -41,9 +41,9 @@ export function Home() {
                 fill={true}
                 className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem]"
               >
-                <a href="https://docs.google.com/forms/d/1GZBzYZRTHoU-waL6NLZ6BDHZsS6SrvjWAgf_YUC-eZQ/viewform?edit_requested=true">
+                <Link to="/project">
                   CLIQUE PARA COMEÇAR
-                </a>
+                </Link>
               </Button>
             </div>
 
@@ -76,7 +76,7 @@ export function Home() {
                   fill={true}
                   className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem] sm:m-[0] sm:w-[100%]"
                 >
-                  <Link to="/login" className="sm:text-[1.4rem]">
+                  <Link to="/project" className="sm:text-[1.4rem]">
                     CLIQUE PARA COMEÇAR
                   </Link>
                 </Button>

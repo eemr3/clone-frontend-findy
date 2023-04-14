@@ -111,13 +111,12 @@ export function Profile() {
       const pos = await getPositions();
 
       setOccupations(pos.data);
-      console.log(pos);
     }
     fetchData();
   }, []);
 
   useEffect(() => {
-    console.log("React Hook Form[Errors]: ", errors);
+   
   }, [errors]);
 
   return (

@@ -93,7 +93,7 @@ export function Cadastro() {
             Crie uma Conta
           </h2>
 
-          <div className="w-[60%] sm:justify-center  mbl:w-[85%]  ">
+          <div className="w-[70%] sm:justify-center  mbl:w-[85%]  ">
             <input
               type="name"
               placeholder="insira seu Nome"
@@ -109,14 +109,14 @@ export function Cadastro() {
             </span>
           </div>
 
-          <div className="w-[100%]  sm:justify-center  mbl:w-[85%]  ">
+          <div className="w-[70%]  sm:justify-center  mbl:w-[85%]  ">
             <input
               type="email"
               placeholder="insira seu email"
               {...register("email")}
               className={
                 errors.email
-                  ? "h-[6rem] w-[100%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[100%] mbl:text-[1.3rem]"
+                  ? "h-[6rem] w-[90%] rounded-[0.8rem] border border-red pl-[1rem] text-[2.4rem] placeholder-red mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[100%] mbl:text-[1.3rem]"
                   : "mb-[2.4rem] h-[6rem] w-[100%] rounded-[0.8rem] border border-black pl-[1rem] text-[2.4rem] mbl:h-[4.3rem] mbl:h-[4.5rem] mbl:w-[100%] mbl:text-[1.3rem]"
               }
             />

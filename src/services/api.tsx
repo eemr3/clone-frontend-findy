@@ -50,7 +50,9 @@ export const loginUser = async (email: string, password: string) => {
 export const formProject = async (body: any) => {
   try {
     return await api.post("/api/candidate-projects", body);
-  } catch (error: any) {}
+  } catch (error: any) {
+    console.log(error)
+  }
 };
 
 export const getProjects = async () => {
@@ -63,5 +65,13 @@ export const getPositions = async () => {
 export const getLanguages = async () => {
   return await api.get("/api/candidate-projects/skills");
 };
+export const getLanguagesById = async (id: string) => {
+  return await api.get(`/api/candidate-projects/skills/${id}`);
+};
+
+export const getUserById = async (id: number) => {
+  return await api.get(`/api/candidate-profile/1`);
+};
+
 
 export default api;

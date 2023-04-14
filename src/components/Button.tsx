@@ -26,6 +26,7 @@ export function Button({
       }`;
 
   return (
+    
     <button
       className={`h-[3.341rem] w-fit rounded-[2.324rem] px-[1.743rem] uppercase ${className} ${buttonStyle}`}
       {...rest}

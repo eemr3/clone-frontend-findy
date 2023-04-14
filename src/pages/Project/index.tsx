@@ -1,4 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -12,8 +13,7 @@ import { TextErrorMessage } from "../../components/forms/TextErrorMessage";
 import { CodeIcon } from "../../components/icons/CodeIcon";
 import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
-import { formProject, getLanguages, getPositions } from "../../services/api";
-
+import { formProject, getLanguages, getPositions, getUserById } from "../../services/api";
 interface FormValues {
   nome: string;
   link_selecao_equipe: string;
@@ -50,11 +50,11 @@ const schema = yup
     ajuda_findy: yup.string(),
     areaAtuacao: yup
       .array(yup.string())
-      .min(1, "Precisa escolher pelo menos uma área de atuação."),
-      areaOutroCargo: yup.string().when("areaAtuacao", {
+      .min(1, "Precisa escolher pelo menos um cargo."),
+      /* areaOutroCargo: yup.string().when("areaAtuacao", {
         is: (area: string[]) => !!area && area.indexOf("Outro") > -1,
         then: (schema) => schema.required("Cargo obrigatório"),
-      })
+      })  */
   })
   .required();
 
@@ -69,6 +69,7 @@ export function Project() {
   /*   const [ferramentas, setFerramentas] = useState<string[]>([]); */
   const [positions, setPositions] = useState<any>([]);
   const [languages, setLanguages] = useState<any>([]);
+  const [name, setName] = useState<any>()
   const {
     register,
     handleSubmit,
@@ -76,30 +77,27 @@ export function Project() {
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
+    defaultValues: {
+      areaAtuacao: [],
+    },
   });
   const timeToWeek = new Array(20)
     .fill(null)
     .map((item, index) => `${String((index + 1) * 2).padStart(2, "0")} horas`);
 
   const onSubmit = async (data: any) => {
-    console.log(data);
-    console.log("hello");
-
-    const checkedIds = Object.keys(checkedItems).filter(
-      (id) => checkedItems[id]
-    );
-    console.log(checkedIds);
+  
     if (data != null) {
       const body = {
         name: data.nome,
-        projectScope: "hello",
+        projectScope: data.escopo_project ,
         urlTeamSelection: data.link_selecao_equipe,
         responsible: data.responsavel_project,
         contactResponsible: data.contato_responsavel,
         urlLinkediResponsible: data.linkedin_responsavel,
         contactLeaders: data.contato_outros_responsaveis,
         language: selectedLanguageIds,
-        professional: checkedIds,
+        professional: data.areaAtuacao,
         //"others": ferramentas,
         findyHelp: data.ajuda_findy,
       };
@@ -115,14 +113,14 @@ export function Project() {
     const selectedName = event.target.options[event.target.selectedIndex].text;
 
     if (!selectedLanguageIds.includes(selectedId)) {
-      setSelectedLanguageIds([...selectedLanguageIds, selectedId]);
+      setSelectedLanguageIds([...selectedLanguageIds, parseInt(selectedId)]);
       setSelectedLanguageNames([...selectedLanguageNames, selectedName]);
     }
   };
 
   const handleRemoveLanguage = (index: number) => {
     setSelectedLanguageIds(
-      selectedLanguageIds.filter((_id: string, i: number) => i !== index)
+      selectedLanguageIds.filter((_id: number, i: number) => i !== index)
     );
     setSelectedLanguageNames(
       selectedLanguageNames.filter((_name: string, i: number) => i !== index)
@@ -135,9 +133,21 @@ export function Project() {
       const lan = await getLanguages();
       setPositions(pos.data);
       setLanguages(lan.data);
+
+      const token: string | any = localStorage.getItem("token");
+      const token2:any = jwt_decode(token)
+
+      const user =  await getUserById(2)
+
+      console.log(token2)
     }
-    fetchData();
+    
+      fetchData();
   }, [selectedLanguageNames]);
+
+
+
+  const dataAtual = new Date().toLocaleDateString('pt-BR');
 
   return (
     <div className="w-max-[144rem] flex flex-col overflow-x-hidden bg-blue-dark ">
@@ -189,7 +199,7 @@ export function Project() {
             <div className=" mt-[3.2rem]flex h-[22.2rem] w-[100%] max-w-[112.4rem] rounded-[0.8rem] border-[0.15rem] border-grey-#1 bg-white p-[1rem]">
               <textarea
                 {...register("escopo_project")}
-                className="h-[100%]  w-[100%] resize-none p-[0.6rem] outline-none"
+                className=" text-[2.2rem] lg:text-[1.8rem]  mbl:text-[1rem] h-[100%]  w-[100%] resize-none p-[0.6rem] outline-none"
               />
             </div>
             <span className=" mb-[1rem] mt-[0.8rem] block  pl-[1rem] text-[1.8rem] text-red">
@@ -217,6 +227,8 @@ export function Project() {
               label="Data do inicio do projeto"
               placeholder="Data"
               fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
+              value={dataAtual}
+              disabled
             />
           </div>
 
