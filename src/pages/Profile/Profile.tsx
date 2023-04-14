@@ -1,28 +1,27 @@
 import { useEffect, useState } from "react";
 
-import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
+import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from 'yup';
 
+import { Button } from "../../components/Button";
 import { HeaderProfile } from "../../components/HeaderProfile";
 import { Heading } from "../../components/Heading";
 import { Text } from "../../components/Text";
-import { Button } from "../../components/Button";
 
-import { InputDB } from "../../components/forms/InputDB";
-import { SelectDB } from "../../components/forms/SelectDB";
 import { Checkbox } from "../../components/forms/Checkbox";
+import { InputDB } from "../../components/forms/InputDB";
 
+import { TextErrorMessage } from "../../components/forms/TextErrorMessage";
 import { ClockIcon } from "../../components/icons/ClockIcon";
 import { EnvelopeIcon } from "../../components/icons/EnvelopeIcon";
 import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
 import { TelephoneIcon } from "../../components/icons/TelephoneIcon";
-import api, { getCandidateUser, getCandidatesProfiles, getCandidatesUsers, getPositions, updateProfile } from "../../services/api";
-import { Role } from "../../types/Role";
-import { TextErrorMessage } from "../../components/forms/TextErrorMessage";
-import { CandidateUser } from "../../types/CandidateUser";
+import { getCandidateUser, getCandidatesProfiles, getPositions, updateProfile } from "../../services/api";
 import { CandidateProfile } from "../../types/CandidateProfile";
+import { CandidateUser } from "../../types/CandidateUser";
+import { Role } from "../../types/Role";
 
 type ProfileFormValues = CandidateProfile & {
   name: string;
@@ -56,41 +55,18 @@ const schema = yup
       is: (others: string[]) => !others.length,
       then: (schema) => schema.min(1, "Precisa escolher pelo menos uma área de atuação")
     }),
-    others: yup.array(yup.string()),
+    others: yup.string(),
     otherDescription: yup.string().when("others", {
       is: (others: string[]) => others.length,
       then: (schema) => schema.required("Cargo obrigatório")
     }),
 
-    /* .when('others', {
-      is: (other: string[]) => !!other && !other.length,
-      then: (schema) => schema.required("Cargo obrigatório")
-    }), */
-
-    /* others: yup.array(yup.string()).when('occupationArea', {
-      is: (area: string[]) => !!area && area.indexOf('Outro') > -1,
-      then: (schema) => schema.required("Cargo obrigatório")
-    }), */
 
     areaOfInterest: yup.string().required("Interesse na sua área de atuação obrigatória"),
   }).required();
 
 
-/* .shape({
-  nome: yup.string().required("Nome obrigatório"),
-  whatsapp: yup.string().required("Número do Whatsapp obrigatório"),
-  linkedin: yup.string().required("Endereço do Linkedin obrigatório").url("Endereço do Linkedin inválido"),
-  github: yup.string().required("Endereço do Github obrigatório").url("Endereço do Github inválido"),
-  email: yup.string().required("Endereço de e-mail obrigatório").email("Endereço de e-mail inválido"),
-  disponibilidadeSemanal: yup.string().required("Tempo de disponibilidade obrigatório"),
-  areaAtuacao: yup.array(yup.string()).min(1, "Precisa escolher pelo menos uma área de atuação"),
-  areaOutroCargo: yup.string().when('areaAtuacao', {
-    is: (area: string[]) => !!area && area.indexOf('Outro') > -1,
-    then: (schema) => schema.required("Cargo obrigatório")
-  }),
 
-  interesseAreaAtuacao: yup.string().required("Interesse na sua área de atuação obrigatória"),
-}).required(); */
 
 
 export function Profile() {
@@ -138,7 +114,7 @@ export function Profile() {
 
       const body = {
         ...newValues,
-        others: [otherDescription]
+        others: "hello"
       }
 
       console.log("Dados do Formulário: ", body);
