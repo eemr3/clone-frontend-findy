@@ -13,7 +13,6 @@ export const createUser = async (body: any) => {
     });
 
     if (response.status === 201) {
-      alert("ok");
       return {
         status: 201,
         success: true,
@@ -50,9 +49,7 @@ export const loginUser = async (email: string, password: string) => {
 export const formProject = async (body: any) => {
   try {
     return await api.post("/api/candidate-projects", body);
-  } catch (error: any) {
-    console.log(error)
-  }
+  } catch (error: any) {}
 };
 
 export const getProjects = async () => {
@@ -73,26 +70,20 @@ export const getUserById = async (id: number) => {
   return await api.get(`/api/candidate-profile/1`);
 };
 
-
 export const getCandidatesUsers = async () => {
-
   return await api.get("/api/candidate-users");
-}
+};
 
 export const getCandidateUser = async (id: string) => {
-
   return await api.get(`/api/candidate-users/${id}`);
-}
-
+};
 
 export const getCandidatesProfiles = async () => {
-
   return await api.get("/api/candidate-profile");
-}
+};
 
 export const updateProfile = async (body: any) => {
   try {
-
     return await api.post("/api/candidate-profile", body);
   } catch (error: any) {
     console.log(error);

@@ -61,7 +61,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     api.defaults.headers.Authorization = null;
     setAuthenticated(false);
     setUser(null);
-    
   };
 
   const setLoggedUser = (user: User) => {

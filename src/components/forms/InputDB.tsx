@@ -48,7 +48,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
 
   return (
     <fieldset
-      className={`flex w-fit max-w-[10rem] flex-col gap-[1.2rem] lg:ml-[0] sm:max-w-[100%]  ${fieldSetClassName}`}
+      className={`flex w-fit mbl:max-w-[10rem] flex-col gap-[1.2rem] lg:ml-[0] sm:max-w-[100%]  ${fieldSetClassName}`}
       onClick={() => {
         if (inputRef.current) inputRef.current.focus();
       }}
@@ -56,19 +56,22 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
       {!!label && (
         <label
           htmlFor={name}
-          className="text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1 mbl:text-[2rem] mbl:font-bold"
+          className="text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1  mbl:text-[1.5rem] mbl:font-bold"
         >
           {label}
         </label>
       )}
 
       <div
-        className={`flex h-[6.631rem] w-[42.5rem] rounded-[0.8rem]  border-[0.1rem] border-grey-#1 bg-white  sm:h-[5.6rem] sm:w-[32rem] sm:max-w-[100%] mbl:h-[4rem] mbl:max-w-[100%] ${
+        className={`flex h-[6.631rem] w-[42.5rem] rounded-[0.3rem]  border-[0.1rem] border-grey-#1 bg-white  sm:h-[5.6rem] sm:w-[32rem] sm:max-w-[100%] mbl:h-[4rem] mbl:max-h-[2.5rem] mbl:max-w-[80%] ${
           wantInputWidthFull ? "w-full" : ""
         }`}
       >
         {icon && (
-          <div className="flex w-[5.3rem] items-center justify-center rounded-bl-[0.6rem] rounded-tl-[0.6rem] bg-blue-dark-#1">
+          <div
+            className="flex w-[5.3rem] items-center justify-center rounded-bl-[0.3rem] rounded-tl-[0.3rem] bg-blue-dark-#1
+          mbl:max-w-[70%] "
+          >
             <>{icon}</>
           </div>
         )}
@@ -77,7 +80,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
           ref={inputRef}
           type={type}
           placeholder={placeholder}
-          className={`ml-[2rem] w-[32.2rem]   border-none text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2 md:w-[80%] sm:w-[70%] ${className} ${
+          className={`ml-[2rem] w-[32.2rem]   border-none text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2 md:w-[80%] sm:w-[70%] mbl:max-w-[17rem] mbl:text-[1.2rem] ${className} ${
             wantInputWidthFull ? "w-[96%]" : ""
           }`}
           {...rest}

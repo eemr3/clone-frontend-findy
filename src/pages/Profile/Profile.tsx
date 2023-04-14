@@ -1,5 +1,3 @@
-
-
 import { Button } from "../../components/Button";
 import { Heading } from "../../components/Heading";
 import { Text } from "../../components/Text";
@@ -7,7 +5,6 @@ import { Text } from "../../components/Text";
 import { Checkbox } from "../../components/forms/Checkbox";
 import { InputDB } from "../../components/forms/InputDB";
 
-import { Header } from "../../components/Header";
 import { TextErrorMessage } from "../../components/forms/TextErrorMessage";
 import { ClockIcon } from "../../components/icons/ClockIcon";
 import { EnvelopeIcon } from "../../components/icons/EnvelopeIcon";
@@ -15,18 +12,18 @@ import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
 import { TelephoneIcon } from "../../components/icons/TelephoneIcon";
 
-
-
 import { useEffect, useState } from "react";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 
-
-
-
-import { getCandidatesProfiles, getPositions, updateProfile } from "../../services/api";
+import { HeaderProfile } from "../../components/HeaderProfile";
+import {
+  getCandidatesProfiles,
+  getPositions,
+  updateProfile,
+} from "../../services/api";
 import { CandidateProfile } from "../../types/CandidateProfile";
 import { CandidateUser } from "../../types/CandidateUser";
 import { Role } from "../../types/Role";
@@ -35,7 +32,7 @@ type ProfileFormValues = CandidateProfile & {
   name: string;
   email: string;
   otherDescription: string;
-}
+};
 
 /* {
   nome: string;
@@ -54,28 +51,38 @@ const schema = yup
   .shape({
     name: yup.string().required("Nome obrigatório"),
     phone: yup.string().required("Número do Whatsapp obrigatório"),
-    urlLinkedin: yup.string().required("Endereço do Linkedin obrigatório").url("Endereço do Linkedin inválido"),
-    urlGithub: yup.string().required("Endereço do Github obrigatório").url("Endereço do Github inválido"),
-    email: yup.string().required("Endereço de e-mail obrigatório").email("Endereço de e-mail inválido"),
-    availableTime: yup.string().required("Tempo de disponibilidade obrigatório"),
+    urlLinkedin: yup
+      .string()
+      .required("Endereço do Linkedin obrigatório")
+      .url("Endereço do Linkedin inválido"),
+    urlGithub: yup
+      .string()
+      .required("Endereço do Github obrigatório")
+      .url("Endereço do Github inválido"),
+    email: yup
+      .string()
+      .required("Endereço de e-mail obrigatório")
+      .email("Endereço de e-mail inválido"),
+    availableTime: yup
+      .string()
+      .required("Tempo de disponibilidade obrigatório"),
     /* occupationArea: yup.array(yup.string()).min(1, "Precisa escolher pelo menos uma área de atuação"), */
-    occupationArea: yup.array(yup.string()).when('others', {
+    occupationArea: yup.array(yup.string()).when("others", {
       is: (others: string[]) => !others.length,
-      then: (schema) => schema.min(1, "Precisa escolher pelo menos uma área de atuação")
+      then: (schema) =>
+        schema.min(1, "Precisa escolher pelo menos uma área de atuação"),
     }),
     others: yup.string(),
     otherDescription: yup.string().when("others", {
       is: (others: string[]) => others.length,
-      then: (schema) => schema.required("Cargo obrigatório")
+      then: (schema) => schema.required("Cargo obrigatório"),
     }),
 
-
-    areaOfInterest: yup.string().required("Interesse na sua área de atuação obrigatória"),
-  }).required();
-
-
-
-
+    areaOfInterest: yup
+      .string()
+      .required("Interesse na sua área de atuação obrigatória"),
+  })
+  .required();
 
 export function Profile() {
   // Teste de Error no nome e e-mail
@@ -93,21 +100,24 @@ export function Profile() {
     shouldFocusError: true,
     defaultValues: {
       occupationArea: [],
-     
-    }
+    },
   });
-
 
   const [activeSubmit, setActiveSubmit] = useState(false);
   const [occupations, setOccupations] = useState<Role[]>([]);
-  const [candidateUser, setCandidateUser] = useState<CandidateUser | null>(null);
+  const [candidateUser, setCandidateUser] = useState<CandidateUser | null>(
+    null
+  );
   const [disableOtherDescription, setDisableOtherDescription] = useState(true);
 
   const timeToWeek = new Array(20)
     .fill(null)
     .map((item, index) => `${String((index + 1) * 2).padStart(2, "0")} horas`);
 
-  const handleUpdateProfile: SubmitHandler<ProfileFormValues> = async (values, event) => {
+  const handleUpdateProfile: SubmitHandler<ProfileFormValues> = async (
+    values,
+    event
+  ) => {
     event?.preventDefault();
     setActiveSubmit(true);
 
@@ -122,19 +132,18 @@ export function Profile() {
 
       const body = {
         ...newValues,
-        others: "hello"
-      }
+        others: "hello",
+      };
 
       console.log("Dados do Formulário: ", body);
 
       await updateProfile(body);
     } catch (error) {
-      console.log("Erro ao atualizar Perfil: ", error)
+      console.log("Erro ao atualizar Perfil: ", error);
     }
 
     setActiveSubmit(false);
-
-  }
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -144,33 +153,30 @@ export function Profile() {
       console.log(pos);
 
       /* const user = await getCandidateUser("23"); */
-     /*  setCandidateUser(user.data);
+      /*  setCandidateUser(user.data);
       console.log("user: ", user); */
 
       const profiles = await getCandidatesProfiles();
       console.log("Candidates Profiles:", profiles);
-
     }
     fetchData();
   }, []);
 
   useEffect(() => {
-    if (!candidateUser)
-      return
+    if (!candidateUser) return;
 
-    setValue('name', candidateUser.name);
-    setValue('email', candidateUser.email);
-    setValue('candidateUserId', candidateUser.id);
-  }, [candidateUser])
-
+    setValue("name", candidateUser.name);
+    setValue("email", candidateUser.email);
+    setValue("candidateUserId", candidateUser.id);
+  }, [candidateUser]);
 
   useEffect(() => {
     console.log("React Hook Form[Errors]: ", errors);
-  }, [errors])
+  }, [errors]);
 
   return (
     <div className="w-max-[144rem] flex flex-col bg-blue-dark">
-      <Header showJustify={false} />
+      <HeaderProfile showJustify={false} />
 
       <article className="ml-[15.9rem] mt-[6.414rem] text-grey-#5 lg:ml-[4rem] mbl:ml-[2rem]">
         <Heading type="lg-leading58" className="mbl:text-[4rem]">
@@ -192,28 +198,28 @@ export function Profile() {
           noValidate
           onSubmit={handleSubmit(handleUpdateProfile)}
         >
-          <div className="grid grid-cols-2 gap-y-[6.469rem] lg:flex lg:flex-col lg:items-start lg:justify-center lg:gap-y-[6.469rem] lg:px-[4rem] mbl:px-[2rem]">
+          <div className="grid grid-cols-2 gap-y-[6.469rem] lg:flex lg:flex-col lg:items-start lg:justify-center lg:gap-y-[5.469rem] lg:px-[4rem] mbl:gap-y-[4rem]  mbl:px-[2rem]  ">
             <InputDB
-              icon={<PencilIcon />}
+              icon={<PencilIcon className={"mbl:max-w-[2rem] "} />}
               label="Nome completo"
               readOnly
-              /* placeholder="Nome" */
+              placeholder="Nome"
               fieldSetClassName={"even:ml-auto"}
               error={errors.name?.message}
               {...register("name")}
             />
 
             <InputDB
-              icon={<TelephoneIcon />}
+              icon={<TelephoneIcon className={"mbl:max-w-[2rem] "} />}
               label="Insira o seu número do WhatsApp"
               placeholder="Ex: (99) 99999-9999"
-              fieldSetClassName={"ml-auto"}
+              fieldSetClassName={"ml-auto "}
               error={errors.phone?.message}
               {...register("phone")}
             />
 
             <InputDB
-              icon={<SocialMediaIcon />}
+              icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
               label="Insira o seu LinkedIn"
               placeholder="LinkedIn"
               fieldSetClassName={"even:ml-auto"}
@@ -222,7 +228,7 @@ export function Profile() {
             />
 
             <InputDB
-              icon={<SocialMediaIcon />}
+              icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
               label="Insira o seu GitHub"
               placeholder="GitHub"
               fieldSetClassName={"ml-auto"}
@@ -231,18 +237,18 @@ export function Profile() {
             />
 
             <InputDB
-              icon={<EnvelopeIcon />}
+              icon={<EnvelopeIcon className={"mbl:max-w-[2rem] "} />}
               label="Insira o seu email"
               type="email"
               readOnly
-              /* placeholder="Email" */
+              placeholder="Email"
               fieldSetClassName={"even:ml-auto"}
               error={errors.email?.message}
               {...register("email")}
             />
 
             <InputDB
-              icon={<ClockIcon />}
+              icon={<ClockIcon className={"mbl:max-w-[2rem] "} />}
               label="Quanto tempo você tem disponível?"
               placeholder="Horas/ semana"
               fieldSetClassName={"ml-auto"}
@@ -261,14 +267,14 @@ export function Profile() {
           </div>
 
           <fieldset className="max-[80%] mb-[6.8rem] mt-[8rem] lg:px-[2rem] mbl:mt-[3rem]">
-            <p className=" text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1 md:text-[2rem] mbl:text-[1.1rem] mbl:font-bold">
+            <p className=" text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1 md:text-[2rem] mbl:text-[1.5rem] mbl:font-bold">
               Quais cargos serão oferecidos à equipe do projeto?
             </p>
 
             {!!errors.occupationArea?.message && disableOtherDescription && (
               <TextErrorMessage
                 errorMessage={errors.occupationArea?.message}
-                className="inline-block mt-[1.2rem]"
+                className="mt-[1.2rem] inline-block"
               />
             )}
 
@@ -283,8 +289,10 @@ export function Profile() {
                 />
               ))}
             </div>
-        
-            <div className="mt-[2.5rem] flex gap-16 mbl:flex mbl:flex-col">
+
+
+
+              {/* <div className="mt-[2.5rem] flex gap-16 mbl:flex mbl:flex-col">
               <Checkbox
                 id={occupations?.length ? String(occupations.length + 1) : "1"}
                 label="Outro: "
@@ -293,30 +301,39 @@ export function Profile() {
                 {...register("others")}
                 onChange={(event) => {
                   setDisableOtherDescription(!event.currentTarget.checked);
-                  if (!event.currentTarget.checked &&
-                    getValues().otherDescription.length > 0)
+                  if (
+                    !event.currentTarget.checked &&
+                    getValues().otherDescription.length > 0
+                  )
                     setValue("otherDescription", "");
-                  /* setValue("others", []); */
+                  setValue("others", []);
                 }}
               />
 
               <InputDB
                 placeholder="Cargo"
                 disabled={disableOtherDescription}
-                /* value={otherDescription} */
-                error={disableOtherDescription ? "" : errors.otherDescription?.message  /* errors.others?.message */}
+                value={otherDescription} 
+                error={
+                  disableOtherDescription
+                    ? ""
+                    : errors.otherDescription
+                        ?.message  errors.others?.message
+                }
                 {...register("otherDescription")}
-              /* {...register("others")} */
-              /* onChange={(event) => setOtherDescription(event.currentTarget.value)} */
+                {...register("others")}
+                onChange={(event) => setOtherDescription(event.currentTarget.value)} 
               />
-
-            </div>
+              </div> */}
+                    
           </fieldset>
 
+
+          <div>
           <InputDB
             label="Quais seus interesses na sua área de atuação?"
             placeholder="Ex.: Área de Dados - “Cientista de dados”, “Analista de dados”, etc..."
-            fieldSetClassName="mt-[8rem] w-[111.6rem] [&>*:nth-child(1)]:mb-[2rem]"
+            fieldSetClassName="mt-[8rem] w-[111.6rem] [&>*:nth-child(1)]:mb-[2rem] mbl:px-[2rem] mbl:mt-[0]"
             wantInputWidthFull
             error={errors.areaOfInterest?.message}
             {...register("areaOfInterest")}
@@ -324,14 +341,17 @@ export function Profile() {
 
           <Button
             type="submit"
-            className="mt-[6.4rem] h-[5.7rem] w-[32.9rem] text-[2.4rem] font-semibold leading-[2.4rem] lg:ml-[2rem]"
+            className="mt-[6.4rem] h-[5.7rem] w-[32.9rem] text-[2.4rem] font-semibold leading-[2.4rem] lg:ml-[2rem] mbl:mt-[4rem] mbl:h-[3rem] mbl:max-w-[13.9rem] mbl:text-[1.4rem]"
             fill
             disabled={activeSubmit}
           >
             SALVAR PERFIL
           </Button>
+          </div>   
         </form>
       </section>
     </div>
   );
 }
+
+

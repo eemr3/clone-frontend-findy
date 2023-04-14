@@ -19,7 +19,11 @@ const schema = yup
   .object()
   .shape({
     nome: yup.string().required("Nome obrigatório"),
-    email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
+    email: yup
+      .string()
+      .min(3, "Minimo de 3 caracters ")
+      .required("E-mail obrigatório")
+      .email("E-mail inválido"),
     password: yup
       .string()
       .required()
@@ -81,7 +85,7 @@ export function Cadastro() {
     <div className="w-max-[144rem] flex h-[100%] flex-col overflow-x-hidden bg-blue-dark">
       <Header showJustify={false} />
 
-      <div className="my-auto flex w-[55%] items-center justify-end  xl:w-[100%] xl:justify-center  md:px-[2rem] mbl:px-[1.5rem] mbl:my-[10rem] ">
+      <div className="my-auto flex w-[55%] items-center justify-end py-[10rem]  xl:w-[100%] xl:justify-center  xl:py-[15rem] md:px-[2rem] mbl:my-[10rem] mbl:px-[1.5rem] ">
         <img
           src={mulherPagePrincipal}
           alt="mulher"

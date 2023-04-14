@@ -3,7 +3,7 @@ import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { Header } from "../../components/Header";
+import { HeaderProfile } from "../../components/HeaderProfile";
 import { Heading } from "../../components/Heading";
 import { Text } from "../../components/Text";
 import { Checkbox } from "../../components/forms/Checkbox";
@@ -13,7 +13,12 @@ import { TextErrorMessage } from "../../components/forms/TextErrorMessage";
 import { CodeIcon } from "../../components/icons/CodeIcon";
 import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
-import { formProject, getLanguages, getPositions, getUserById } from "../../services/api";
+import {
+  formProject,
+  getLanguages,
+  getPositions,
+  getUserById,
+} from "../../services/api";
 interface FormValues {
   nome: string;
   link_selecao_equipe: string;
@@ -51,7 +56,7 @@ const schema = yup
     areaAtuacao: yup
       .array(yup.string())
       .min(1, "Precisa escolher pelo menos um cargo."),
-      /* areaOutroCargo: yup.string().when("areaAtuacao", {
+    /* areaOutroCargo: yup.string().when("areaAtuacao", {
         is: (area: string[]) => !!area && area.indexOf("Outro") > -1,
         then: (schema) => schema.required("Cargo obrigatório"),
       })  */
@@ -69,7 +74,7 @@ export function Project() {
   /*   const [ferramentas, setFerramentas] = useState<string[]>([]); */
   const [positions, setPositions] = useState<any>([]);
   const [languages, setLanguages] = useState<any>([]);
-  const [name, setName] = useState<any>()
+  const [name, setName] = useState<any>();
   const {
     register,
     handleSubmit,
@@ -86,11 +91,10 @@ export function Project() {
     .map((item, index) => `${String((index + 1) * 2).padStart(2, "0")} horas`);
 
   const onSubmit = async (data: any) => {
-  
     if (data != null) {
       const body = {
         name: data.nome,
-        projectScope: data.escopo_project ,
+        projectScope: data.escopo_project,
         urlTeamSelection: data.link_selecao_equipe,
         responsible: data.responsavel_project,
         contactResponsible: data.contato_responsavel,
@@ -135,23 +139,21 @@ export function Project() {
       setLanguages(lan.data);
 
       const token: string | any = localStorage.getItem("token");
-      const token2:any = jwt_decode(token)
+      const token2: any = jwt_decode(token);
 
-      const user =  await getUserById(2)
+      const user = await getUserById(2);
 
-      console.log(token2)
+      console.log(token2);
     }
-    
-      fetchData();
+
+    fetchData();
   }, [selectedLanguageNames]);
 
-
-
-  const dataAtual = new Date().toLocaleDateString('pt-BR');
+  const dataAtual = new Date().toLocaleDateString("pt-BR");
 
   return (
     <div className="w-max-[144rem] flex flex-col overflow-x-hidden bg-blue-dark ">
-      <Header showJustify={false} />
+      <HeaderProfile showJustify={false} />
 
       <article className="ml-[15.9rem] mt-[6.414rem] overflow-x-hidden text-grey-#5 lg:ml-[4rem] mbl:ml-[2rem]">
         <Heading type="lg-leading58" className=" mbl:text-[4rem]">
@@ -171,7 +173,7 @@ export function Project() {
         <div className="mx-auto mb-[16rem] mt-[7.4rem] w-[100%] max-w-[112.4rem]">
           <div className="grid grid-cols-2 lg:flex lg:flex-col lg:items-start lg:justify-center lg:gap-y-[6.469rem]">
             <InputDB
-              icon={<PencilIcon />}
+              icon={<PencilIcon className={"mbl:max-w-[2rem] "} />}
               {...register("nome")}
               label="Nome do Projeto"
               placeholder="Nome"
@@ -180,7 +182,7 @@ export function Project() {
             />
 
             <InputDB
-              icon={<SocialMediaIcon />}
+              icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
               label="Link para seleção da equipe"
               {...register("link_selecao_equipe")}
               placeholder="Link"
@@ -199,7 +201,7 @@ export function Project() {
             <div className=" mt-[3.2rem]flex h-[22.2rem] w-[100%] max-w-[112.4rem] rounded-[0.8rem] border-[0.15rem] border-grey-#1 bg-white p-[1rem]">
               <textarea
                 {...register("escopo_project")}
-                className=" text-[2.2rem] lg:text-[1.8rem]  mbl:text-[1rem] h-[100%]  w-[100%] resize-none p-[0.6rem] outline-none"
+                className=" h-[100%] w-[100%]  resize-none p-[0.6rem]  text-[2.2rem] outline-none lg:text-[1.8rem] mbl:text-[1rem]"
               />
             </div>
             <span className=" mb-[1rem] mt-[0.8rem] block  pl-[1rem] text-[1.8rem] text-red">
@@ -209,7 +211,7 @@ export function Project() {
 
           <div className="grid h-[100%] grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] overflow-x-hidden  overflow-y-hidden  lg:flex sm:w-[32rem]  sm:max-w-[100%]  mbl:max-w-[100%]  ">
             <SelectDB
-              icon={<CodeIcon />}
+              icon={<CodeIcon className={"mbl:max-w-[2rem] "} />}
               label="Selecione as linguagens de programação"
               placeholder="Selecione as linguagens"
               fieldSetClassName={"even:ml-auto"}
@@ -223,7 +225,7 @@ export function Project() {
             />
 
             <InputDB
-              icon={<SocialMediaIcon />}
+              icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
               label="Data do inicio do projeto"
               placeholder="Data"
               fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
@@ -282,16 +284,16 @@ export function Project() {
                 />
               ))}
             </div>
-            <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col ">
+            {/* <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col ">
               <Checkbox name="area" id="Outro" label="Outro: " />
 
               <InputDB placeholder="Cargo" fieldSetClassName="h-[6rem]" />
-            </div>
+            </div> */}
           </fieldset>
-          
+
           <div className="grid grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] lg:flex ">
             <InputDB
-              icon={<PencilIcon />}
+              icon={<PencilIcon className={"mbl:max-w-[2rem] "} />}
               label="Insira o nome da pessoa responsável pelo projeto"
               placeholder="Nome"
               {...register("responsavel_project")}
@@ -300,7 +302,7 @@ export function Project() {
             />
 
             <InputDB
-              icon={<SocialMediaIcon />}
+              icon={<SocialMediaIcon className={"mbl:max-w-[2rem]"} />}
               label="Insira o contato da pessoa responsável"
               placeholder="Contato"
               fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
@@ -308,7 +310,7 @@ export function Project() {
               error={errors ? errors.contato_responsavel?.message : ""}
             />
             <InputDB
-              icon={<SocialMediaIcon />}
+              icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
               label="Linkedin do Responsável"
               placeholder="LinkedIn"
               fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
@@ -316,7 +318,7 @@ export function Project() {
               error={errors ? errors.linkedin_responsavel?.message : ""}
             />
             <InputDB
-              icon={<SocialMediaIcon />}
+              icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
               label="Insira os outros contatos dos responsáveis"
               placeholder="LinkedIn"
               fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}

@@ -30,7 +30,7 @@ export function Input({
         ref={inputRef}
         type="text"
         placeholder={placeholder}
-        className={`${className} border-none text-[2.4rem] font-medium leading-[3.2rem] text-black outline-none placeholder:text-grey-#2`}
+        className={`${className} border-none text-[2.4rem] font-medium leading-[3.2rem] text-black outline-none placeholder:text-grey-#2 mbl:text-[1.4rem]`}
         {...rest}
       />
     </fieldset>

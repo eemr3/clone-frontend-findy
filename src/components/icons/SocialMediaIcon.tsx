@@ -4,8 +4,6 @@ export function SocialMediaIcon({ color = "#fff", ...rest }: SVGIconProps) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="26"
-      height="40"
       fill="none"
       viewBox="0 0 26 40"
       {...rest}
@@ -14,7 +12,7 @@ export function SocialMediaIcon({ color = "#fff", ...rest }: SVGIconProps) {
         cx="13.004"
         cy="20"
         stroke={color}
-        strokeWidth="2.617"
+        strokeWidth="2.617  mbl:max-w-[2rem] mbl:max-h-[2rem]"
         rx="10.98"
         ry="10.588"
       ></ellipse>

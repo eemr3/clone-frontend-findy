@@ -16,9 +16,9 @@ export const AppRouter = () => {
       return <div>Carregando...</div>;
     }
     if (!authenticated) {
-      console.log(authenticated)
+      console.log(authenticated);
       return <Navigate to="/login" />;
-    } 
+    }
 
     return children;
   };

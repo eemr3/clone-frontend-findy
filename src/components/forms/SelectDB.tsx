@@ -109,16 +109,18 @@ const SelectBase: ForwardRefRenderFunction<HTMLSelectElement, SelectDBProps> = (
                 .map((newOption: string | ValueLabel, index: number) => {
                   return typeof newOption === "string" ? (
                     <option
-                      key={`${name}${newOption ? newOption : Date.now() + index
-                        }`}
+                      key={`${name}${
+                        newOption ? newOption : Date.now() + index
+                      }`}
                       value={newOption}
                     >
                       {newOption}
                     </option>
                   ) : (
                     <option
-                      key={`${name}${newOption.value ? newOption.value : Date.now() + index
-                        }`}
+                      key={`${name}${
+                        newOption.value ? newOption.value : Date.now() + index
+                      }`}
                       value={newOption.value}
                     >
                       {newOption.label}
@@ -129,11 +131,7 @@ const SelectBase: ForwardRefRenderFunction<HTMLSelectElement, SelectDBProps> = (
         )}
       </div>
 
-      {!!error &&
-        <TextErrorMessage
-          errorMessage={error}
-        />
-      }
+      {!!error && <TextErrorMessage errorMessage={error} />}
     </fieldset>
   );
 };
