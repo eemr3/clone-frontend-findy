@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIwLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5kb2VAZW1haWwuY29tIiwicm9sZXMiOiJjYW5kaWRhdGUiLCJpYXQiOjE2ODEzOTQxMzUsImV4cCI6MTY4MTQwMjEzNX0.BLRnrS8VF_lS3IaiF8TYQcoKg5FmQ3uoEqNXY1v_OLc";
+const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIwLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5kb2VAZW1haWwuY29tIiwicm9sZXMiOiJjYW5kaWRhdGUiLCJpYXQiOjE2ODE0MzczOTAsImV4cCI6MTY4MTQ0NTM5MH0.Kg6pAjcxLnotkVVXLTlnJa-6pW9l3IOlzD7YllZ6VT8";
 
 
 export const api = axios.create({
@@ -80,6 +80,43 @@ export const getLanguages = async () => {
     }
   };
   return await api.get("/api/candidate-projects/skills", options);
+};
+
+export const getCandidatesUsers = async () => {
+  const options = {
+    headers: {
+      Authorization: token
+    }
+  };
+  return await api.get("/api/candidate-users", options);
+}
+
+export const getCandidateUser = async (id: string) => {
+  const options = {
+    headers: {
+      Authorization: token
+    }
+  };
+  return await api.get(`/api/candidate-users/${id}`, options);
+}
+
+
+export const getCandidatesProfiles = async () => {
+  const options = {
+    headers: {
+      Authorization: token
+    }
+  };
+  return await api.get("/api/candidate-profile", options);
+}
+
+export const updateProfile = async (body: any) => {
+  try {
+
+    return await api.post("/api/candidate-profile", body);
+  } catch (error: any) {
+    console.log(error);
+  }
 };
 
 export default api;

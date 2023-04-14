@@ -8,6 +8,7 @@ import {
 } from "react";
 import { SVGIcon } from "../../types/SVGIcon";
 import { Text } from "../Text";
+import { TextErrorMessage } from "./TextErrorMessage";
 
 interface InputDBProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
   /* name?: string; */
@@ -76,12 +77,9 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
         </div>
 
         {!!error &&
-          <Text
-            type="md"
-            className="text-[1.8rem] text-red font-bold leading-[1.924rem]"
-          >
-            {`${error}`}
-          </Text>
+          <TextErrorMessage
+            errorMessage={error}
+          />
         }
       </fieldset>
     );

@@ -18,11 +18,19 @@ import { EnvelopeIcon } from "../../components/icons/EnvelopeIcon";
 import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
 import { TelephoneIcon } from "../../components/icons/TelephoneIcon";
-import { getPositions } from "../../services/api";
+import api, { getCandidateUser, getCandidatesProfiles, getCandidatesUsers, getPositions, updateProfile } from "../../services/api";
 import { Role } from "../../types/Role";
 import { TextErrorMessage } from "../../components/forms/TextErrorMessage";
+import { CandidateUser } from "../../types/CandidateUser";
+import { CandidateProfile } from "../../types/CandidateProfile";
 
-type ProfileFormValues = {
+type ProfileFormValues = CandidateProfile & {
+  name: string;
+  email: string;
+  otherDescription: string;
+}
+
+/* {
   nome: string;
   whatsapp: string;
   linkedin: string;
@@ -33,24 +41,56 @@ type ProfileFormValues = {
   areaOutroCargo: string;
   interesseAreaAtuacao: string;
 }
-
+ */
 const schema = yup
   .object()
   .shape({
-    nome: yup.string().required("Nome obrigatório"),
-    whatsapp: yup.string().required("Número do Whatsapp obrigatório"),
-    linkedin: yup.string().required("Endereço do Linkedin obrigatório").url("Endereço do Linkedin inválido"),
-    github: yup.string().required("Endereço do Github obrigatório").url("Endereço do Github inválido"),
+    name: yup.string().required("Nome obrigatório"),
+    phone: yup.string().required("Número do Whatsapp obrigatório"),
+    urlLinkedin: yup.string().required("Endereço do Linkedin obrigatório").url("Endereço do Linkedin inválido"),
+    urlGithub: yup.string().required("Endereço do Github obrigatório").url("Endereço do Github inválido"),
     email: yup.string().required("Endereço de e-mail obrigatório").email("Endereço de e-mail inválido"),
-    disponibilidadeSemanal: yup.string().required("Tempo de disponibilidade obrigatório"),
-    areaAtuacao: yup.array(yup.string()).min(1, "Precisa escolher pelo menos uma área de atuação."),
-    areaOutroCargo: yup.string().when('areaAtuacao', {
-      is: (area: string[]) => !!area && area.indexOf('Outro') > -1,
+    availableTime: yup.string().required("Tempo de disponibilidade obrigatório"),
+    /* occupationArea: yup.array(yup.string()).min(1, "Precisa escolher pelo menos uma área de atuação"), */
+    occupationArea: yup.array(yup.string()).when('others', {
+      is: (others: string[]) => !others.length,
+      then: (schema) => schema.min(1, "Precisa escolher pelo menos uma área de atuação")
+    }),
+    others: yup.array(yup.string()),
+    otherDescription: yup.string().when("others", {
+      is: (others: string[]) => others.length,
       then: (schema) => schema.required("Cargo obrigatório")
     }),
 
-    interesseAreaAtuacao: yup.string().required("Interesse na sua área de atuação obrigatória"),
+    /* .when('others', {
+      is: (other: string[]) => !!other && !other.length,
+      then: (schema) => schema.required("Cargo obrigatório")
+    }), */
+
+    /* others: yup.array(yup.string()).when('occupationArea', {
+      is: (area: string[]) => !!area && area.indexOf('Outro') > -1,
+      then: (schema) => schema.required("Cargo obrigatório")
+    }), */
+
+    areaOfInterest: yup.string().required("Interesse na sua área de atuação obrigatória"),
   }).required();
+
+
+/* .shape({
+  nome: yup.string().required("Nome obrigatório"),
+  whatsapp: yup.string().required("Número do Whatsapp obrigatório"),
+  linkedin: yup.string().required("Endereço do Linkedin obrigatório").url("Endereço do Linkedin inválido"),
+  github: yup.string().required("Endereço do Github obrigatório").url("Endereço do Github inválido"),
+  email: yup.string().required("Endereço de e-mail obrigatório").email("Endereço de e-mail inválido"),
+  disponibilidadeSemanal: yup.string().required("Tempo de disponibilidade obrigatório"),
+  areaAtuacao: yup.array(yup.string()).min(1, "Precisa escolher pelo menos uma área de atuação"),
+  areaOutroCargo: yup.string().when('areaAtuacao', {
+    is: (area: string[]) => !!area && area.indexOf('Outro') > -1,
+    then: (schema) => schema.required("Cargo obrigatório")
+  }),
+
+  interesseAreaAtuacao: yup.string().required("Interesse na sua área de atuação obrigatória"),
+}).required(); */
 
 
 export function Profile() {
@@ -68,14 +108,15 @@ export function Profile() {
     resolver: yupResolver(schema),
     shouldFocusError: true,
     defaultValues: {
-      areaAtuacao: []
+      occupationArea: [],
+      others: []
     }
   });
 
-  /* const [errorName, setErrorName] = useState('');
-  const [errorEmail, setErrorEmail] = useState('');
- */
+
+  const [activeSubmit, setActiveSubmit] = useState(false);
   const [occupations, setOccupations] = useState<Role[]>([]);
+  const [candidateUser, setCandidateUser] = useState<CandidateUser | null>(null);
   const [disableOtherDescription, setDisableOtherDescription] = useState(true);
 
   const timeToWeek = new Array(20)
@@ -83,10 +124,32 @@ export function Profile() {
     .map((item, index) => `${String((index + 1) * 2).padStart(2, "0")} horas`);
 
   const handleUpdateProfile: SubmitHandler<ProfileFormValues> = async (values, event) => {
-    event?.preventDefault()
-    await new Promise(resolve => setTimeout(resolve, 600))
+    event?.preventDefault();
+    setActiveSubmit(true);
 
-    console.log("Dados do Formulário: ", values);
+    /* await new Promise(resolve => setTimeout(resolve, 3000)) */
+
+    // handle data that is not in the form
+    values.description = `Profile ${values.description}`;
+    values.profileSkills = [1];
+
+    try {
+      const { otherDescription, ...newValues } = values;
+
+      const body = {
+        ...newValues,
+        others: [otherDescription]
+      }
+
+      console.log("Dados do Formulário: ", body);
+
+      await updateProfile(body);
+    } catch (error) {
+      console.log("Erro ao atualizar Perfil: ", error)
+    }
+
+    setActiveSubmit(false);
+
   }
 
   useEffect(() => {
@@ -95,9 +158,27 @@ export function Profile() {
 
       setOccupations(pos.data);
       console.log(pos);
+
+      const user = await getCandidateUser("23");
+      setCandidateUser(user.data);
+      console.log("user: ", user);
+
+      const profiles = await getCandidatesProfiles();
+      console.log("Candidates Profiles:", profiles);
+
     }
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (!candidateUser)
+      return
+
+    setValue('name', candidateUser.name);
+    setValue('email', candidateUser.email);
+    setValue('candidateUserId', candidateUser.id);
+  }, [candidateUser])
+
 
   useEffect(() => {
     console.log("React Hook Form[Errors]: ", errors);
@@ -129,18 +210,11 @@ export function Profile() {
             <InputDB
               icon={<PencilIcon />}
               label="Nome completo"
-              placeholder="Nome"
+              readOnly
+              /* placeholder="Nome" */
               fieldSetClassName={"even:ml-auto"}
-              error={errors.nome?.message}
-              {...register("nome")}
-              /* error={errorName} */
-              onBlur={(e) => {
-                /* setErrorName(
-                  e.currentTarget.value.length < 4
-                    ? "Nome precisa de ter no mínimo 4 caracteres"
-                    : ""
-                ); */
-              }}
+              error={errors.name?.message}
+              {...register("name")}
             />
 
             <InputDB
@@ -148,8 +222,8 @@ export function Profile() {
               label="Insira o seu número do WhatsApp"
               placeholder="Ex: (99) 99999-9999"
               fieldSetClassName={"even:ml-auto"}
-              error={errors.whatsapp?.message}
-              {...register("whatsapp")}
+              error={errors.phone?.message}
+              {...register("phone")}
             />
 
             <InputDB
@@ -157,8 +231,8 @@ export function Profile() {
               label="Insira o seu LinkedIn"
               placeholder="LinkedIn"
               fieldSetClassName={"even:ml-auto"}
-              error={errors.linkedin?.message}
-              {...register("linkedin")}
+              error={errors.urlLinkedin?.message}
+              {...register("urlLinkedin")}
             />
 
             <InputDB
@@ -166,15 +240,16 @@ export function Profile() {
               label="Insira o seu GitHub"
               placeholder="GitHub"
               fieldSetClassName={"even:ml-auto"}
-              error={errors.github?.message}
-              {...register("github")}
+              error={errors.urlGithub?.message}
+              {...register("urlGithub")}
             />
 
             <InputDB
               icon={<EnvelopeIcon />}
               label="Insira o seu email"
               type="email"
-              placeholder="Email"
+              readOnly
+              /* placeholder="Email" */
               fieldSetClassName={"even:ml-auto"}
               error={errors.email?.message}
               {...register("email")}
@@ -185,8 +260,8 @@ export function Profile() {
               label="Quanto tempo você tem disponível?"
               placeholder="Horas/ semana"
               fieldSetClassName={"even:ml-auto"}
-              error={errors.disponibilidadeSemanal?.message}
-              {...register("disponibilidadeSemanal")}
+              error={errors.availableTime?.message}
+              {...register("availableTime")}
             />
 
             {/* <SelectDB
@@ -204,9 +279,9 @@ export function Profile() {
               Qual a sua área de atuação?
             </legend>
 
-            {!!errors.areaAtuacao?.message &&
+            {!!errors.occupationArea?.message && disableOtherDescription &&
               <TextErrorMessage
-                errorMessage={errors.areaAtuacao?.message}
+                errorMessage={errors.occupationArea?.message}
                 className="inline-block mt-[1.2rem]"
               />
 
@@ -227,7 +302,7 @@ export function Profile() {
                   id={String(occupation.id)}
                   label={occupation.title}
                   value={occupation.title}
-                  {...register("areaAtuacao")}
+                  {...register("occupationArea")}
                 />
               ))}
 
@@ -238,22 +313,26 @@ export function Profile() {
               <Checkbox
                 id={occupations?.length ? String(occupations.length + 1) : "1"}
                 label="Outro: "
-                value={"Outro"}
+                value={"others"}
                 labelClassName="mt-[1.315rem] h-fit"
-                {...register("areaAtuacao")}
+                {...register("others")}
                 onChange={(event) => {
                   setDisableOtherDescription(!event.currentTarget.checked);
                   if (!event.currentTarget.checked &&
-                    getValues().areaOutroCargo.length > 0)
-                    setValue("areaOutroCargo", "");
+                    getValues().otherDescription.length > 0)
+                    setValue("otherDescription", "");
+                  /* setValue("others", []); */
                 }}
               />
 
               <InputDB
                 placeholder="Cargo"
                 disabled={disableOtherDescription}
-                error={disableOtherDescription ? "" : errors.areaOutroCargo?.message}
-                {...register("areaOutroCargo")}
+                /* value={otherDescription} */
+                error={disableOtherDescription ? "" : errors.otherDescription?.message  /* errors.others?.message */}
+                {...register("otherDescription")}
+              /* {...register("others")} */
+              /* onChange={(event) => setOtherDescription(event.currentTarget.value)} */
               />
 
             </div>
@@ -264,14 +343,15 @@ export function Profile() {
             placeholder="Ex.: Área de Dados - “Cientista de dados”, “Analista de dados”, etc..."
             fieldSetClassName="mt-[8rem] w-[111.6rem] [&>*:nth-child(1)]:mb-[2rem]"
             wantInputWidthFull
-            error={errors.interesseAreaAtuacao?.message}
-            {...register("interesseAreaAtuacao")}
+            error={errors.areaOfInterest?.message}
+            {...register("areaOfInterest")}
           />
 
           <Button
             type="submit"
             className="mt-[6.4rem] h-[5.7rem] w-[32.9rem] text-[2.4rem] font-semibold leading-[2.4rem]"
             fill
+            disabled={activeSubmit}
           >
             SALVAR PERFIL
           </Button>
