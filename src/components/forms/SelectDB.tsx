@@ -10,7 +10,7 @@ import {
 
 import { SVGIcon } from "../../types/SVGIcon";
 import { Spinner } from "../Spinner";
-import { Text } from "../Text";
+import { TextErrorMessage } from "./TextErrorMessage";
 
 export type ValueLabel = {
   value: string;
@@ -109,18 +109,16 @@ const SelectBase: ForwardRefRenderFunction<HTMLSelectElement, SelectDBProps> = (
                 .map((newOption: string | ValueLabel, index: number) => {
                   return typeof newOption === "string" ? (
                     <option
-                      key={`${name}${
-                        newOption ? newOption : Date.now() + index
-                      }`}
+                      key={`${name}${newOption ? newOption : Date.now() + index
+                        }`}
                       value={newOption}
                     >
                       {newOption}
                     </option>
                   ) : (
                     <option
-                      key={`${name}${
-                        newOption.value ? newOption.value : Date.now() + index
-                      }`}
+                      key={`${name}${newOption.value ? newOption.value : Date.now() + index
+                        }`}
                       value={newOption.value}
                     >
                       {newOption.label}
@@ -131,11 +129,11 @@ const SelectBase: ForwardRefRenderFunction<HTMLSelectElement, SelectDBProps> = (
         )}
       </div>
 
-      {!!error && (
-        <Text type="sm" className="font-semibold leading-[1.924rem] text-red">
-          {`Erro (${error})`}
-        </Text>
-      )}
+      {!!error &&
+        <TextErrorMessage
+          errorMessage={error}
+        />
+      }
     </fieldset>
   );
 };

@@ -74,4 +74,29 @@ export const getUserById = async (id: number) => {
 };
 
 
+export const getCandidatesUsers = async () => {
+
+  return await api.get("/api/candidate-users");
+}
+
+export const getCandidateUser = async (id: string) => {
+
+  return await api.get(`/api/candidate-users/${id}`);
+}
+
+
+export const getCandidatesProfiles = async () => {
+
+  return await api.get("/api/candidate-profile");
+}
+
+export const updateProfile = async (body: any) => {
+  try {
+
+    return await api.post("/api/candidate-profile", body);
+  } catch (error: any) {
+    console.log(error);
+  }
+};
+
 export default api;
