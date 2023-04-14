@@ -12,6 +12,14 @@ export const Header = (props: { showJustify: boolean }) => {
     setShowContent(!showContent);
   }
   console.log(authenticated);
+
+  function handleLogout() { 
+    logout()
+
+    setTimeout(() => {
+
+    })
+  }
   return (
     <>
       <div className="bg-gray-800 py-3 pt-[2rem]">
@@ -51,7 +59,7 @@ export const Header = (props: { showJustify: boolean }) => {
               </>
             )}
 
-            {props.showJustify && authenticated ? (
+            {/* {props.showJustify && authenticated ? (
               ""
             ) : (
               <>
@@ -72,49 +80,38 @@ export const Header = (props: { showJustify: boolean }) => {
                   </Link>
                 </Button>
               </>
-            )}
+            )} */}
           </nav>
         </div>
       </div>
       {showContent ? (
         <div className=" bg-gray-800 absolute right-5 top-[8rem] flex hidden w-[20rem] items-center justify-center bg-blue-dark shadow-shadow-#2 lg:block ">
           <nav className=" w-[max-content] text-3xl font-bold text-white mr-[3rem]">
+            l
             {authenticated ? (
               <ul>
               <li className=" border-b border-black p-[1rem]">
-                  <button className="bg">
-                    <Link to="/login" className="hover:text-green-dark">
-                      Login
-                    </Link>
-                  </button>
-                </li>
-                <li className=" border-b border-black p-[1rem]">
-                  <button className="bg">
-                    <Link to="/project" className="hover:text-green-dark">
-                      projeto
-                    </Link>
-                  </button>
-                </li>
-                <li className="border-b border-black p-[1rem] p-[1rem]">
-                  <button className="bg">
-                    <Link to="/profile" className="hover:text-green-dark">
-                      profile
-                    </Link>
-                  </button>
-                </li>
-                <li className="border-b border-black p-[1rem] p-[1rem]">
-                  <button className="bg">
-                    <Link
-                      to="/project_registered"
-                      className="hover:text-green-dark"
-                    >
-                      Projetos Registrados
-                    </Link>
+                  <button className="bg " onClick={() => handleLogout()}>
+                   <p className="hover:text-green-dark">Logout</p>
                   </button>
                 </li>
               </ul>
             ) : (
-              <li className="border-b border-black p-[1rem] p-[1rem]">
+
+              <ul>
+<li className="border-b border-black p-[1rem] p-[1rem]">
+              <button className="bg">
+                <Link
+                  to="/login"
+                  className="hover:text-green-dark"
+                >
+                  Login
+                </Link>
+              </button>
+            </li>
+
+
+<li className="border-b border-black p-[1rem] p-[1rem]">
               <button className="bg">
                 <Link
                   to="/cadastro"
@@ -124,6 +121,8 @@ export const Header = (props: { showJustify: boolean }) => {
                 </Link>
               </button>
             </li>
+              </ul>
+              
             )}
           </nav>
         </div>

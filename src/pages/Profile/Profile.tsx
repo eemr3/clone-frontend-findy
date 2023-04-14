@@ -2,9 +2,9 @@ import { Button } from "../../components/Button";
 import { Heading } from "../../components/Heading";
 import { Text } from "../../components/Text";
 
+import jwt_decode from "jwt-decode";
 import { Checkbox } from "../../components/forms/Checkbox";
 import { InputDB } from "../../components/forms/InputDB";
-
 import { TextErrorMessage } from "../../components/forms/TextErrorMessage";
 import { ClockIcon } from "../../components/icons/ClockIcon";
 import { EnvelopeIcon } from "../../components/icons/EnvelopeIcon";
@@ -20,37 +20,25 @@ import * as yup from "yup";
 
 import { HeaderProfile } from "../../components/HeaderProfile";
 import {
-  getCandidatesProfiles,
+  getCandidateUser,
   getPositions,
-  updateProfile,
+  updateProfile
 } from "../../services/api";
 import { CandidateProfile } from "../../types/CandidateProfile";
-import { CandidateUser } from "../../types/CandidateUser";
 import { Role } from "../../types/Role";
 
 type ProfileFormValues = CandidateProfile & {
   name: string;
   email: string;
+  phone: string ;
   otherDescription: string;
 };
 
-/* {
-  nome: string;
-  whatsapp: string;
-  linkedin: string;
-  github: string;
-  email: string;
-  disponibilidadeSemanal: string;
-  areaAtuacao: string[];
-  areaOutroCargo: string;
-  interesseAreaAtuacao: string;
-}
- */
 const schema = yup
   .object()
   .shape({
     name: yup.string().required("Nome obrigatório"),
-    phone: yup.string().required("Número do Whatsapp obrigatório"),
+    phone: yup.number().required("Número do Whatsapp obrigatório"),
     urlLinkedin: yup
       .string()
       .required("Endereço do Linkedin obrigatório")
@@ -86,13 +74,13 @@ const schema = yup
 
 export function Profile() {
   // Teste de Error no nome e e-mail
-
+  const [activeSubmit, setActiveSubmit] = useState(false);
+  const [occupations, setOccupations] = useState<Role[]>([]);
+  const [candidateUser, setCandidateUser] = useState<any>();
   const {
     register,
     handleSubmit,
-    getValues,
     setValue,
-    watch,
     setError,
     formState: { errors }, // Adicione essa propriedade na desestruturação
   } = useForm<ProfileFormValues>({
@@ -100,14 +88,15 @@ export function Profile() {
     shouldFocusError: true,
     defaultValues: {
       occupationArea: [],
+      name:  candidateUser ? candidateUser.name :  "",
+      urlLinkedin: candidateUser?.profile?.urlLinkedin || "",
+      email: candidateUser ? candidateUser.email :  "",
+      phone: candidateUser ? candidateUser?.profile?.id : ""
+      /* phone: candidateUser ? console.log(candidateUser) : "" */
     },
   });
 
-  const [activeSubmit, setActiveSubmit] = useState(false);
-  const [occupations, setOccupations] = useState<Role[]>([]);
-  const [candidateUser, setCandidateUser] = useState<CandidateUser | null>(
-    null
-  );
+
   const [disableOtherDescription, setDisableOtherDescription] = useState(true);
 
   const timeToWeek = new Array(20)
@@ -148,16 +137,18 @@ export function Profile() {
   useEffect(() => {
     async function fetchData() {
       const pos = await getPositions();
+      
 
       setOccupations(pos.data);
-      console.log(pos);
+      
+      const token: string | any = localStorage.getItem("token");
+      const {sub}: any = jwt_decode(token);
+    
+      const user = await getCandidateUser(sub); 
+      setCandidateUser(user.data)
+      console.log(user.data)
 
-      /* const user = await getCandidateUser("23"); */
-      /*  setCandidateUser(user.data);
-      console.log("user: ", user); */
-
-      const profiles = await getCandidatesProfiles();
-      console.log("Candidates Profiles:", profiles);
+    
     }
     fetchData();
   }, []);
@@ -200,9 +191,9 @@ export function Profile() {
         >
           <div className="grid grid-cols-2 gap-y-[6.469rem] lg:flex lg:flex-col lg:items-start lg:justify-center lg:gap-y-[5.469rem] lg:px-[4rem] mbl:gap-y-[4rem]  mbl:px-[2rem]  ">
             <InputDB
-              icon={<PencilIcon className={"mbl:max-w-[2rem] "} />}
+              icon={<PencilIcon className={"mbl:max-w-[2rem]"} />}
               label="Nome completo"
-              readOnly
+    
               placeholder="Nome"
               fieldSetClassName={"even:ml-auto"}
               error={errors.name?.message}
@@ -245,6 +236,7 @@ export function Profile() {
               fieldSetClassName={"even:ml-auto"}
               error={errors.email?.message}
               {...register("email")}
+              
             />
 
             <InputDB
@@ -268,7 +260,7 @@ export function Profile() {
 
           <fieldset className="max-[80%] mb-[6.8rem] mt-[8rem] lg:px-[2rem] mbl:mt-[3rem]">
             <p className=" text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1 md:text-[2rem] mbl:text-[1.5rem] mbl:font-bold">
-              Quais cargos serão oferecidos à equipe do projeto?
+            Quais áreas você gostaria de atuar?
             </p>
 
             {!!errors.occupationArea?.message && disableOtherDescription && (
@@ -353,5 +345,7 @@ export function Profile() {
     </div>
   );
 }
+
+
 
 
