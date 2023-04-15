@@ -1,7 +1,7 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 import { HeaderProfile } from "../../components/HeaderProfile";
 import { Heading } from "../../components/Heading";
@@ -15,9 +15,9 @@ import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
 import {
   formProject,
+  getCandidateUser,
   getLanguages,
-  getPositions,
-  getUserById,
+  getPositions
 } from "../../services/api";
 interface FormValues {
   nome: string;
@@ -68,29 +68,35 @@ interface Positions {
 }
 
 export function Project() {
-  const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>(
-    {}
-  );
+
   /*   const [ferramentas, setFerramentas] = useState<string[]>([]); */
   const [positions, setPositions] = useState<any>([]);
   const [languages, setLanguages] = useState<any>([]);
-  const [name, setName] = useState<any>();
+  const [candidateUser,setCandidateUser] = useState<any>()
+  const [activeSubmit, setActiveSubmit] = useState(false);
+
   const {
     register,
     handleSubmit,
-    formState: { errors }, // Adicione essa propriedade na desestruturação
+    setValue,
+    setError,
+    getValues,
+    formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
     defaultValues: {
       areaAtuacao: [],
+      responsavel_project: candidateUser ? candidateUser.name : "",
+      contato_responsavel:  candidateUser ? candidateUser.email : ""
     },
   });
-  const timeToWeek = new Array(20)
-    .fill(null)
-    .map((item, index) => `${String((index + 1) * 2).padStart(2, "0")} horas`);
 
-  const onSubmit = async (data: any) => {
+/*   const timeToWeek = new Array(20)
+    .fill(null)
+    .map((item, index) => `${String((index + 1) * 2).padStart(2, "0")} horas`); */
+
+ /*  const handleUpdateProfile = async (data: any) => {
     if (data != null) {
       const body = {
         name: data.nome,
@@ -102,15 +108,42 @@ export function Project() {
         contactLeaders: data.contato_outros_responsaveis,
         language: selectedLanguageIds,
         professional: data.areaAtuacao,
-        //"others": ferramentas,
         findyHelp: data.ajuda_findy,
       };
+      console.log(data)
       let result = await formProject(body);
       console.log(result);
     }
+  }; */
+
+
+  const handleUpdateProject: SubmitHandler<FormValues> = async (
+    values,
+    event
+  ) => {
+    event?.preventDefault();
+    setActiveSubmit(true);
+    console.log(values)
+ 
+
+    try {
+       const { ...newValues } = values; 
+
+     const body = {
+        ...newValues,
+       
+      }; 
+      let result = await formProject(body);
+      console.log(result)
+    } catch (error) {
+   
+    }
+
+    setActiveSubmit(false);
   };
   const [selectedLanguageIds, setSelectedLanguageIds] = useState<any>([]);
   const [selectedLanguageNames, setSelectedLanguageNames] = useState<any>([]);
+  
 
   const handleLanguageChange = (event: any) => {
     const selectedId = event.target.value;
@@ -133,22 +166,35 @@ export function Project() {
 
   useEffect(() => {
     async function fetchData() {
+      const token: string | any = localStorage.getItem("token");
+      const {sub}: any = jwt_decode(token);
+      const user = await getCandidateUser(sub);
       const pos = await getPositions();
       const lan = await getLanguages();
+      
+
+      setCandidateUser(user.data)
+      console.log(user.data)
       setPositions(pos.data);
-      setLanguages(lan.data);
-
-      const token: string | any = localStorage.getItem("token");
-      const token2: any = jwt_decode(token);
-
-      const user = await getUserById(2);
-
-      console.log(token2);
+      setLanguages(lan?.data);
+   
     }
-
+  
     fetchData();
-  }, [selectedLanguageNames]);
 
+    setValue("responsavel_project", candidateUser?.name);
+    setValue("contato_responsavel", candidateUser?.email);
+    setValue("linkedin_responsavel", candidateUser?.profile?.urlLinkedin);
+
+  }, [selectedLanguageNames,candidateUser]);
+
+
+/*   useEffect(() => {
+    if (!candidateUser) return;
+
+    setValue("name", candidateUser.name);
+  }, [candidateUser]);
+ */
   const dataAtual = new Date().toLocaleDateString("pt-BR");
 
   return (
@@ -179,6 +225,7 @@ export function Project() {
               placeholder="Nome"
               fieldSetClassName={"even:ml-auto"}
               error={errors ? errors.nome?.message : ""}
+              
             />
 
             <InputDB
@@ -296,9 +343,13 @@ export function Project() {
               icon={<PencilIcon className={"mbl:max-w-[2rem] "} />}
               label="Insira o nome da pessoa responsável pelo projeto"
               placeholder="Nome"
-              {...register("responsavel_project")}
               fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
               error={errors ? errors.responsavel_project?.message : ""}
+              {...register("responsavel_project")}
+              
+              fieldSetBG={`${
+                candidateUser?.name ? "bg-[#d3d3d3!important]" : ""
+              }`}
             />
 
             <InputDB
@@ -308,6 +359,12 @@ export function Project() {
               fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
               {...register("contato_responsavel")}
               error={errors ? errors.contato_responsavel?.message : ""}
+             
+            
+                fieldSetBG={`${
+                  candidateUser?.email != undefined ? "bg-[#d3d3d3!important]" : ""
+                }`}
+                
             />
             <InputDB
               icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
@@ -316,13 +373,21 @@ export function Project() {
               fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
               {...register("linkedin_responsavel")}
               error={errors ? errors.linkedin_responsavel?.message : ""}
+            
+               
+                fieldSetBG={`${
+                  candidateUser?.profile?.urlLinkedin != undefined ? "bg-[#d3d3d3!important]" : ""
+                }`}
+                
             />
             <InputDB
               icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
-              label="Insira os outros contatos dos responsáveis"
+              label="Linkedin do Responsável"
               placeholder="LinkedIn"
               fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
               {...register("contato_outros_responsaveis")}
+              error={errors ? errors.linkedin_responsavel?.message : ""}
+                
             />
           </div>
 
@@ -345,7 +410,7 @@ export function Project() {
           <button className="mt-[6.6rem] h-[6rem] w-[60%] max-w-[32.9rem] rounded-[3.2rem] bg-[#01A195]">
             <p
               className="text-[2.4rem] text-[#FFFFFF] mbl:text-[2rem] "
-              onClick={handleSubmit(onSubmit)}
+              onClick={handleSubmit(handleUpdateProject)}
             >
               SUBMETER PROJETO
             </p>

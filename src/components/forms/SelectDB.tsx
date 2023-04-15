@@ -75,7 +75,7 @@ const SelectBase: ForwardRefRenderFunction<HTMLSelectElement, SelectDBProps> = (
         </label>
       )}
 
-      <div className="flex h-[6.631rem]   rounded-[0.6rem] border-[0.1rem] border-grey-#1  bg-white sm:max-w-[100%] mbl:h-[4rem] mbl:w-[25rem]  mbl:max-h-[3rem] mbl:max-w-[80%] ">
+      <div className="flex h-[6.631rem]   rounded-[0.6rem] border-[0.1rem] border-grey-#1  bg-white sm:max-w-[100%] mbl:h-[4rem] mbl:max-h-[3rem]  mbl:w-[25rem] mbl:max-w-[80%] ">
         {icon && (
           <div className="flex w-[5.3rem] items-center justify-center rounded-bl-[0.6rem] rounded-tl-[0.6rem] bg-blue-dark-#1">
             <>{icon}</>

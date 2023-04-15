@@ -11,14 +11,11 @@ export const Header = (props: { showJustify: boolean }) => {
   function handleMenu() {
     setShowContent(!showContent);
   }
-  console.log(authenticated);
 
-  function handleLogout() { 
-    logout()
+  function handleLogout() {
+    logout();
 
-    setTimeout(() => {
-
-    })
+    setTimeout(() => {});
   }
   return (
     <>
@@ -29,20 +26,18 @@ export const Header = (props: { showJustify: boolean }) => {
           `}
         >
           <Link to="/" className="pointer">
-            <Logo
-              className="ml-[4.624rem] sm:h-[3.5rem] sm:max-w-[10.5rem]"
-            />
+            <Logo className="ml-[4.624rem] sm:h-[3.5rem] sm:max-w-[10.5rem]" />
           </Link>
           <button className="hidden pr-[4rem] lg:block" onClick={handleMenu}>
             <img src={IconMenu} alt="Menu" className="  h-[4rem] w-auto" />
           </button>
-          <nav className={"mt-5 flex gap-[2rem] pl-[5rem] lg:hidden pr-[3rem]"}>
+          <nav className={"mt-5 flex gap-[2rem] pl-[5rem] pr-[3rem] lg:hidden"}>
             {authenticated ? (
-              <Button>
-                <Link to="/">
+              <Link to="/" onClick={() => handleLogout()}>
+                <Button>
                   <p> Logout</p>{" "}
-                </Link>
-              </Button>
+                </Button>
+              </Link>
             ) : (
               <>
                 <Button>
@@ -86,43 +81,34 @@ export const Header = (props: { showJustify: boolean }) => {
       </div>
       {showContent ? (
         <div className=" bg-gray-800 absolute right-5 top-[8rem] flex hidden w-[20rem] items-center justify-center bg-blue-dark shadow-shadow-#2 lg:block ">
-          <nav className=" w-[max-content] text-3xl font-bold text-white mr-[3rem]">
+          <nav className=" mr-[3rem] w-[max-content] text-3xl font-bold text-white">
             l
             {authenticated ? (
               <ul>
-              <li className=" border-b border-black p-[1rem]">
+                <li className=" border-b border-black p-[1rem]">
                   <button className="bg " onClick={() => handleLogout()}>
-                   <p className="hover:text-green-dark">Logout</p>
+                    <p className="hover:text-green-dark">Logout</p>
                   </button>
                 </li>
               </ul>
             ) : (
-
               <ul>
-<li className="border-b border-black p-[1rem] p-[1rem]">
-              <button className="bg">
-                <Link
-                  to="/login"
-                  className="hover:text-green-dark"
-                >
-                  Login
-                </Link>
-              </button>
-            </li>
+                <li className="border-b border-black p-[1rem] p-[1rem]">
+                  <button className="bg">
+                    <Link to="/login" className="hover:text-green-dark">
+                      Login
+                    </Link>
+                  </button>
+                </li>
 
-
-<li className="border-b border-black p-[1rem] p-[1rem]">
-              <button className="bg">
-                <Link
-                  to="/cadastro"
-                  className="hover:text-green-dark"
-                >
-                  Cadastro
-                </Link>
-              </button>
-            </li>
+                <li className="border-b border-black p-[1rem] p-[1rem]">
+                  <button className="bg">
+                    <Link to="/cadastro" className="hover:text-green-dark">
+                      Cadastro
+                    </Link>
+                  </button>
+                </li>
               </ul>
-              
             )}
           </nav>
         </div>

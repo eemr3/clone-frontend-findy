@@ -1,3 +1,4 @@
+import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import c from "../../../assets/c.svg";
@@ -5,10 +6,10 @@ import mulherPagePrincipal from "../../../assets/mulher-page-principal.svg";
 import mulherPagePrincipal3 from "../../../assets/mulher-page-principal3.svg";
 import { Button } from "../../../components/Button";
 import { Header } from "../../../components/Header";
-
+import { getCandidateUser } from "../../../services/api";
 export function Home() {
   const [larguraTela, setLarguraTela] = useState(window.innerWidth);
-
+  const [candidateUser, setCandidateUser] = useState<any>();
   useEffect(() => {
     const handleResize = () => {
       setLarguraTela(window.innerWidth);
@@ -16,6 +17,15 @@ export function Home() {
 
     window.addEventListener("resize", handleResize);
 
+    async function fetchData() {
+      const token: string | any = localStorage.getItem("token");
+      const { sub }: any = jwt_decode(token);
+
+      const user = await getCandidateUser(sub);
+      setCandidateUser(user.data);
+      console.log(user.data);
+    }
+    fetchData();
     return () => {
       window.removeEventListener("resize", handleResize);
     };
@@ -41,7 +51,15 @@ export function Home() {
                 fill={true}
                 className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem]"
               >
-                <Link to="/project">CLIQUE PARA COMEÇAR</Link>
+                <Link
+                  to={`${
+                    Object.keys(candidateUser?.profile || {}).length === 0
+                      ? "/profile"
+                      : "/project"
+                  }`}
+                >
+                  CLIQUE PARA COMEÇAR
+                </Link>
               </Button>
             </div>
 

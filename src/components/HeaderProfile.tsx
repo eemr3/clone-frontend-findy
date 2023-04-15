@@ -5,11 +5,15 @@ import { AuthContext } from "../context/auth";
 import { Button } from "./Button";
 import { Logo } from "./Logo";
 export function HeaderProfile(props: { showJustify: boolean }) {
-
   const [showContent, setShowContent] = React.useState<boolean>(false);
   const { logout, authenticated } = useContext(AuthContext);
   function handleMenu() {
     setShowContent(!showContent);
+  }
+  function handleLogout() {
+    logout();
+
+    setTimeout(() => {});
   }
   return (
     <>
@@ -25,16 +29,18 @@ export function HeaderProfile(props: { showJustify: boolean }) {
           <button className="hidden pr-[4rem] lg:block" onClick={handleMenu}>
             <img src={IconMenu} alt="Menu" className="  h-[4rem] w-auto" />
           </button>
-          <nav className={"mt-5 flex gap-[2rem] pl-[5rem] lg:hidden pr-[4rem] "}>
+          <nav
+            className={"mt-5 flex gap-[2rem] pl-[5rem] pr-[4rem] lg:hidden "}
+          >
             {authenticated ? (
               <>
-              <Button>
-                <Link to="/">
-                  <p> Logout</p>{" "}
-                </Link>
-              </Button>
-              
-              <Button>
+                <Button>
+                  <Link to="/">
+                    <p> Logout</p>{" "}
+                  </Link>
+                </Button>
+
+                {/*  <Button>
                   <Link to="/project">
                     <p>novo projeto</p>{" "}
                   </Link>
@@ -49,20 +55,19 @@ export function HeaderProfile(props: { showJustify: boolean }) {
                     {" "}
                     <p> Projetos Registrados</p>
                   </Link>
-                </Button>
-              
+                </Button> */}
               </>
-              
             ) : (
               <>
-              
+                {/*
                 <Button>
                   <Link to="/cadastro">
                     <p> Cadastre-se</p>
                   </Link>
                 </Button>
+            
 
-                <Button>
+                 <Button>
                   <Link to="/project">
                     <p>novo projeto</p>{" "}
                   </Link>
@@ -77,17 +82,16 @@ export function HeaderProfile(props: { showJustify: boolean }) {
                     {" "}
                     <p> Projetos Registrados</p>
                   </Link>
-                </Button>
+                </Button> */}
               </>
             )}
-          
           </nav>
         </div>
       </div>
       {showContent ? (
         <div className=" bg-gray-800 absolute right-5 top-[8rem] flex hidden w-[20rem] items-center justify-center bg-blue-dark shadow-shadow-#2 lg:block ">
           <ul className=" w-[max-content] text-3xl font-bold text-white">
-            <li className=" border-b border-black p-[1rem]">
+            {/* <li className=" border-b border-black p-[1rem]">
               <button className="bg">
                 <Link to="/login" className="hover:text-green-dark">
                   Login
@@ -101,17 +105,15 @@ export function HeaderProfile(props: { showJustify: boolean }) {
                 </Link>
               </button>
             </li>
-
+ */}
             {authenticated ? (
               <>
                 <li className=" border-b border-black p-[1rem]">
-                  <button className="bg">
-                    <Link to="/project" className="hover:text-green-dark">
-                      projeto
-                    </Link>
+                  <button className="bg" onClick={() => handleLogout()}>
+                    Logout
                   </button>
                 </li>
-                <li className="border-b border-black p-[1rem] p-[1rem]">
+                {/*  <li className="border-b border-black p-[1rem] p-[1rem]">
                   <button className="bg">
                     <Link to="/profile" className="hover:text-green-dark">
                       profile
@@ -127,10 +129,25 @@ export function HeaderProfile(props: { showJustify: boolean }) {
                       Projetos Registrados
                     </Link>
                   </button>
-                </li>
+                </li> */}
               </>
             ) : (
-              ""
+              <>
+                <li className=" border-b border-black p-[1rem]">
+                  <button className="bg">
+                    <Link to="/login" className="hover:text-green-dark">
+                      Login
+                    </Link>
+                  </button>
+                </li>
+                <li className="border-b border-black p-[1rem] p-[1rem]">
+                  <button className="bg">
+                    <Link to="/cadastro" className="hover:text-green-dark">
+                      Cadastro
+                    </Link>
+                  </button>
+                </li>
+              </>
             )}
           </ul>
         </div>

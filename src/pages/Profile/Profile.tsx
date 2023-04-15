@@ -18,11 +18,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
 import * as yup from "yup";
 
-import { HeaderProfile } from "../../components/HeaderProfile";
+import { Header } from "../../components/Header";
 import {
   getCandidateUser,
   getPositions,
-  updateProfile
+  updateProfile,
 } from "../../services/api";
 import { CandidateProfile } from "../../types/CandidateProfile";
 import { Role } from "../../types/Role";
@@ -30,7 +30,7 @@ import { Role } from "../../types/Role";
 type ProfileFormValues = CandidateProfile & {
   name: string;
   email: string;
-  phone: string ;
+  phone: string;
   otherDescription: string;
 };
 
@@ -38,7 +38,7 @@ const schema = yup
   .object()
   .shape({
     name: yup.string().required("Nome obrigatório"),
-    phone: yup.number().required("Número do Whatsapp obrigatório"),
+    phone: yup.string().required("Número do Whatsapp obrigatório"),
     urlLinkedin: yup
       .string()
       .required("Endereço do Linkedin obrigatório")
@@ -60,11 +60,21 @@ const schema = yup
       then: (schema) =>
         schema.min(1, "Precisa escolher pelo menos uma área de atuação"),
     }),
-    others: yup.string(),
+    others: yup.array(yup.string()),
     otherDescription: yup.string().when("others", {
       is: (others: string[]) => others.length,
       then: (schema) => schema.required("Cargo obrigatório"),
     }),
+
+    /* .when('others', {
+      is: (other: string[]) => !!other && !other.length,
+      then: (schema) => schema.required("Cargo obrigatório")
+    }), */
+
+    /* others: yup.array(yup.string()).when('occupationArea', {
+      is: (area: string[]) => !!area && area.indexOf('Outro') > -1,
+      then: (schema) => schema.required("Cargo obrigatório")
+    }), */
 
     areaOfInterest: yup
       .string()
@@ -82,20 +92,18 @@ export function Profile() {
     handleSubmit,
     setValue,
     setError,
+    getValues,
     formState: { errors }, // Adicione essa propriedade na desestruturação
   } = useForm<ProfileFormValues>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
     defaultValues: {
       occupationArea: [],
-      name:  candidateUser ? candidateUser.name :  "",
-      urlLinkedin: candidateUser?.profile?.urlLinkedin || "",
-      email: candidateUser ? candidateUser.email :  "",
-      phone: candidateUser ? candidateUser?.profile?.id : ""
-      /* phone: candidateUser ? console.log(candidateUser) : "" */
+      name: candidateUser ? candidateUser.name : "",
+      email: candidateUser ? candidateUser.email : "",
+      others: [],
     },
   });
-
 
   const [disableOtherDescription, setDisableOtherDescription] = useState(true);
 
@@ -109,10 +117,6 @@ export function Profile() {
   ) => {
     event?.preventDefault();
     setActiveSubmit(true);
-
-    /* await new Promise(resolve => setTimeout(resolve, 3000)) */
-
-    // handle data that is not in the form
     values.description = `Profile ${values.description}`;
     values.profileSkills = [1];
 
@@ -121,14 +125,11 @@ export function Profile() {
 
       const body = {
         ...newValues,
-        others: "hello",
+       
       };
-
-      console.log("Dados do Formulário: ", body);
-
       await updateProfile(body);
     } catch (error) {
-      console.log("Erro ao atualizar Perfil: ", error);
+   
     }
 
     setActiveSubmit(false);
@@ -137,18 +138,14 @@ export function Profile() {
   useEffect(() => {
     async function fetchData() {
       const pos = await getPositions();
-      
 
       setOccupations(pos.data);
-      
-      const token: string | any = localStorage.getItem("token");
-      const {sub}: any = jwt_decode(token);
-    
-      const user = await getCandidateUser(sub); 
-      setCandidateUser(user.data)
-      console.log(user.data)
 
-    
+      const token: string | any = localStorage.getItem("token");
+      const { sub }: any = jwt_decode(token);
+
+      const user = await getCandidateUser(sub);
+      setCandidateUser(user.data);
     }
     fetchData();
   }, []);
@@ -161,13 +158,11 @@ export function Profile() {
     setValue("candidateUserId", candidateUser.id);
   }, [candidateUser]);
 
-  useEffect(() => {
-    console.log("React Hook Form[Errors]: ", errors);
-  }, [errors]);
+
 
   return (
     <div className="w-max-[144rem] flex flex-col bg-blue-dark">
-      <HeaderProfile showJustify={false} />
+      <Header showJustify={false} />
 
       <article className="ml-[15.9rem] mt-[6.414rem] text-grey-#5 lg:ml-[4rem] mbl:ml-[2rem]">
         <Heading type="lg-leading58" className="mbl:text-[4rem]">
@@ -193,9 +188,12 @@ export function Profile() {
             <InputDB
               icon={<PencilIcon className={"mbl:max-w-[2rem]"} />}
               label="Nome completo"
-    
+              readOnly
               placeholder="Nome"
               fieldSetClassName={"even:ml-auto"}
+              fieldSetBG={`${
+                candidateUser?.name != "" || undefined ? "bg-[#d3d3d3!important]" : ""
+              }`}
               error={errors.name?.message}
               {...register("name")}
             />
@@ -236,7 +234,9 @@ export function Profile() {
               fieldSetClassName={"even:ml-auto"}
               error={errors.email?.message}
               {...register("email")}
-              
+              fieldSetBG={`${
+                candidateUser?.name != "" || undefined ? "bg-[#d3d3d3!important]" : ""
+              }`}
             />
 
             <InputDB
@@ -260,7 +260,7 @@ export function Profile() {
 
           <fieldset className="max-[80%] mb-[6.8rem] mt-[8rem] lg:px-[2rem] mbl:mt-[3rem]">
             <p className=" text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1 md:text-[2rem] mbl:text-[1.5rem] mbl:font-bold">
-            Quais áreas você gostaria de atuar?
+              Quais áreas você gostaria de atuar?
             </p>
 
             {!!errors.occupationArea?.message && disableOtherDescription && (
@@ -270,8 +270,8 @@ export function Profile() {
               />
             )}
 
-            <div className="mt-[4rem] grid  grid-cols-2 gap-y-[2.5rem] md:grid-cols-1 mbl:mt-[3.8rem] mbl:w-[86%] mbl:text-[1.1rem]">
-              {occupations?.map((occupation: any) => (
+            <div className="mt-[3.8rem] grid grid-cols-2 gap-y-[2.5rem]">
+              {occupations?.map((occupation) => (
                 <Checkbox
                   key={occupation.id}
                   id={String(occupation.id)}
@@ -281,71 +281,29 @@ export function Profile() {
                 />
               ))}
             </div>
-
-
-
-              {/* <div className="mt-[2.5rem] flex gap-16 mbl:flex mbl:flex-col">
-              <Checkbox
-                id={occupations?.length ? String(occupations.length + 1) : "1"}
-                label="Outro: "
-                value={"others"}
-                labelClassName="mt-[1.315rem] h-fit"
-                {...register("others")}
-                onChange={(event) => {
-                  setDisableOtherDescription(!event.currentTarget.checked);
-                  if (
-                    !event.currentTarget.checked &&
-                    getValues().otherDescription.length > 0
-                  )
-                    setValue("otherDescription", "");
-                  setValue("others", []);
-                }}
-              />
-
-              <InputDB
-                placeholder="Cargo"
-                disabled={disableOtherDescription}
-                value={otherDescription} 
-                error={
-                  disableOtherDescription
-                    ? ""
-                    : errors.otherDescription
-                        ?.message  errors.others?.message
-                }
-                {...register("otherDescription")}
-                {...register("others")}
-                onChange={(event) => setOtherDescription(event.currentTarget.value)} 
-              />
-              </div> */}
-                    
           </fieldset>
 
-
           <div>
-          <InputDB
-            label="Quais seus interesses na sua área de atuação?"
-            placeholder="Ex.: Área de Dados - “Cientista de dados”, “Analista de dados”, etc..."
-            fieldSetClassName="mt-[8rem] w-[111.6rem] [&>*:nth-child(1)]:mb-[2rem] mbl:px-[2rem] mbl:mt-[0]"
-            wantInputWidthFull
-            error={errors.areaOfInterest?.message}
-            {...register("areaOfInterest")}
-          />
+            <InputDB
+              label="Quais seus interesses na sua área de atuação?"
+              placeholder="Ex.: Área de Dados - “Cientista de dados”, “Analista de dados”, etc..."
+              fieldSetClassName="mt-[8rem] w-[111.6rem] [&>*:nth-child(1)]:mb-[2rem] mbl:px-[2rem] mbl:mt-[0]"
+              wantInputWidthFull
+              error={errors.areaOfInterest?.message}
+              {...register("areaOfInterest")}
+            />
 
-          <Button
-            type="submit"
-            className="mt-[6.4rem] h-[5.7rem] w-[32.9rem] text-[2.4rem] font-semibold leading-[2.4rem] lg:ml-[2rem] mbl:mt-[4rem] mbl:h-[3rem] mbl:max-w-[13.9rem] mbl:text-[1.4rem]"
-            fill
-            disabled={activeSubmit}
-          >
-            SALVAR PERFIL
-          </Button>
-          </div>   
+            <Button
+              type="submit"
+              className="mt-[6.4rem] h-[5.7rem] w-[32.9rem] text-[2.4rem] font-semibold leading-[2.4rem] lg:ml-[2rem] mbl:mt-[4rem] mbl:h-[3rem] mbl:max-w-[13.9rem] mbl:text-[1.4rem]"
+              fill
+              disabled={activeSubmit}
+            >
+              SALVAR PERFIL
+            </Button>
+          </div>
         </form>
       </section>
     </div>
   );
 }
-
-
-
-
