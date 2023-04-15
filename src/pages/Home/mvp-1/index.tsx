@@ -47,10 +47,6 @@ export function Home() {
                 tecnologia? Então conheça a Findy!
               </span>
 
-              <Button
-                fill={true}
-                className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem]"
-              >
               <Link
   to={`${
     typeof candidateUser?.profile === "object" && Object.entries(candidateUser?.profile || {}).length === 0
@@ -58,9 +54,13 @@ export function Home() {
       : "/project"
   }`}
 >
+  <Button
+    fill={true}
+    className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem]"
+    >
                   CLIQUE PARA COMEÇAR
-                </Link>
               </Button>
+                </Link>
             </div>
 
             <img
@@ -89,20 +89,21 @@ export function Home() {
               />
 
               <div className="flex justify-center sm:h-[4.2rem] sm:w-[100%] sm:px-[0] sm:pb-[3.8rem] sm:pt-[2.8rem]">
-                <Button
-                  fill={true}
-                  className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem] sm:m-[0] sm:w-[100%]"
-                >
-                            <Link
+              <Link
   to={`${
     typeof candidateUser?.profile === "object" && Object.entries(candidateUser?.profile || {}).length === 0
       ? "/profile"
       : "/project"
   }`}
 >
+                <Button
+                  fill={true}
+                  className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem] sm:m-[0] sm:w-[100%]"
+                >
+     
                     CLIQUE PARA COMEÇAR
-                  </Link>
                 </Button>
+                  </Link>
               </div>
             </div>
           </div>

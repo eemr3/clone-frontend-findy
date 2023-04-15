@@ -40,17 +40,17 @@ export const Header = (props: { showJustify: boolean }) => {
               </Link>
             ) : (
               <>
-                <Button>
                   <Link to="/login">
-                    <p> Login</p>
-                  </Link>
-                </Button>
-
                 <Button>
-                  <Link to="/cadastro">
-                    <p> Cadastre-se</p>
-                  </Link>
+                    <p> Login</p>
                 </Button>
+                  </Link>
+
+                  <Link to="/cadastro">
+                <Button>
+                    <p> Cadastre-se</p>
+                </Button>
+                  </Link>
               </>
             )}
 
@@ -94,19 +94,19 @@ export const Header = (props: { showJustify: boolean }) => {
             ) : (
               <ul>
                 <li className="border-b border-black p-[1rem] p-[1rem]">
-                  <button className="bg">
                     <Link to="/login" className="hover:text-green-dark">
+                  <button className="bg">
                       Login
-                    </Link>
                   </button>
+                    </Link>
                 </li>
 
                 <li className="border-b border-black p-[1rem] p-[1rem]">
-                  <button className="bg">
                     <Link to="/cadastro" className="hover:text-green-dark">
+                  <button className="bg">
                       Cadastro
-                    </Link>
                   </button>
+                    </Link>
                 </li>
               </ul>
             )}
