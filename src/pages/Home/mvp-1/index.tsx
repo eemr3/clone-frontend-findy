@@ -23,7 +23,7 @@ export function Home() {
 
       const user = await getCandidateUser(sub);
       setCandidateUser(user.data);
-      console.log(user.data);
+    
     }
     fetchData();
     return () => {
@@ -51,13 +51,13 @@ export function Home() {
                 fill={true}
                 className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem]"
               >
-                <Link
-                  to={`${
-                    Object.keys(candidateUser?.profile || {}).length === 0
-                      ? "/profile"
-                      : "/project"
-                  }`}
-                >
+              <Link
+  to={`${
+    typeof candidateUser?.profile === "object" && Object.entries(candidateUser?.profile || {}).length === 0
+      ? "/profile"
+      : "/project"
+  }`}
+>
                   CLIQUE PARA COMEÇAR
                 </Link>
               </Button>
@@ -93,7 +93,13 @@ export function Home() {
                   fill={true}
                   className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem] sm:m-[0] sm:w-[100%]"
                 >
-                  <Link to="/project" className="sm:text-[1.4rem]">
+                            <Link
+  to={`${
+    typeof candidateUser?.profile === "object" && Object.entries(candidateUser?.profile || {}).length === 0
+      ? "/profile"
+      : "/project"
+  }`}
+>
                     CLIQUE PARA COMEÇAR
                   </Link>
                 </Button>

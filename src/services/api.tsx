@@ -43,13 +43,15 @@ export const loginUser = async (email: string, password: string) => {
     } else {
       return { success: false, message: "Erro desconhecido" };
     }
-  } catch (error: any) {}
+  } catch (error: unknown) {}
 };
 
 export const formProject = async (body: any) => {
   try {
     return await api.post("/api/candidate-projects", body);
-  } catch (error: any) {}
+  } catch (error: any) {
+    console.log(error)
+  }
 };
 
 export const getProjects = async () => {
@@ -66,10 +68,6 @@ export const getLanguagesById = async (id: string) => {
   return await api.get(`/api/candidate-projects/skills/${id}`);
 };
 
-export const getUserById = async (id: string) => {
-  return await api.get(`/api/candidate-users/6`);
-};
-
 export const getCandidatesUsers = async () => {
   return await api.get("/api/candidate-users");
 };
@@ -78,9 +76,9 @@ export const getCandidateUser = async (id: string) => {
   return await api.get(`/api/candidate-users/${id}`);
 };
 
-export const getCandidatesProfiles = async () => {
+/* export const getCandidatesProfiles = async () => {
   return await api.get("/api/candidate-profile");
-};
+}; */
 
 export const updateProfile = async (body: any) => {
   try {

@@ -35,14 +35,14 @@ export const Header = (props: { showJustify: boolean }) => {
             {authenticated ? (
               <Link to="/" onClick={() => handleLogout()}>
                 <Button>
-                  <p> Logout</p>{" "}
+                  <p> Logout</p>
                 </Button>
               </Link>
             ) : (
               <>
                 <Button>
                   <Link to="/login">
-                    <p> Login</p>{" "}
+                    <p> Login</p>
                   </Link>
                 </Button>
 
@@ -82,7 +82,7 @@ export const Header = (props: { showJustify: boolean }) => {
       {showContent ? (
         <div className=" bg-gray-800 absolute right-5 top-[8rem] flex hidden w-[20rem] items-center justify-center bg-blue-dark shadow-shadow-#2 lg:block ">
           <nav className=" mr-[3rem] w-[max-content] text-3xl font-bold text-white">
-            l
+        
             {authenticated ? (
               <ul>
                 <li className=" border-b border-black p-[1rem]">
