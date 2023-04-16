@@ -1,10 +1,14 @@
 import axios from "axios";
 
-const token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIwLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImpvaG5kb2VAZW1haWwuY29tIiwicm9sZXMiOiJjYW5kaWRhdGUiLCJpYXQiOjE2ODE0MzczOTAsImV4cCI6MTY4MTQ0NTM5MH0.Kg6pAjcxLnotkVVXLTlnJa-6pW9l3IOlzD7YllZ6VT8";
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIzLCJuYW1lIjoiRGFyY2lvIENhcnZhbGhvIiwiZW1haWwiOiJkYXJjaW8uY2FydmFsaG8uZGV2QGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxNDc5ODY4LCJleHAiOjE2ODE0ODc4Njh9.BP4yluPsDNGFGzMYn6Wuv6JQArxTnbiDJA4PU_-l3fQ";
 
 
 export const api = axios.create({
   baseURL: "https://findybackend-development.up.railway.app",
+  headers: {
+    Authorization: `Bearer ${token}`,
+    "Access-Control-Allow-Origin": true,
+  },
 });
 export const createUser = async (body: any) => {
   try {
@@ -70,7 +74,7 @@ export const getPositions = async () => {
       Authorization: token //`Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImwyQGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxMzA3NTk5LCJleHAiOjE2ODEzMTU1OTl9.j4BGnuvEux8DB5ytyvXJOUE2IxAZnNPdFPSuLqkVNhY` // O token é uma string que representa o token de autenticação
     }
   };
-  return await api.get("/api/candidate-projects/roles", options);
+  return await api.get("/api/candidate-projects/roles"/* , options */);
 };
 
 export const getLanguages = async () => {
@@ -79,7 +83,7 @@ export const getLanguages = async () => {
       Authorization: token // `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImwyQGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxMzA3NTk5LCJleHAiOjE2ODEzMTU1OTl9.j4BGnuvEux8DB5ytyvXJOUE2IxAZnNPdFPSuLqkVNhY` // O token é uma string que representa o token de autenticação
     }
   };
-  return await api.get("/api/candidate-projects/skills", options);
+  return await api.get("/api/candidate-projects/skills"/* , options */);
 };
 
 export const getCandidatesUsers = async () => {
@@ -88,7 +92,7 @@ export const getCandidatesUsers = async () => {
       Authorization: token
     }
   };
-  return await api.get("/api/candidate-users", options);
+  return await api.get("/api/candidate-users"/* , options */);
 }
 
 export const getCandidateUser = async (id: string) => {
@@ -97,7 +101,7 @@ export const getCandidateUser = async (id: string) => {
       Authorization: token
     }
   };
-  return await api.get(`/api/candidate-users/${id}`, options);
+  return await api.get(`/api/candidate-users/${id}`/* , options */);
 }
 
 
@@ -107,7 +111,7 @@ export const getCandidatesProfiles = async () => {
       Authorization: token
     }
   };
-  return await api.get("/api/candidate-profile", options);
+  return await api.get("/api/candidate-profile"/* , options */);
 }
 
 export const updateProfile = async (body: any) => {

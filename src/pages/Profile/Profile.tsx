@@ -159,7 +159,7 @@ export function Profile() {
       setOccupations(pos.data);
       console.log(pos);
 
-      const user = await getCandidateUser("23");
+      const user = await getCandidateUser("20");
       setCandidateUser(user.data);
       console.log("user: ", user);
 
@@ -360,7 +360,13 @@ export function Profile() {
         <div className="flex flex-col gap-4 ml-[100px]">
           <h1 className="text-[30px] font-black">ERROR</h1>
           <pre>
-            {/* JSON.stringify(errors, null, 2) */}
+            {
+              Object.keys(errors).map((key, index) => (
+                key
+              ))
+
+              /* JSON.stringify(errors, null, 2) */
+            }
           </pre>
         </div>
       </section>
