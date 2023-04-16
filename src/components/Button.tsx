@@ -1,33 +1,44 @@
 import { ButtonHTMLAttributes, ReactNode } from "react";
+import { useNavigate } from 'react-router-dom';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   fill?: boolean;
   disabled?: boolean;
+  url?: string;
 }
 
 export function Button({
   children,
   fill = false,
   disabled = false,
+  url = "",
   className = "text-[1.4rem] leading-[1.162rem] tracking-[0.091rem] font-bold",
+  onClick,
   ...rest
 }: ButtonProps) {
   const buttonStyle = fill
-    ? `${
-        disabled
-          ? "bg-grey-#4 text-grey-#2"
-          : "shadow-shadow-button bg-green-medium text-grey-#5 hover:bg-green-dark"
-      }`
-    : `border-[1px] ${
-        disabled
-          ? "text-grey-#2 border-grey-#2"
-          : "shadow-shadow-button text-green-medium border-green-medium hover:text-green-dark hover:border-green-dark"
-      }`;
+    ? `${disabled
+      ? "bg-grey-#4 text-grey-#2"
+      : "shadow-shadow-button bg-green-medium text-grey-#5 hover:bg-green-dark"
+    }`
+    : `border-[1px] ${disabled
+      ? "text-grey-#2 border-grey-#2"
+      : "shadow-shadow-button text-green-medium border-green-medium hover:text-green-dark hover:border-green-dark"
+    }`;
+
+  const navigate = useNavigate();
 
   return (
     <button
       className={`h-[3.341rem] w-fit rounded-[2.324rem] px-[1.743rem] uppercase ${className} ${buttonStyle}`}
+      onClick={(event) => {
+        url &&
+          navigate(url);
+
+        onClick &&
+          onClick(event);
+      }}
       {...rest}
     >
       {children}
