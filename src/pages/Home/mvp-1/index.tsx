@@ -38,10 +38,11 @@ export function Home() {
               <Button
                 fill={true}
                 className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem]"
+                url="https://docs.google.com/forms/d/1GZBzYZRTHoU-waL6NLZ6BDHZsS6SrvjWAgf_YUC-eZQ/viewform?edit_requested=true"
               >
-                <a href="https://docs.google.com/forms/d/1GZBzYZRTHoU-waL6NLZ6BDHZsS6SrvjWAgf_YUC-eZQ/viewform?edit_requested=true">
-                  CLIQUE PARA COMEÇAR
-                </a>
+                {/*  <a href="https://docs.google.com/forms/d/1GZBzYZRTHoU-waL6NLZ6BDHZsS6SrvjWAgf_YUC-eZQ/viewform?edit_requested=true"> */}
+                CLIQUE PARA COMEÇAR
+                {/* </a> */}
               </Button>
             </div>
 
@@ -72,10 +73,11 @@ export function Home() {
               <Button
                 fill={true}
                 className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem]"
+                url="https://docs.google.com/forms/d/1GZBzYZRTHoU-waL6NLZ6BDHZsS6SrvjWAgf_YUC-eZQ/viewform?edit_requested=true"
               >
-                <a href="https://docs.google.com/forms/d/1GZBzYZRTHoU-waL6NLZ6BDHZsS6SrvjWAgf_YUC-eZQ/viewform?edit_requested=true">
-                  CLIQUE PARA COMEÇAR
-                </a>
+                {/* <a href="https://docs.google.com/forms/d/1GZBzYZRTHoU-waL6NLZ6BDHZsS6SrvjWAgf_YUC-eZQ/viewform?edit_requested=true"> */}
+                CLIQUE PARA COMEÇAR
+                {/* </a> */}
               </Button>
             </div>
           </div>
