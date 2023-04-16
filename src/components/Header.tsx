@@ -9,11 +9,11 @@ export function Header(props: { showJustify: boolean }) {
         className={`flex w-full items-center md:mx-[0] ${props.showJustify ? "justify-between" : ""
           }`}
       >
-        <Link to="/">
-          <Logo
-            className={`ml-[4.624rem] ${props.showJustify ? "" : "mr-[12.3rem] sm:mr-[6rem]"
-              }`}
-          />
+        <Link
+          className={`ml-[4.624rem] ${props.showJustify ? "" : "mr-[12.3rem] sm:mr-[6rem]"}`}
+          to="/"
+        >
+          <Logo />
         </Link>
 
         {/* <nav className="flex items-center gap-5">
@@ -25,12 +25,14 @@ export function Header(props: { showJustify: boolean }) {
           </Link> */}
 
         <nav className="flex items-center gap-5 ">
-          <Button>
-            <Link to="/login">Login</Link>
+          <Button url="/login">
+            Login
+            {/* <Link to="/login">Login</Link> */}
           </Button>
 
-          <Button fill={true}>
-            <Link to="/cadastro">Cadastre-se</Link>
+          <Button fill={true} url="/cadastro">
+            Cadastre-se
+            {/* <Link to="/cadastro">Cadastre-se</Link> */}
           </Button>
         </nav>
       </div>
