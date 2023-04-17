@@ -38,9 +38,10 @@ const schema = yup
   .object()
   .shape({
     name: yup.string().required("Nome obrigatório"),
-    phone: yup.string()
-    .required("Número do Whatsapp obrigatório")
-    .matches(/^[0-9]+$/, "Este campo deve conter apenas números"),
+    phone: yup
+      .string()
+      .required("Número do Whatsapp obrigatório")
+      .matches(/^[0-9]+$/, "Este campo deve conter apenas números"),
     urlLinkedin: yup
       .string()
       .required("Endereço do Linkedin obrigatório")
@@ -57,26 +58,24 @@ const schema = yup
       .string()
       .required("Tempo de disponibilidade obrigatório"),
     /* occupationArea: yup.array(yup.string()).min(1, "Precisa escolher pelo menos uma área de atuação"), */
-   occupationArea: yup.array(yup.string()).when("others", {
+    occupationArea: yup.array(yup.string()).when("others", {
       is: (others: string[]) => !others.length,
       then: (schema) =>
         schema.min(1, "Precisa escolher pelo menos uma área de atuação"),
     }),
-    others: yup.array(yup.string()),  
+    others: yup.array(yup.string()),
     areaOfInterest: yup
       .string()
       .required("Interesse na sua área de atuação obrigatória"),
   })
   .required();
 
- 
-
 export function Profile() {
   // Teste de Error no nome e e-mail
   const [activeSubmit, setActiveSubmit] = useState(false);
   const [occupations, setOccupations] = useState<Role[]>([]);
   const [candidateUser, setCandidateUser] = useState<any>();
-  const [othersArray,setOthersArray] = useState<string[]>([]);
+  const [othersArray, setOthersArray] = useState<string[]>([]);
   const navigate = useNavigate();
   const {
     register,
@@ -99,8 +98,6 @@ export function Profile() {
 
   const [disableOtherDescription, setDisableOtherDescription] = useState(true);
 
-
-
   const handleUpdateProfile: SubmitHandler<ProfileFormValues> = async (
     values,
     event
@@ -111,19 +108,16 @@ export function Profile() {
     values.profileSkills = [1];
 
     try {
-      const {...newValues } = values;
+      const { ...newValues } = values;
 
       const body = {
         ...newValues,
-       
       };
-        const resposta  = await updateProfile(body);
-         if(resposta?.status === 201) {
-          navigate("/project");
-         }
-    } catch (error) {
-   
-    }
+      const resposta = await updateProfile(body);
+      if (resposta?.status === 201) {
+        navigate("/project");
+      }
+    } catch (error) {}
 
     setActiveSubmit(false);
   };
@@ -143,23 +137,21 @@ export function Profile() {
     fetchData();
   }, []);
 
-   function handleOthersInputChange(e: ChangeEvent<HTMLInputElement>) {
+  function handleOthersInputChange(e: ChangeEvent<HTMLInputElement>) {
     const inputValue = e.target.value;
-    const othersArray = inputValue.split(",").map((item) => item.trim().charAt(0).toUpperCase() + item.slice(1));
+    const othersArray = inputValue
+      .split(",")
+      .map((item) => item.trim().charAt(0).toUpperCase() + item.slice(1));
     setOthersArray(othersArray);
-
-
-  } 
+  }
   useEffect(() => {
     if (!candidateUser) return;
 
     setValue("name", candidateUser?.name);
     setValue("email", candidateUser?.email);
     setValue("candidateUserId", candidateUser?.id);
-    setValue("others", othersArray)
+    setValue("others", othersArray);
   }, [candidateUser, othersArray]);
-
-
 
   return (
     <div className="w-max-[144rem] flex flex-col bg-blue-dark">
@@ -193,7 +185,9 @@ export function Profile() {
               placeholder="Nome"
               fieldSetClassName={"even:ml-auto"}
               fieldSetBG={`${
-                candidateUser?.name != "" || undefined ? "bg-[#d3d3d3!important]" : ""
+                candidateUser?.name != "" || undefined
+                  ? "bg-[#d3d3d3!important]"
+                  : ""
               }`}
               error={errors.name?.message}
               {...register("name")}
@@ -207,12 +201,11 @@ export function Profile() {
               error={errors.phone?.message}
               type="number"
               {...register("phone", {
-                valueAsNumber: true
+                valueAsNumber: true,
               })}
-/>
+            />
 
-
-<InputDB
+            <InputDB
               icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
               label="Insira o seu LinkedIn"
               placeholder="LinkedIn"
@@ -221,17 +214,13 @@ export function Profile() {
               {...register("urlLinkedin")}
             />
 
-
-
-        
-
-<InputDB
-            icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
-            label="Insira o seu GitHub"
-            placeholder="GitHub"
-            fieldSetClassName={"ml-auto"}
-            error={errors.urlGithub?.message}
-            {...register("urlGithub")}
+            <InputDB
+              icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
+              label="Insira o seu GitHub"
+              placeholder="GitHub"
+              fieldSetClassName={"ml-auto"}
+              error={errors.urlGithub?.message}
+              {...register("urlGithub")}
             />
 
             <InputDB
@@ -244,7 +233,9 @@ export function Profile() {
               error={errors.email?.message}
               {...register("email")}
               fieldSetBG={`${
-                candidateUser?.email != "" || undefined ? "bg-[#d3d3d3!important]" : ""
+                candidateUser?.email != "" || undefined
+                  ? "bg-[#d3d3d3!important]"
+                  : ""
               }`}
             />
 
@@ -256,8 +247,6 @@ export function Profile() {
               error={errors.availableTime?.message}
               {...register("availableTime")}
             />
-
-
           </div>
           <fieldset className="max-[80%] mb-[6.8rem] mt-[8rem] lg:px-[2rem] mbl:mt-[3rem]">
             <p className=" text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1 md:text-[2rem] mbl:text-[1.5rem] mbl:font-bold">
@@ -284,13 +273,19 @@ export function Profile() {
             </div>
 
             <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col ">
-              <Checkbox  id="10" label="Outro:" {...register("occupationArea")} />
+              <Checkbox
+                id="10"
+                label="Outro:"
+                {...register("occupationArea")}
+              />
 
-              <InputDB placeholder="'Tech Lead','Gestor'"  {...register("others")}  error={errors.others?.message}
-        fieldSetClassName="h-[6rem]"
-       
-        onChange={(e) => handleOthersInputChange(e)}
-        />
+              <InputDB
+                placeholder="'Tech Lead','Gestor'"
+                {...register("others")}
+                error={errors.others?.message}
+                fieldSetClassName="h-[6rem]"
+                onChange={(e) => handleOthersInputChange(e)}
+              />
             </div>
           </fieldset>
 
@@ -303,7 +298,6 @@ export function Profile() {
               error={errors.areaOfInterest?.message}
               {...register("areaOfInterest")}
               type="textarea"
-              
             />
 
             <Button

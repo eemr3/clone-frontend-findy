@@ -18,7 +18,7 @@ import {
   formProject,
   getCandidateUser,
   getLanguages,
-  getPositions
+  getPositions,
 } from "../../services/api";
 interface FormValues {
   name: string;
@@ -46,7 +46,7 @@ const schema = yup
         "Escopo Obrigatorio"
       ) /* .required("Escopo do projeto obrigatório") */,
     language: yup
-    .array(yup.number())
+      .array(yup.number())
       .required("Obrigatório Pelos menos 1 liguagem ou ferramenta"),
     data_inicio: yup.string(),
     responsible: yup.string().required("Responsavel Obrigatorio"),
@@ -69,10 +69,9 @@ interface Positions {
 }
 
 export function Project() {
-
   const [positions, setPositions] = useState<any>([]);
   const [languages, setLanguages] = useState<number[]>([]);
-  const [candidateUser,setCandidateUser] = useState<any>()
+  const [candidateUser, setCandidateUser] = useState<any>();
   const [activeSubmit, setActiveSubmit] = useState(false);
   const navigate = useNavigate();
   const {
@@ -87,13 +86,10 @@ export function Project() {
     shouldFocusError: true,
     defaultValues: {
       responsible: candidateUser ? candidateUser.name : "",
-      contactResponsible:  candidateUser ? candidateUser.email : "",
+      contactResponsible: candidateUser ? candidateUser.email : "",
       language: [],
     },
   });
-
-
-
 
   const handleUpdateProject: SubmitHandler<FormValues> = async (
     values,
@@ -101,38 +97,36 @@ export function Project() {
   ) => {
     event?.preventDefault();
     setActiveSubmit(true);
-    console.log(values)
- 
+    console.log(values);
 
     try {
-       const { ...newValues } = values; 
+      const { ...newValues } = values;
 
-     const body = {
+      const body = {
         ...newValues,
-       
-      }; 
+      };
       let result = await formProject(body);
-      if(result?.status === 201) {
+      if (result?.status === 201) {
         navigate("/project_registered");
       }
-    } catch (error) {
-   
-    }
+    } catch (error) {}
 
     setActiveSubmit(false);
   };
   const [selectedLanguageIds, setSelectedLanguageIds] = useState<any>([]);
-  const [selectedLanguageNames, setSelectedLanguageNames] = useState<string[]>([]);
-  console.log(selectedLanguageIds)
+  const [selectedLanguageNames, setSelectedLanguageNames] = useState<string[]>(
+    []
+  );
+  console.log(selectedLanguageIds);
 
   const handleLanguageChange = (event: any) => {
     const selectedId = event.target.value;
     const selectedName = event.target.options[event.target.selectedIndex].text;
-  
+
     if (!selectedLanguageIds.includes(parseInt(selectedId))) {
       setSelectedLanguageIds([...selectedLanguageIds, parseInt(selectedId)]);
     }
-  
+
     if (!selectedLanguageNames.includes(selectedName)) {
       setSelectedLanguageNames([...selectedLanguageNames, selectedName]);
     }
@@ -150,33 +144,27 @@ export function Project() {
   useEffect(() => {
     async function fetchData() {
       const token: string | any = localStorage.getItem("token");
-      const {sub}: any = jwt_decode(token);
+      const { sub }: any = jwt_decode(token);
       const user = await getCandidateUser(sub);
       const pos = await getPositions();
       const lan = await getLanguages();
-      
 
-      setCandidateUser(user.data)
+      setCandidateUser(user.data);
       setPositions(pos.data);
       setLanguages(lan?.data);
-   
     }
-  
+
     fetchData();
-
-
-
   }, [selectedLanguageNames]);
 
-
-useEffect(() => {
+  useEffect(() => {
     if (!candidateUser) return;
     setValue("responsible", candidateUser?.name);
     setValue("contactResponsible", candidateUser?.email);
     setValue("urlLinkediResponsible", candidateUser?.profile?.urlLinkedin);
     setValue("language", selectedLanguageIds);
-  }, [candidateUser,selectedLanguageIds]);
- 
+  }, [candidateUser, selectedLanguageIds]);
+
   const dataAtual = new Date().toLocaleDateString("pt-BR");
 
   return (
@@ -207,7 +195,6 @@ useEffect(() => {
               placeholder="Nome"
               fieldSetClassName={"even:ml-auto"}
               error={errors ? errors.name?.message : ""}
-              
             />
 
             <InputDB
@@ -314,7 +301,6 @@ useEffect(() => {
                 />
               ))}
             </div>
-           
           </fieldset>
 
           <div className="grid grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] lg:flex mbl:gap-y-[4rem]">
@@ -325,7 +311,6 @@ useEffect(() => {
               fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
               error={errors ? errors.responsible?.message : ""}
               {...register("responsible")}
-              
               fieldSetBG={`${
                 candidateUser?.name ? "bg-[#d3d3d3!important]" : ""
               }`}
@@ -338,12 +323,11 @@ useEffect(() => {
               fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
               {...register("contactResponsible")}
               error={errors ? errors.contactResponsible?.message : ""}
-             
-            
-                fieldSetBG={`${
-                  candidateUser?.email != undefined ? "bg-[#d3d3d3!important]" : ""
-                }`}
-                
+              fieldSetBG={`${
+                candidateUser?.email != undefined
+                  ? "bg-[#d3d3d3!important]"
+                  : ""
+              }`}
             />
             <InputDB
               icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
@@ -352,12 +336,11 @@ useEffect(() => {
               fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
               {...register("urlLinkediResponsible")}
               error={errors ? errors.urlLinkediResponsible?.message : ""}
-            
-               
-                fieldSetBG={`${
-                  candidateUser?.profile?.urlLinkedin != undefined ? "bg-[#d3d3d3!important]" : ""
-                }`}
-                
+              fieldSetBG={`${
+                candidateUser?.profile?.urlLinkedin != undefined
+                  ? "bg-[#d3d3d3!important]"
+                  : ""
+              }`}
             />
             <InputDB
               icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
@@ -366,7 +349,6 @@ useEffect(() => {
               fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
               {...register("contactLeaders")}
               error={errors ? errors.urlLinkediResponsible?.message : ""}
-                
             />
           </div>
 

@@ -1,19 +1,17 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import * as yup from "yup";
 import mulherPagePrincipal from "../../assets/mulher-page-principal2.svg";
 import { Header } from "../../components/Header";
 import IconLock from "../../components/icons/IconConfirm";
 import { createUser } from "../../services/api";
-interface FormValues {
-  nome: string;
-  email: string;
-  password: string;
-  password_confirmation: string;
-}
+import { Register } from "../../types/Register";
+
+
+
 
 const schema = yup
   .object()
@@ -40,14 +38,14 @@ const schema = yup
 export function Cadastro() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
-  const navigate = useNavigate();
+ 
   const {
     register,
     handleSubmit,
     watch,
     setError,
     formState: { errors }, // Adicione essa propriedade na desestruturação
-  } = useForm<FormValues>({
+  } = useForm<Register>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
   });
@@ -59,7 +57,8 @@ export function Cadastro() {
     password
   );
 
-  const onSubmit = async (data: any) => {
+  const handleSubmitRegister: SubmitHandler<Register> = async (data) => {
+  
     const body = {
       name: data.nome,
       email: data.email,
@@ -69,13 +68,14 @@ export function Cadastro() {
 
     if (data != null && isChecked) {
       let result = await createUser(body);
-      if (result.status === 201 || result.status === 200) {
-        toast.success(result.message);
-      }
+  
       if (result.status === 409) {
+        
         setError("email", {
           message: result.message,
+          
         });
+        toast.error(result.message);
       }
     }
     setIsSuccess(true);
@@ -92,7 +92,7 @@ export function Cadastro() {
           className="absolute right-[0]  top-[0] h-[100%]  w-[100%] max-w-[54.6rem] object-cover xl:hidden "
         />
 
-        <div className="flex  w-[100%] max-w-[63.5rem] flex-col items-center rounded-[2.6rem] bg-[#FFFFFF] ">
+        <form className="flex  w-[100%] max-w-[63.5rem] flex-col items-center rounded-[2.6rem] bg-[#FFFFFF] " onSubmit={handleSubmit(handleSubmitRegister)}>
           <h2 className="mb-[6.4rem] mt-[6.4rem] text-[4.8rem] font-[700] md:text-[4rem] mbl:mb-[2.8rem] mbl:mb-[4rem] mbl:mt-[4.1rem]  mbl:mt-[4rem] mbl:text-[2.2rem] mbl:text-[2.5rem]">
             Crie uma Conta
           </h2>
@@ -300,7 +300,6 @@ export function Cadastro() {
           </div>
           <button
             className="mdl:mt-[3rem] mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195] mbl:h-[4rem]"
-            onClick={handleSubmit(onSubmit)}
           >
             <p className="text-[2.4rem] text-[#FFFFFF]  ">Criar</p>
           </button>
@@ -311,7 +310,7 @@ export function Cadastro() {
               Login
             </Link>{" "}
           </p>
-        </div>
+        </form>
       </div>
     </div>
   );

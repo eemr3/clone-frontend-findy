@@ -40,7 +40,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const login = ({ data }: any) => {
-  /*   const loggedUser = {
+    /*   const loggedUser = {
       data,
     }; */
 

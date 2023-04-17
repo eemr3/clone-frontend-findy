@@ -1,15 +1,18 @@
 import jwt_decode from "jwt-decode";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import c from "../../../assets/c.svg";
 import mulherPagePrincipal from "../../../assets/mulher-page-principal.svg";
 import mulherPagePrincipal3 from "../../../assets/mulher-page-principal3.svg";
 import { Button } from "../../../components/Button";
 import { Header } from "../../../components/Header";
+import { AuthContext } from "../../../context/auth";
 import { getCandidateUser } from "../../../services/api";
 export function Home() {
   const [larguraTela, setLarguraTela] = useState(window.innerWidth);
   const [candidateUser, setCandidateUser] = useState<any>();
+  const { authenticated } = useContext(AuthContext);
+  
   useEffect(() => {
     const handleResize = () => {
       setLarguraTela(window.innerWidth);
@@ -23,13 +26,33 @@ export function Home() {
 
       const user = await getCandidateUser(sub);
       setCandidateUser(user.data);
-    
     }
     fetchData();
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const handleVerification = () =>{
+
+    if(authenticated) {
+
+     if(typeof candidateUser?.profile === "object" &&
+     Object.entries(candidateUser?.profile || {}).length === 0) {
+      return  "/profile"
+     } else {
+        return "/project"
+     }
+    
+       
+    } else {
+      toast.error('Você precisa estar logado para continuar', {
+       
+        style: { fontSize: '1.8rem' },
+        autoClose: 2000,
+      });
+    }
+  }
 
   return (
     <section className="flex h-[100%] flex-col bg-blue-dark pb-[5rem] ">
@@ -47,20 +70,15 @@ export function Home() {
                 tecnologia? Então conheça a Findy!
               </span>
 
-              <Link
-  to={`${
-    typeof candidateUser?.profile === "object" && Object.entries(candidateUser?.profile || {}).length === 0
-      ? "/profile"
-      : "/project"
-  }`}
->
-  <Button
-    fill={true}
-    className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem]"
-    >
+           
+                <Button
+                  fill={true}
+                  className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem]"
+                  url={handleVerification}
+                >
                   CLIQUE PARA COMEÇAR
-              </Button>
-                </Link>
+                </Button>
+             
             </div>
 
             <img
@@ -89,21 +107,15 @@ export function Home() {
               />
 
               <div className="flex justify-center sm:h-[4.2rem] sm:w-[100%] sm:px-[0] sm:pb-[3.8rem] sm:pt-[2.8rem]">
-              <Link
-  to={`${
-    typeof candidateUser?.profile === "object" && Object.entries(candidateUser?.profile || {}).length === 0
-      ? "/profile"
-      : "/project"
-  }`}
->
-                <Button
-                  fill={true}
-                  className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem] sm:m-[0] sm:w-[100%]"
-                >
-     
+                {}
+
+              
+                  <Button
+                    fill={true}
+                    className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem] sm:m-[0] sm:w-[100%]" url={handleVerification}>
                     CLIQUE PARA COMEÇAR
-                </Button>
-                  </Link>
+                  </Button>
+             
               </div>
             </div>
           </div>
