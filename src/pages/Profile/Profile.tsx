@@ -63,7 +63,8 @@ const schema = yup
       then: (schema) =>
         schema.min(1, "Precisa escolher pelo menos uma área de atuação"),
     }),
-     others: yup.array(yup.string()), 
+    others: yup.array(yup.string()),
+    othersName: yup.array(yup.string()),
     areaOfInterest: yup
       .string()
       .required("Interesse na sua área de atuação obrigatória"),
@@ -91,7 +92,8 @@ export function Profile() {
       occupationArea: [],
       name: candidateUser ? candidateUser.name : "",
       email: candidateUser ? candidateUser.email : "",
-      /* others: [], */
+      others: [],
+      othersName: []
     },
   });
  
@@ -106,8 +108,9 @@ export function Profile() {
     setActiveSubmit(true);
     values.description = `Profile ${values.description}`;
     values.profileSkills = [1];
-
+console.log(values)
     try {
+    
       const { ...newValues } = values;
 
       const body = {
@@ -143,17 +146,18 @@ export function Profile() {
       .split(",")
       .map((item) => item.trim().charAt(0).toUpperCase() + item.slice(1));
     setOthersArray(othersArray)
-    setValue("others", othersArray);
-    ;
+    setValue("othersName", othersArray);
+   
   }
+
   useEffect(() => {
     if (!candidateUser) return;
 
     setValue("name", candidateUser?.name);
     setValue("email", candidateUser?.email);
     setValue("candidateUserId", candidateUser?.id);
-    /* setValue("others", othersArray); */
-  }, [candidateUser/* , othersArray */]);
+   
+  }, [candidateUser]);
 
   return (
     <div className="w-max-[144rem] flex flex-col bg-blue-dark">
@@ -274,7 +278,7 @@ export function Profile() {
               ))}
             </div>
 
-         {/*    <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col ">
+            <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col ">
               <Checkbox
                 id="10"
                 label="Outro:"
@@ -282,13 +286,12 @@ export function Profile() {
               />
 
               <InputDB
-                placeholder="'Tech Lead','Gestor'"
-                {...register("others")}
+                placeholder="Tech Lead,Gestor"
                 error={errors.others?.message}
                 fieldSetClassName="h-[6rem]"
-                onChange={(e) => handleOthersInputChange(e)}
+                onChange={handleOthersInputChange}
               />
-            </div> */}
+            </div>
           </fieldset>
 
           <div>

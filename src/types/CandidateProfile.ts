@@ -1,4 +1,3 @@
-import { CandidateUser } from "./CandidateUser";
 
 export type CandidateProfile = {
   "id": number;
@@ -12,4 +11,5 @@ export type CandidateProfile = {
   "areaOfInterest": string;
   "availableTime": string;
   "candidateUserId": number;
+  "othersName"?: string[]
 }

@@ -28,6 +28,7 @@ export function Home() {
 
       const user = await getCandidateUser(sub);
       setCandidateUser(user?.data);
+      console.log(user)
     }
     fetchData();
     return () => {
@@ -36,13 +37,16 @@ export function Home() {
   }, []);
 
   const handleVerification = () => {
+    
     if (authenticated) {
       if (
         typeof candidateUser?.profile === "object" &&
         Object.entries(candidateUser?.profile || {}).length === 0
       ) {
         return "/profile";
-      } else {
+      } 
+      if(typeof candidateUser?.profile === "object" &&
+      Object.entries(candidateUser?.profile || {}).length > 0){
         return "/project_registered";
       }
 
