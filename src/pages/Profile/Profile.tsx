@@ -39,8 +39,10 @@ const schema = yup
   .shape({
     name: yup.string().required("Nome obrigatório"),
     phone: yup.string()
-      .required("Número do Whatsapp obrigatório")/* 
-      .matches(/^[0-9]+$/, "Este campo deve conter apenas números") */,
+      .required("Número do Whatsapp obrigatório")
+      .min(14, "Número de Whatsapp inválido"),
+    /* 
+    .matches(/^[0-9]+$/, "Este campo deve conter apenas números") */
     urlLinkedin: yup
       .string()
       .required("Endereço do Linkedin obrigatório")
@@ -206,13 +208,14 @@ export function Profile() {
             <InputDB
               icon={<TelephoneIcon className={"mbl:max-w-[2rem] "} />}
               label="Insira o seu número do WhatsApp"
-              placeholder="Ex: 9999999999"
+              placeholder="Ex: (99) 99999-9999"
               fieldSetClassName={"ml-auto "}
               error={errors.phone?.message}
+              mask="PHONE"
               /* type="number" */
-              {...register("phone", {
+              {...register("phone"/* , {
                 valueAsNumber: true
-              })}
+              } */)}
             />
 
 
@@ -224,10 +227,6 @@ export function Profile() {
               error={errors.urlLinkedin?.message}
               {...register("urlLinkedin")}
             />
-
-
-
-
 
             <InputDB
               icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}

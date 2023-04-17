@@ -1,13 +1,16 @@
 import {
   DetailedHTMLProps,
+  FormEvent,
   ForwardRefRenderFunction,
   InputHTMLAttributes,
   forwardRef,
+  useCallback,
   useImperativeHandle,
   useRef,
 } from "react";
 import { SVGIcon } from "../../types/SVGIcon";
 import { Text } from "../Text";
+import { getMaxLength, maskPhone } from "../../utils/inputdbMasksUtil";
 
 interface InputDBProps
   extends DetailedHTMLProps<
@@ -31,6 +34,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
     name = "",
     label,
     placeholder,
+    mask,
     icon = undefined,
     type = "text",
     error = null,
@@ -48,6 +52,13 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
     ref,
     () => inputRef.current
   );
+
+  const handleKeyUp = useCallback((e: FormEvent<HTMLInputElement>) => {
+    if (mask === "PHONE") {
+      e.currentTarget.maxLength = 15 //10
+      rest.value = maskPhone(e.currentTarget.value);
+    }
+  }, [mask])
 
   return (
     <fieldset
@@ -82,9 +93,11 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
           name={name}
           ref={inputRef}
           type={type}
+          maxLength={mask && getMaxLength(mask)}
           placeholder={placeholder}
           className={`ml-[2rem] w-[32.2rem] ${fieldSetBG}  border-none text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2 md:w-[80%] sm:w-[70%] mbl:max-w-[17rem] mbl:text-[1.2rem] ${className} ${wantInputWidthFull ? "w-[96%]" : ""
             }`}
+          onKeyUp={mask && handleKeyUp}
           {...rest}
         />
       </div>
