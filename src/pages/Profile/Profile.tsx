@@ -63,7 +63,7 @@ const schema = yup
       then: (schema) =>
         schema.min(1, "Precisa escolher pelo menos uma área de atuação"),
     }),
-   /*  others: yup.array(yup.string()), */
+     others: yup.array(yup.string()), 
     areaOfInterest: yup
       .string()
       .required("Interesse na sua área de atuação obrigatória"),
