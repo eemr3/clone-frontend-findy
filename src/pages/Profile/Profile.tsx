@@ -63,7 +63,7 @@ const schema = yup
       then: (schema) =>
         schema.min(1, "Precisa escolher pelo menos uma área de atuação"),
     }),
-    others: yup.array(yup.string()),
+   /*  others: yup.array(yup.string()), */
     areaOfInterest: yup
       .string()
       .required("Interesse na sua área de atuação obrigatória"),
@@ -81,13 +81,12 @@ export function Profile() {
     register,
     handleSubmit,
     setValue,
-    setError,
-    getValues,
-    watch,
+    
     formState: { errors }, // Adicione essa propriedade na desestruturação
   } = useForm<ProfileFormValues>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
+    mode: "onBlur",
     defaultValues: {
       occupationArea: [],
       name: candidateUser ? candidateUser.name : "",
@@ -95,6 +94,7 @@ export function Profile() {
       others: [],
     },
   });
+ 
 
   const [disableOtherDescription, setDisableOtherDescription] = useState(true);
 
@@ -142,7 +142,9 @@ export function Profile() {
     const othersArray = inputValue
       .split(",")
       .map((item) => item.trim().charAt(0).toUpperCase() + item.slice(1));
-    setOthersArray(othersArray);
+    setOthersArray(othersArray)
+    setValue("others", othersArray);
+    ;
   }
   useEffect(() => {
     if (!candidateUser) return;

@@ -10,9 +10,6 @@ import IconLock from "../../components/icons/IconConfirm";
 import { createUser } from "../../services/api";
 import { Register } from "../../types/Register";
 
-
-
-
 const schema = yup
   .object()
   .shape({
@@ -38,7 +35,7 @@ const schema = yup
 export function Cadastro() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
- 
+
   const {
     register,
     handleSubmit,
@@ -58,7 +55,6 @@ export function Cadastro() {
   );
 
   const handleSubmitRegister: SubmitHandler<Register> = async (data) => {
-  
     const body = {
       name: data.nome,
       email: data.email,
@@ -68,12 +64,10 @@ export function Cadastro() {
 
     if (data != null && isChecked) {
       let result = await createUser(body);
-  
+
       if (result.status === 409) {
-        
         setError("email", {
           message: result.message,
-          
         });
         toast.error(result.message);
       }
@@ -92,7 +86,10 @@ export function Cadastro() {
           className="absolute right-[0]  top-[0] h-[100%]  w-[100%] max-w-[54.6rem] object-cover xl:hidden "
         />
 
-        <form className="flex  w-[100%] max-w-[63.5rem] flex-col items-center rounded-[2.6rem] bg-[#FFFFFF] " onSubmit={handleSubmit(handleSubmitRegister)}>
+        <form
+          className="flex  w-[100%] max-w-[63.5rem] flex-col items-center rounded-[2.6rem] bg-[#FFFFFF] "
+          onSubmit={handleSubmit(handleSubmitRegister)}
+        >
           <h2 className="mb-[6.4rem] mt-[6.4rem] text-[4.8rem] font-[700] md:text-[4rem] mbl:mb-[2.8rem] mbl:mb-[4rem] mbl:mt-[4.1rem]  mbl:mt-[4rem] mbl:text-[2.2rem] mbl:text-[2.5rem]">
             Crie uma Conta
           </h2>
@@ -298,9 +295,7 @@ export function Cadastro() {
               </p>
             </div>
           </div>
-          <button
-            className="mdl:mt-[3rem] mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195] mbl:h-[4rem]"
-          >
+          <button className="mdl:mt-[3rem] mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195] mbl:h-[4rem]">
             <p className="text-[2.4rem] text-[#FFFFFF]  ">Criar</p>
           </button>
           <p className="mdl:mb-[3rem] mb-[6rem] mt-[2.4rem] text-[2.4rem] mbl:text-[2rem]">

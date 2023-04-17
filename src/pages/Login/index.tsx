@@ -42,11 +42,9 @@ export function Login() {
         login(result);
 
         setTimeout(() => {
-          navigate("/")
-        },2000)
-        
+          navigate("/");
+        }, 2000);
       }
-      
     }
     setIsSuccess(true);
   };
