@@ -39,8 +39,8 @@ const schema = yup
   .shape({
     name: yup.string().required("Nome obrigatório"),
     phone: yup.string()
-      .required("Número do Whatsapp obrigatório")
-      .matches(/^[0-9]+$/, "Este campo deve conter apenas números"),
+      .required("Número do Whatsapp obrigatório")/* 
+      .matches(/^[0-9]+$/, "Este campo deve conter apenas números") */,
     urlLinkedin: yup
       .string()
       .required("Endereço do Linkedin obrigatório")
@@ -107,7 +107,7 @@ export function Profile() {
   ) => {
     event?.preventDefault();
     setActiveSubmit(true);
-    values.description = `Profile ${values.description}`;
+    values.description = `${values.name}'s Profile`;
     values.profileSkills = [1];
 
     try {
@@ -153,9 +153,8 @@ export function Profile() {
     const inputValue = e.target.value;
     const othersArray = inputValue.split(",").map((item) => item.trim().charAt(0).toUpperCase() + item.slice(1));
     setOthersArray(othersArray);
-
-
   }
+
   useEffect(() => {
     if (!candidateUser) return;
 
@@ -210,7 +209,7 @@ export function Profile() {
               placeholder="Ex: 9999999999"
               fieldSetClassName={"ml-auto "}
               error={errors.phone?.message}
-              type="number"
+              /* type="number" */
               {...register("phone", {
                 valueAsNumber: true
               })}
@@ -287,7 +286,8 @@ export function Profile() {
               ))}
             </div>
 
-            <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col ">
+            {/* <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col "> */}
+            <div className="mt-[2.5rem] flex gap-16 mbl:flex-col ">
               <Checkbox id="10" label="Outro:" {...register("occupationArea")} />
 
               <InputDB placeholder="'Tech Lead','Gestor'"  {...register("others")} error={errors.others?.message}
@@ -322,7 +322,7 @@ export function Profile() {
         </form>
       </section>
 
-      <div className="flex flex-col gap-4 ml-[100px]">
+      {/* <div className="flex flex-col gap-4 ml-[100px]">
         <h1 className="text-[30px] font-black">ERROR</h1>
         <pre>
           {
@@ -330,10 +330,10 @@ export function Profile() {
               key
             ))
 
-            /* JSON.stringify(errors, null, 2) */
+            /* JSON.stringify(errors, null, 2) /
           }
         </pre>
-      </div>
+      </div> */}
 
     </div>
   );

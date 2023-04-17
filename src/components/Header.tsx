@@ -112,7 +112,7 @@ export const Header = (props: { showJustify: boolean }) => {
       </div >
       {
         showContent ? (
-          <div className=" bg-gray-800 absolute right-5 top-[8rem] flex hidden w-[20rem] items-center justify-center bg-blue-dark shadow-shadow-#2 lg:block " >
+          <div className=" bg-gray-800 absolute right-5 top-[8rem] flex w-[20rem] items-center justify-center bg-blue-dark shadow-shadow-#2 lg:block " >
             <nav className=" mr-[3rem] w-[max-content] text-3xl font-bold text-white">
 
               {authenticated ? (
@@ -125,7 +125,7 @@ export const Header = (props: { showJustify: boolean }) => {
                 </ul>
               ) : (
                 <ul>
-                  <li className="border-b border-black p-[1rem] p-[1rem]">
+                  <li className="border-b border-black p-[1rem]">
                     <Link to="/login" className="hover:text-green-dark">
                       <button className="bg">
                         Login
@@ -133,7 +133,7 @@ export const Header = (props: { showJustify: boolean }) => {
                     </Link>
                   </li>
 
-                  <li className="border-b border-black p-[1rem] p-[1rem]">
+                  <li className="border-b border-black p-[1rem]">
                     <Link to="/cadastro" className="hover:text-green-dark">
                       <button className="bg">
                         Cadastro

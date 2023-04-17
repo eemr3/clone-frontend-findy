@@ -18,6 +18,7 @@ interface InputDBProps
   label?: string;
   type?: string;
   placeholder?: string;
+  mask?: "PHONE"; /* "CEP" | "PHONE" | "PHONE_DDI" | "CPF_CNPJ" | "CPF" | "CNPJ" | "CURRENCY"; */
   icon?: SVGIcon;
   error?: string;
   fieldSetClassName?: string;
@@ -50,7 +51,8 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
 
   return (
     <fieldset
-      className={`flex w-fit flex-col gap-[1.2rem] lg:ml-[0] sm:max-w-[100%] mbl:max-w-[10rem]  ${fieldSetClassName}`}
+      className={`flex flex-col gap-[1.2rem] lg:ml-[0] sm:max-w-[100%]  ${fieldSetClassName}`}
+      /* className={`flex w-fit flex-col gap-[1.2rem] lg:ml-[0] sm:max-w-[100%] mbl:max-w-[10rem]  ${fieldSetClassName}`} */
       onClick={() => {
         if (inputRef.current) inputRef.current.focus();
       }}
@@ -65,9 +67,8 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
       )}
 
       <div
-        className={`flex h-[6.631rem] w-[42.5rem] rounded-[0.3rem]  border-[0.1rem] border-grey-#1 bg-white  sm:h-[5.6rem] sm:w-[32rem] sm:max-w-[100%] mbl:h-[4rem] mbl:max-h-[3rem] mbl:max-w-[80%] ${fieldSetBG} ${
-          wantInputWidthFull ? "w-full" : ""
-        }`}
+        className={`flex h-[6.631rem] w-[42.5rem] rounded-[0.3rem]  border-[0.1rem] border-grey-#1 bg-white  sm:h-[5.6rem] sm:w-[32rem] sm:max-w-[100%] mbl:h-[4rem] mbl:max-h-[3rem] mbl:max-w-[80%] ${fieldSetBG} ${wantInputWidthFull ? "w-full" : ""
+          }`}
       >
         {icon && (
           <div
@@ -82,9 +83,8 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
           ref={inputRef}
           type={type}
           placeholder={placeholder}
-          className={`ml-[2rem] w-[32.2rem] ${fieldSetBG}  border-none text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2 md:w-[80%] sm:w-[70%] mbl:max-w-[17rem] mbl:text-[1.2rem] ${className} ${
-            wantInputWidthFull ? "w-[96%]" : ""
-          }`}
+          className={`ml-[2rem] w-[32.2rem] ${fieldSetBG}  border-none text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2 md:w-[80%] sm:w-[70%] mbl:max-w-[17rem] mbl:text-[1.2rem] ${className} ${wantInputWidthFull ? "w-[96%]" : ""
+            }`}
           {...rest}
         />
       </div>

@@ -1,14 +1,14 @@
 import axios from "axios";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIzLCJuYW1lIjoiRGFyY2lvIENhcnZhbGhvIiwiZW1haWwiOiJkYXJjaW8uY2FydmFsaG8uZGV2QGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxNDc5ODY4LCJleHAiOjE2ODE0ODc4Njh9.BP4yluPsDNGFGzMYn6Wuv6JQArxTnbiDJA4PU_-l3fQ";
+/* const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIzLCJuYW1lIjoiRGFyY2lvIENhcnZhbGhvIiwiZW1haWwiOiJkYXJjaW8uY2FydmFsaG8uZGV2QGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxNDc5ODY4LCJleHAiOjE2ODE0ODc4Njh9.BP4yluPsDNGFGzMYn6Wuv6JQArxTnbiDJA4PU_-l3fQ"; */
 
 
 export const api = axios.create({
   baseURL: "https://findybackend-development.up.railway.app",
-  headers: {
-    Authorization: `Bearer ${token}`,
-    "Access-Control-Allow-Origin": true,
-  },
+  /*   headers: {
+      Authorization: `Bearer ${token}`,
+      "Access-Control-Allow-Origin": true,
+    }, */
 });
 
 export const createUser = async (body: any) => {
@@ -45,7 +45,7 @@ export const loginUser = async (email: string, password: string) => {
         data: response,
         status: 200,
         success: true,
-        message: "Conta criada com sucesso!",
+        message: "Conta conectada com sucesso!",
       };
     } else {
       return { success: false, message: "Erro desconhecido" };
