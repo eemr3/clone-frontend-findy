@@ -43,7 +43,7 @@ export function Home() {
       ) {
         return "/profile";
       } else {
-        return "/project";
+        return "/project_redirect";
       }
 
     } else {

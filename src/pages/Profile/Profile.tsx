@@ -115,7 +115,7 @@ export function Profile() {
       };
       const resposta = await updateProfile(body);
       if (resposta?.status === 201) {
-        navigate("/project");
+        navigate("/project_registered");
       }
     } catch (error) {}
 
