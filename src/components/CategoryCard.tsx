@@ -1,8 +1,8 @@
-import { SVGAttributes, cloneElement } from "react";
 import Icon, { CaretRight } from "@phosphor-icons/react";
+import { SVGAttributes, cloneElement } from "react";
 
 import { Heading } from "./Heading";
-import { Link } from "./Link";
+import { CustomerLink } from "./Link";
 import { Text } from "./Text";
 
 type CardColorComposition = {
@@ -67,7 +67,7 @@ export function CategoryCard({
 
   return (
     <div
-      className={`flex h-[33.9rem] w-[33.4rem] flex-col rounded-[0.8rem] pl-[4.9rem] ${cardBackground} border-[0.1rem] border-blue-dark shadow-shadow-#2-card`}
+      className={`flex h-[33.9rem] w-[33.4rem] flex-col rounded-[0.8rem] pl-[4.9rem] ${cardBackground} shadow-shadow-#2-card border-[0.1rem] border-blue-dark`}
     >
       <div className="mt-[5.96rem] flex h-[9.5rem] ">
         {cloneElement(icon as JSX.Element, {
@@ -83,7 +83,10 @@ export function CategoryCard({
         {title}
       </Heading>
 
-      <Link type="card" className={`group mt-[3.04rem] flex items-center`}>
+      <CustomerLink
+        type="card"
+        className={`group mt-[3.04rem] flex items-center`}
+      >
         <Text
           type="md"
           className={`w-[19.2rem] ${linkColor} ${linkColorHover}`}
@@ -96,7 +99,7 @@ export function CategoryCard({
           weight="bold"
           className={`mt-[0.3rem] ${CaretRightColor} ${CaretRightColorHover}`}
         />
-      </Link>
+      </CustomerLink>
     </div>
   );
 }

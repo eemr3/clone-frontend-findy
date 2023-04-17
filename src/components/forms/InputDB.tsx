@@ -4,86 +4,101 @@ import {
   InputHTMLAttributes,
   forwardRef,
   useImperativeHandle,
-  useRef
+  useRef,
 } from "react";
 import { SVGIcon } from "../../types/SVGIcon";
 import { Text } from "../Text";
-import { TextErrorMessage } from "./TextErrorMessage";
 
-interface InputDBProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
-  /* name?: string; */
+interface InputDBProps
+  extends DetailedHTMLProps<
+    InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  > {
+  name?: string;
   label?: string;
   type?: string;
   placeholder?: string;
   icon?: SVGIcon;
   error?: string;
   fieldSetClassName?: string;
+  fieldSetBG?: string;
   wantInputWidthFull?: boolean;
 }
 
-const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps>
-  = ({
-    /* name = '', */
+const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
+  {
+    name = "",
     label,
     placeholder,
     icon = undefined,
-    type = 'text',
+    type = "text",
     error = null,
-    fieldSetClassName = '',
+    fieldSetClassName = "",
+    fieldSetBG = "",
     wantInputWidthFull = false,
     className = "",
 
-    ...rest }, ref) => {
+    ...rest
+  },
+  ref
+) => {
+  const inputRef = useRef<HTMLInputElement>(null);
+  useImperativeHandle<HTMLInputElement | null, HTMLInputElement | null>(
+    ref,
+    () => inputRef.current
+  );
 
-    const inputRef = useRef<HTMLInputElement>(null);
-    useImperativeHandle<HTMLInputElement | null, HTMLInputElement | null>(
-      ref,
-      () => inputRef.current
-    );
+  return (
+    <fieldset
+      className={`flex w-fit flex-col gap-[1.2rem] lg:ml-[0] sm:max-w-[100%] mbl:max-w-[10rem]  ${fieldSetClassName}`}
+      onClick={() => {
+        if (inputRef.current) inputRef.current.focus();
+      }}
+    >
+      {!!label && (
+        <label
+          htmlFor={name}
+          className="text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1  mbl:text-[1.5rem] mbl:font-bold"
+        >
+          {label}
+        </label>
+      )}
 
-    return (
-      <fieldset
-        className={`flex flex-col gap-[1.2rem] ${fieldSetClassName}`}
-        /* className={`w-fit flex flex-col gap-[1.2rem] max-w-[10rem] ${fieldSetClassName}`} */
-        onClick={() => {
-          if (inputRef.current)
-            inputRef.current.focus()
-        }}
+      <div
+        className={`flex h-[6.631rem] w-[42.5rem] rounded-[0.3rem]  border-[0.1rem] border-grey-#1 bg-white  sm:h-[5.6rem] sm:w-[32rem] sm:max-w-[100%] mbl:h-[4rem] mbl:max-h-[3rem] mbl:max-w-[80%] ${fieldSetBG} ${
+          wantInputWidthFull ? "w-full" : ""
+        }`}
       >
+        {icon && (
+          <div
+            className="flex w-[5.3rem] items-center justify-center rounded-bl-[0.3rem] rounded-tl-[0.3rem] bg-blue-dark-#1
+          mbl:max-w-[70%] "
+          >
+            <>{icon}</>
+          </div>
+        )}
+        <input
+          name={name}
+          ref={inputRef}
+          type={type}
+          placeholder={placeholder}
+          className={`ml-[2rem] w-[32.2rem] ${fieldSetBG}  border-none text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2 md:w-[80%] sm:w-[70%] mbl:max-w-[17rem] mbl:text-[1.2rem] ${className} ${
+            wantInputWidthFull ? "w-[96%]" : ""
+          }`}
+          {...rest}
+        />
+      </div>
 
-        {!!label &&
-          <label htmlFor={rest.name} className={`text-[2.4rem] leading-[2.813rem] tracking-[-0.5%] font-medium text-grey-#1 text-clip overflow-hidden ${wantInputWidthFull ? "w-full" : "max-w-[42.5rem]"}`}>
-            {label}
-          </label>
-        }
-
-        <div className={`w-[42.5rem] h-[6.631rem] rounded-[0.8rem] flex bg-white border-[0.1rem] border-grey-#1 ${wantInputWidthFull ? "w-full" : ""}`}>
-
-          {icon &&
-            <div className="w-[5.3rem] rounded-tl-[0.6rem] rounded-bl-[0.6rem] flex items-center justify-center bg-blue-dark-#1">
-              <>
-                {icon}
-              </>
-            </div>
-          }
-          <input
-            /* name={name} */
-            ref={inputRef}
-            type={type}
-            placeholder={placeholder}
-            className={`w-[33.2rem] text-[2.4rem] leading-[2.831rem] tracking-[-0.5%] ml-[2rem] font-medium text-grey-#1 placeholder:text-grey-#2 disabled:bg-white border-none outline-none ${className} ${wantInputWidthFull ? "w-[96%]" : ""}`}
-            {...rest}
-          />
-        </div>
-
-        {!!error &&
-          <TextErrorMessage
-            errorMessage={error}
-          />
-        }
-      </fieldset>
-    );
-
-  }
+      {!!error && (
+        <Text
+          type="md"
+          className="text-[1.8rem] font-bold leading-[1.924rem] text-red"
+        >
+          {`${error}`}
+        </Text>
+      )}
+    </fieldset>
+  );
+};
 
 export const InputDB = forwardRef(InputBase);

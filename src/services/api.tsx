@@ -10,6 +10,7 @@ export const api = axios.create({
     "Access-Control-Allow-Origin": true,
   },
 });
+
 export const createUser = async (body: any) => {
   try {
     const response = await api.post("/api/candidate-users", body, {
@@ -19,7 +20,6 @@ export const createUser = async (body: any) => {
     });
 
     if (response.status === 201) {
-      alert("ok");
       return {
         status: 201,
         success: true,
@@ -39,10 +39,7 @@ export const createUser = async (body: any) => {
 
 export const loginUser = async (email: string, password: string) => {
   try {
-    const response = await api.post(
-      "/api/login",
-      { email, password }
-    );
+    const response = await api.post("/api/login", { email, password });
     if (response.status === 200) {
       return {
         data: response,
@@ -53,15 +50,14 @@ export const loginUser = async (email: string, password: string) => {
     } else {
       return { success: false, message: "Erro desconhecido" };
     }
-  } catch (error: any) { }
+  } catch (error: unknown) { }
 };
 
 export const formProject = async (body: any) => {
   try {
-
     return await api.post("/api/candidate-projects", body);
   } catch (error: any) {
-    console.log(error);
+    console.log(error)
   }
 };
 
@@ -69,54 +65,30 @@ export const getProjects = async () => {
   return await api.get("/api/candidate-projects");
 };
 export const getPositions = async () => {
-  const options = {
-    headers: {
-      Authorization: token //`Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImwyQGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxMzA3NTk5LCJleHAiOjE2ODEzMTU1OTl9.j4BGnuvEux8DB5ytyvXJOUE2IxAZnNPdFPSuLqkVNhY` // O token é uma string que representa o token de autenticação
-    }
-  };
-  return await api.get("/api/candidate-projects/roles"/* , options */);
+  return await api.get("/api/candidate-projects/roles");
 };
 
 export const getLanguages = async () => {
-  const options = {
-    headers: {
-      Authorization: token // `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIxLCJuYW1lIjoiSm9obiBEb2UiLCJlbWFpbCI6ImwyQGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxMzA3NTk5LCJleHAiOjE2ODEzMTU1OTl9.j4BGnuvEux8DB5ytyvXJOUE2IxAZnNPdFPSuLqkVNhY` // O token é uma string que representa o token de autenticação
-    }
-  };
-  return await api.get("/api/candidate-projects/skills"/* , options */);
+  return await api.get("/api/candidate-projects/skills");
+};
+export const getLanguagesById = async (id: string) => {
+  return await api.get(`/api/candidate-projects/skills/${id}`);
 };
 
 export const getCandidatesUsers = async () => {
-  const options = {
-    headers: {
-      Authorization: token
-    }
-  };
-  return await api.get("/api/candidate-users"/* , options */);
-}
+  return await api.get("/api/candidate-users");
+};
 
 export const getCandidateUser = async (id: string) => {
-  const options = {
-    headers: {
-      Authorization: token
-    }
-  };
-  return await api.get(`/api/candidate-users/${id}`/* , options */);
-}
+  return await api.get(`/api/candidate-users/${id}`);
+};
 
-
-export const getCandidatesProfiles = async () => {
-  const options = {
-    headers: {
-      Authorization: token
-    }
-  };
-  return await api.get("/api/candidate-profile"/* , options */);
-}
+/* export const getCandidatesProfiles = async () => {
+  return await api.get("/api/candidate-profile");
+}; */
 
 export const updateProfile = async (body: any) => {
   try {
-
     return await api.post("/api/candidate-profile", body);
   } catch (error: any) {
     console.log(error);

@@ -1,151 +1,194 @@
-
 import { yupResolver } from "@hookform/resolvers/yup";
+import jwt_decode from "jwt-decode";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { HeaderProfile } from "../../components/HeaderProfile";
 import { Heading } from "../../components/Heading";
 import { Text } from "../../components/Text";
 import { Checkbox } from "../../components/forms/Checkbox";
 import { InputDB } from "../../components/forms/InputDB";
+import { SelectDB } from "../../components/forms/SelectDB";
+import { TextErrorMessage } from "../../components/forms/TextErrorMessage";
 import { CodeIcon } from "../../components/icons/CodeIcon";
 import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
-import { formProject, getLanguages, getPositions } from "../../services/api";
-
-
-
+import {
+  formProject,
+  getCandidateUser,
+  getLanguages,
+  getPositions
+} from "../../services/api";
 interface FormValues {
-  nome: string;
-  link_selecao_equipe: string;
-  escopo_project: string;
-  ferramentas: string;
+  name: string;
+  urlTeamSelection: string;
+  projectScope: string;
+  language: number[];
   data_inicio: string;
-  responsavel_project: string;
-  contato_responsavel: string;
-  linkedin_responsavel: string;
-  contato_outros_responsaveis: string;
-  ajuda_findy: string;
+  responsible: string;
+  contactResponsible: string;
+  urlLinkediResponsible: string;
+  contactLeaders: string;
+  findyHelp: string;
+  professional: string[];
+  others: string[];
 }
 
 const schema = yup
   .object()
   .shape({
-    nome: yup.string().required("Nome Obrigatorio"),
-    link_selecao_equipe: yup.string().required("Link Obrigatorio"),
-    escopo_project: yup.string().required("Escopo Obrigatorio")/* .required("Escopo do projeto obrigatório") */,
-    ferramentas: yup.string().required("Obrigatório Pelos menos 1 liguagem ou ferramenta"),
+    name: yup.string().required("Nome Obrigatorio"),
+    urlTeamSelection: yup.string().required("Link Obrigatorio"),
+    projectScope: yup
+      .string()
+      .required(
+        "Escopo Obrigatorio"
+      ) /* .required("Escopo do projeto obrigatório") */,
+    language: yup
+    .array(yup.number())
+      .required("Obrigatório Pelos menos 1 liguagem ou ferramenta"),
     data_inicio: yup.string(),
-    responsavel_project: yup.string().required("Responsavel Obrigatorio"),
-    contato_responsavel: yup.string().required("Contato Obrigatorio"),
-    linkedin_responsavel: yup.string().url("URL do LinkedIn inválida"),
-    contato_outros_responsaveis: yup.string(),
-    ajuda_findy: yup.string()
+    responsible: yup.string().required("Responsavel Obrigatorio"),
+    contactResponsible: yup.string().required("Contato Obrigatorio"),
+    urlLinkediResponsible: yup.string().url("URL do LinkedIn inválida"),
+    contactLeaders: yup.string(),
+    findyHelp: yup.string(),
+    professional: yup
+      .array(yup.string())
+      .min(1, "Precisa escolher pelo menos um cargo."),
+    /* others: yup.string().when("professional", {
+        is: (area: string[]) => !!area && area.indexOf("Outro") > -1,
+        then: (schema) => schema.required("Cargo obrigatório"),
+      })  */
   })
   .required();
 
 interface Positions {
-  data: [
-    id?: number,
-    title?: string,
-  ];
-
+  data: [id?: number, title?: string];
 }
 
 export function Project() {
 
-  const [checkedItems, setCheckedItems] = useState<{ [key: string]: boolean }>({});
-  const [ferramentas, setFerramentas] = useState<string[]>([]);
-  const [positions, setPositions] = useState<any>([])
-  const [languages, setLanguages] = useState<any>([])
-  const handleOnChange = (event: any) => {
-    const { id, checked } = event.target;
-    setCheckedItems({ ...checkedItems, [id]: checked });
-  };
-  const handleFerramentasChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const ferramentasStr = event.target.value;
-    const ferramentasArr = ferramentasStr.split(",");
-    setFerramentas(ferramentasArr.map((f) => f.trim()));
-  };
-
-
+  const [positions, setPositions] = useState<any>([]);
+  const [languages, setLanguages] = useState<number[]>([]);
+  const [candidateUser,setCandidateUser] = useState<any>()
+  const [activeSubmit, setActiveSubmit] = useState(false);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
-    formState: { errors }, // Adicione essa propriedade na desestruturação
+    setValue,
+    setError,
+    getValues,
+    formState: { errors },
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
+    defaultValues: {
+      responsible: candidateUser ? candidateUser.name : "",
+      contactResponsible:  candidateUser ? candidateUser.email : "",
+      language: [],
+    },
   });
-  const timeToWeek = new Array(20)
-    .fill(null)
-    .map((item, index) => `${String((index + 1) * 2).padStart(2, "0")} horas`);
 
 
-  const onSubmit = async (data: any) => {
-    console.log(data);
-    console.log("hello")
 
-    const checkedIds = Object.keys(checkedItems).filter((id) => checkedItems[id]);
-    console.log(checkedIds);
-    if (data != null) {
-      const body = {
-        "name": data.nome,
-        "projectScope": "hello",
-        "urlTeamSelection": data.link_selecao_equipe,
-        "responsible": data.responsavel_project,
-        "contactResponsible": data.contato_responsavel,
-        "urlLinkediResponsible": data.linkedin_responsavel,
-        "contactLeaders": data.contato_outros_responsaveis,
-        "language": [
-          1,
-          2,
-          4,
-          6,
-          7
-        ],
-        "professional": checkedIds,
-        //"others": ferramentas,
-        "findyHelp": "Descreva como a Sou Junior pode apoiar seu projeto"
-      };
+
+  const handleUpdateProject: SubmitHandler<FormValues> = async (
+    values,
+    event
+  ) => {
+    event?.preventDefault();
+    setActiveSubmit(true);
+    console.log(values)
+ 
+
+    try {
+       const { ...newValues } = values; 
+
+     const body = {
+        ...newValues,
+       
+      }; 
       let result = await formProject(body);
-      console.log(result);
+      if(result?.status === 201) {
+        navigate("/project_registered");
+      }
+    } catch (error) {
+   
     }
 
+    setActiveSubmit(false);
   };
   const [selectedLanguageIds, setSelectedLanguageIds] = useState<any>([]);
-  const [selectedLanguageNames, setSelectedLanguageNames] = useState<any>([]);
+  const [selectedLanguageNames, setSelectedLanguageNames] = useState<string[]>([]);
+  console.log(selectedLanguageIds)
 
   const handleLanguageChange = (event: any) => {
     const selectedId = event.target.value;
     const selectedName = event.target.options[event.target.selectedIndex].text;
-
-    if (!selectedLanguageIds.includes(selectedId)) {
-      setSelectedLanguageIds([...selectedLanguageIds, selectedId]);
+  
+    if (!selectedLanguageIds.includes(parseInt(selectedId))) {
+      setSelectedLanguageIds([...selectedLanguageIds, parseInt(selectedId)]);
+    }
+  
+    if (!selectedLanguageNames.includes(selectedName)) {
       setSelectedLanguageNames([...selectedLanguageNames, selectedName]);
     }
   };
+
+  const handleRemoveLanguage = (index: number) => {
+    setSelectedLanguageIds(
+      selectedLanguageIds.filter((_id: number, i: number) => i !== index)
+    );
+    setSelectedLanguageNames(
+      selectedLanguageNames.filter((_name: string, i: number) => i !== index)
+    );
+  };
+
   useEffect(() => {
     async function fetchData() {
+      const token: string | any = localStorage.getItem("token");
+      const {sub}: any = jwt_decode(token);
+      const user = await getCandidateUser(sub);
       const pos = await getPositions();
       const lan = await getLanguages();
+      
+
+      setCandidateUser(user.data)
       setPositions(pos.data);
-      setLanguages(lan.data)
-      console.log(lan);
+      setLanguages(lan?.data);
+   
     }
+  
     fetchData();
-  }, [])
 
 
+
+  }, [selectedLanguageNames]);
+
+
+useEffect(() => {
+    if (!candidateUser) return;
+    setValue("responsible", candidateUser?.name);
+    setValue("contactResponsible", candidateUser?.email);
+    setValue("urlLinkediResponsible", candidateUser?.profile?.urlLinkedin);
+    setValue("language", selectedLanguageIds);
+  }, [candidateUser,selectedLanguageIds]);
+ 
+  const dataAtual = new Date().toLocaleDateString("pt-BR");
 
   return (
-    <div className="w-max-[144rem] flex flex-col bg-blue-dark ">
-      <HeaderProfile />
+    <div className="w-max-[144rem] flex flex-col overflow-x-hidden bg-blue-dark ">
+      <HeaderProfile showJustify={false} />
 
-      <article className="ml-[15.9rem] mt-[6.414rem] text-grey-#5">
-        <Heading type="lg-leading58">Novo projeto</Heading>
+      <article className="ml-[15.9rem] mt-[6.414rem] overflow-x-hidden text-grey-#5 lg:ml-[4rem] mbl:ml-[2rem]">
+        <Heading type="lg-leading58" className=" mbl:text-[4rem]">
+          Novo projeto
+        </Heading>
 
-        <Text type="md" className="mt-[6.4rem] inline-block">
+        <Text type="md" className="mt-[6.4rem] inline-block mbl:text-[2rem]">
           Preencha o formulário abaixo com todas as informações relevantes
           acerca do projeto.
           <br />
@@ -154,32 +197,29 @@ export function Project() {
         </Text>
       </article>
 
-      <section className="mt-[10.2rem] bg-grey-#5">
-        <form
-          className="mx-auto mb-[16rem] mt-[7.4rem] w-[100%] max-w-[112.4rem]"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <div className="grid grid-cols-2 gap-y-[6.469rem]">
+      <section className="mt-[10.2rem] overflow-x-hidden bg-grey-#5 xl:px-[3rem] mbl:px-[1rem]">
+        <div className="mx-auto mb-[16rem] mt-[7.4rem] w-[100%] max-w-[112.4rem]">
+          <div className="grid grid-cols-2 lg:flex lg:flex-col lg:items-start lg:justify-center lg:gap-y-[6.469rem] mbl:gap-y-[4rem]">
             <InputDB
-              icon={<PencilIcon />}
-              {...register("nome")}
+              icon={<PencilIcon className={"mbl:max-w-[2rem] "} />}
+              {...register("name")}
               label="Nome do Projeto"
               placeholder="Nome"
               fieldSetClassName={"even:ml-auto"}
-              error={errors ? errors.nome?.message : ""}
-
+              error={errors ? errors.name?.message : ""}
+              
             />
 
             <InputDB
-              icon={<SocialMediaIcon />}
+              icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
               label="Link para seleção da equipe"
-              {...register("link_selecao_equipe")}
+              {...register("urlTeamSelection")}
               placeholder="Link"
-              fieldSetClassName={"even:ml-auto"}
-              error={errors ? errors.link_selecao_equipe?.message : ""}
+              fieldSetClassName={"ml-auto"}
+              error={errors ? errors.urlTeamSelection?.message : ""}
             />
           </div>
-          <div className="mb-[4rem] mt-[4rem] flex w-[100%] flex-col gap-[2rem]">
+          <div className="mb-[4rem] mt-[4rem] flex w-[100%] flex-col gap-[2rem] ">
             <label
               className=" text-[2.4rem]"
               htmlFor="nome_completo "
@@ -188,96 +228,145 @@ export function Project() {
               Escopo do Projeto:{" "}
             </label>
             <div className=" mt-[3.2rem]flex h-[22.2rem] w-[100%] max-w-[112.4rem] rounded-[0.8rem] border-[0.15rem] border-grey-#1 bg-white p-[1rem]">
-              <textarea  {...register("escopo_project")} className="h-[100%]  w-[100%] resize-none p-[0.6rem] outline-none" />
+              <textarea
+                {...register("projectScope")}
+                className=" h-[100%] w-[100%]  resize-none p-[0.6rem]  text-[2.2rem] outline-none lg:text-[1.8rem] mbl:text-[1rem]"
+              />
             </div>
             <span className=" mb-[1rem] mt-[0.8rem] block  pl-[1rem] text-[1.8rem] text-red">
-              {errors ? errors.escopo_project?.message : ""}{" "}
+              {errors ? errors.projectScope?.message : ""}{" "}
             </span>
           </div>
 
-          <div className="grid grid-cols-2 gap-y-[6.469rem]">
-            <InputDB
-              icon={<CodeIcon />}
+          <div className="grid h-[100%] grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] overflow-x-hidden  overflow-y-hidden  lg:flex sm:w-[32rem]  sm:max-w-[100%]  mbl:max-w-[100%] mbl:gap-y-[4rem]  ">
+            <SelectDB
+              icon={<CodeIcon className={"mbl:max-w-[2rem] "} />}
               label="Selecione as linguagens de programação"
               placeholder="Selecione as linguagens"
               fieldSetClassName={"even:ml-auto"}
-              {...register("ferramentas")}
-              type={"select"}
-              /* options={languages.map((language) => ({
-                value: language.id,
-                label: language.name,
-              }))} */
+              options={languages.map((language: any) => ({
+                value: language?.id,
+                label: language?.title,
+                name: language?.title,
+              }))}
               onChange={handleLanguageChange}
+              error={errors ? errors.language?.message : ""}
             />
 
             <InputDB
-              icon={<SocialMediaIcon />}
+              icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
               label="Data do inicio do projeto"
               placeholder="Data"
-              fieldSetClassName={"even:ml-auto"}
+              fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
+              value={dataAtual}
+              disabled
             />
           </div>
 
+          <div className="mb-[4rem] mt-[4rem] flex w-[100%] flex-col gap-[2rem]">
+            <label
+              className=" text-[2.4rem]"
+              htmlFor="nome_completo "
+              placeholder="Deixe sua mensagem"
+            >
+              Linguagens{" "}
+            </label>
+            <div className="mt-[3.2rem]flex flex h-[22.2rem] w-[100%] max-w-[112.4rem] gap-[1rem] rounded-[0.8rem] border-[0.15rem] border-grey-#1 bg-white p-[1rem]">
+              {selectedLanguageNames.map((lang: string, index: number) => (
+                <div
+                  key={selectedLanguageIds[index]}
+                  className="selected-language flex h-[3rem] items-center justify-between bg-[lightgray] px-[1rem] pl-[1rem]"
+                  data-index={index}
+                  {...register("language")}
+                >
+                  <p className="mr-[2rem] text-[2rem]">{lang}</p>
+                  <button
+                    className="text-[2rem] font-bold"
+                    onClick={() => handleRemoveLanguage(index)}
+                  >
+                    X
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
 
-
-          <fieldset className="mt-[8rem] mb-[6.8rem]">
+          <fieldset className="max-[80%] mb-[6.8rem] mt-[8rem] ">
             <legend className="text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1">
-              Qual a sua área de atuação?
+              Quais cargos serão oferecidos à equipe do projeto?
             </legend>
 
-            <div className="mt-[3.8rem] grid grid-cols-2 gap-y-[2.5rem]">
-              {positions?.map((pos: any) => (
+            {!!errors.professional?.message && (
+              <TextErrorMessage
+                errorMessage={errors.professional?.message}
+                className="mt-[1.2rem] inline-block"
+              />
+            )}
+
+            <div className="mt-[4rem] grid  grid-cols-2 gap-y-[2.5rem] md:grid-cols-1 mbl:mt-[3.8rem] mbl:w-[86%]">
+              {positions?.map((occupation: any) => (
                 <Checkbox
-                  key={pos.id}
-                  name="area"
-                  id={pos.id}
-                  label={pos.title}
-                  checked={checkedItems[pos.id]}
-                  onChange={handleOnChange}
+                  key={occupation.id}
+                  id={String(occupation.id)}
+                  label={occupation.title}
+                  value={occupation.title}
+                  {...register("professional")}
                 />
               ))}
-
             </div>
-            <div className="mt-[2.5rem] flex items-center gap-16">
-              <Checkbox name="area" id="Outro" label="Outro: " />
-
-              <InputDB placeholder="Cargo" fieldSetClassName="h-[6rem]" />
-            </div>
+           
           </fieldset>
 
-          <div className="grid grid-cols-2 gap-y-[6.469rem] ">
+          <div className="grid grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] lg:flex mbl:gap-y-[4rem]">
             <InputDB
-              icon={<PencilIcon />}
+              icon={<PencilIcon className={"mbl:max-w-[2rem] "} />}
               label="Insira o nome da pessoa responsável pelo projeto"
               placeholder="Nome"
-              {...register("responsavel_project")}
-              fieldSetClassName={"even:ml-auto"}
-              error={errors ? errors.responsavel_project?.message : ""}
+              fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
+              error={errors ? errors.responsible?.message : ""}
+              {...register("responsible")}
+              
+              fieldSetBG={`${
+                candidateUser?.name ? "bg-[#d3d3d3!important]" : ""
+              }`}
             />
 
             <InputDB
-              icon={<SocialMediaIcon />}
+              icon={<SocialMediaIcon className={"mbl:max-w-[2rem]"} />}
               label="Insira o contato da pessoa responsável"
               placeholder="Contato"
-              fieldSetClassName={"even:ml-auto"}
-              {...register("contato_responsavel")}
-              error={errors ? errors.contato_responsavel?.message : ""}
+              fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
+              {...register("contactResponsible")}
+              error={errors ? errors.contactResponsible?.message : ""}
+             
+            
+                fieldSetBG={`${
+                  candidateUser?.email != undefined ? "bg-[#d3d3d3!important]" : ""
+                }`}
+                
             />
             <InputDB
-              icon={<SocialMediaIcon />}
+              icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
               label="Linkedin do Responsável"
               placeholder="LinkedIn"
-              fieldSetClassName={"even:ml-auto"}
-              {...register("linkedin_responsavel")}
-              error={errors ? errors.linkedin_responsavel?.message : ""}
+              fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
+              {...register("urlLinkediResponsible")}
+              error={errors ? errors.urlLinkediResponsible?.message : ""}
+            
+               
+                fieldSetBG={`${
+                  candidateUser?.profile?.urlLinkedin != undefined ? "bg-[#d3d3d3!important]" : ""
+                }`}
+                
             />
             <InputDB
-              icon={<SocialMediaIcon />}
-              label="Insira os outros contatos dos responsáveis"
+              icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
+              label="Contato de outros responsaveis"
               placeholder="LinkedIn"
-              fieldSetClassName={"even:ml-auto"}
-              {...register("contato_outros_responsaveis")}
-
+              fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
+              {...register("contactLeaders")}
+              error={errors ? errors.urlLinkediResponsible?.message : ""}
+                
             />
           </div>
 
@@ -290,16 +379,23 @@ export function Project() {
               Como a Findy pode apoiar o seu projeto?{" "}
             </label>
             <div className=" mt-[3.2rem]flex h-[22.2rem] w-[100%] max-w-[112.4rem] rounded-[0.8rem] border-[0.15rem] border-grey-#1 bg-white p-[1rem]">
-              <textarea  {...register("ajuda_findy")} className="h-[100%]  w-[100%] resize-none p-[0.6rem] outline-none" />
+              <textarea
+                {...register("findyHelp")}
+                className="h-[100%]  w-[100%] resize-none p-[0.6rem] outline-none"
+              />
             </div>
           </div>
 
           <button className="mt-[6.6rem] h-[6rem] w-[60%] max-w-[32.9rem] rounded-[3.2rem] bg-[#01A195]">
-            <p className="text-[2.4rem] text-[#FFFFFF] ">SUBMETER PROJETO</p>
+            <p
+              className="text-[2.4rem] text-[#FFFFFF] mbl:text-[2rem] "
+              onClick={handleSubmit(handleUpdateProject)}
+            >
+              SUBMETER PROJETO
+            </p>
           </button>
-        </form>
+        </div>
       </section>
     </div>
   );
 }
-

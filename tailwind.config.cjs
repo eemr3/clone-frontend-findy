@@ -48,6 +48,11 @@ module.exports = {
         'frame-one': 'url(/assets/bg-frame1.png)'
       }
     },
+    boxShadow: {
+      'shadow-#1': '0px 10px 30px 5px rgba(1, 161, 149, 0.24)',
+      'shadow-#2': '1px 1px 2px 2px black',
+      
+    },
     screens: {
       '4xl': { 'max': '2170px' },
       // => @media (max-width: 2170px) { ... }
@@ -60,7 +65,7 @@ module.exports = {
       'xl': { 'max': '1350px' },
       // => @media (max-width: 1279px) and (max-height: 1350px) { ... }
 
-      'lg': { 'max': '1023px' },
+      'lg': {'max': '1200px'},
       // => @media (max-width: 1023px) { ... }
 
       'md': { 'max': '767px' },
@@ -68,6 +73,9 @@ module.exports = {
 
       'sm': { 'max': '639px' },
       // => @media (max-width: 639px) { ... }
+      
+      'mbl': {'max': '500px'},
+      // => @media (max-width: 500px) { ... }
       'md-h': { 'raw': '(max-height: 1110px)' },
       // => @media (min-height: 800px) { ... }
     },

@@ -9,7 +9,6 @@ import {
 } from "react";
 
 import { SVGIcon } from "../../types/SVGIcon";
-import { Text } from "../Text";
 import { Spinner } from "../Spinner";
 import { TextErrorMessage } from "./TextErrorMessage";
 
@@ -65,6 +64,7 @@ const SelectBase: ForwardRefRenderFunction<HTMLSelectElement, SelectDBProps> = (
       onClick={() => {
         if (selectRef.current) selectRef.current.focus();
       }}
+      overflow-x-hidden
     >
       {!!label && (
         <label
@@ -75,7 +75,7 @@ const SelectBase: ForwardRefRenderFunction<HTMLSelectElement, SelectDBProps> = (
         </label>
       )}
 
-      <div className="flex h-[6.631rem] w-[42.5rem] rounded-[0.8rem] border-[0.1rem] border-grey-#1 bg-white">
+      <div className="flex h-[6.631rem] w-[90%]  rounded-[0.6rem] border-[0.1rem] border-grey-#1  bg-white sm:max-w-[100%] mbl:h-[4rem] mbl:max-h-[3rem]  ">
         {icon && (
           <div className="flex w-[5.3rem] items-center justify-center rounded-bl-[0.6rem] rounded-tl-[0.6rem] bg-blue-dark-#1">
             <>{icon}</>
@@ -92,7 +92,7 @@ const SelectBase: ForwardRefRenderFunction<HTMLSelectElement, SelectDBProps> = (
             id={name}
             disabled={!options.length && whenListIsEmpty === "disabled"}
             ref={ref}
-            className={`${className} ml-[2rem] w-[33.2rem] border-none bg-white text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2`}
+            className={`${className} text-[2.4rem]border-none ml-[2rem]  w-[80%] bg-white  text-[2.4rem]  font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2   mbl:text-[1.2rem]`}
             value={!ref ? selectValue : rest.value}
             onChange={(e) => setSelectValue(e.currentTarget.value)}
             {...rest}
@@ -109,16 +109,18 @@ const SelectBase: ForwardRefRenderFunction<HTMLSelectElement, SelectDBProps> = (
                 .map((newOption: string | ValueLabel, index: number) => {
                   return typeof newOption === "string" ? (
                     <option
-                      key={`${name}${newOption ? newOption : Date.now() + index
-                        }`}
+                      key={`${name}${
+                        newOption ? newOption : Date.now() + index
+                      }`}
                       value={newOption}
                     >
                       {newOption}
                     </option>
                   ) : (
                     <option
-                      key={`${name}${newOption.value ? newOption.value : Date.now() + index
-                        }`}
+                      key={`${name}${
+                        newOption.value ? newOption.value : Date.now() + index
+                      }`}
                       value={newOption.value}
                     >
                       {newOption.label}
@@ -129,11 +131,7 @@ const SelectBase: ForwardRefRenderFunction<HTMLSelectElement, SelectDBProps> = (
         )}
       </div>
 
-      {!!error &&
-        <TextErrorMessage
-          errorMessage={error}
-        />
-      }
+      {!!error && <TextErrorMessage errorMessage={error} />}
     </fieldset>
   );
 };
