@@ -91,7 +91,7 @@ export function Profile() {
       occupationArea: [],
       name: candidateUser ? candidateUser.name : "",
       email: candidateUser ? candidateUser.email : "",
-      others: [],
+      /* others: [], */
     },
   });
  
@@ -152,8 +152,8 @@ export function Profile() {
     setValue("name", candidateUser?.name);
     setValue("email", candidateUser?.email);
     setValue("candidateUserId", candidateUser?.id);
-    setValue("others", othersArray);
-  }, [candidateUser, othersArray]);
+    /* setValue("others", othersArray); */
+  }, [candidateUser/* , othersArray */]);
 
   return (
     <div className="w-max-[144rem] flex flex-col bg-blue-dark">
@@ -274,7 +274,7 @@ export function Profile() {
               ))}
             </div>
 
-            <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col ">
+         {/*    <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col ">
               <Checkbox
                 id="10"
                 label="Outro:"
@@ -288,7 +288,7 @@ export function Profile() {
                 fieldSetClassName="h-[6rem]"
                 onChange={(e) => handleOthersInputChange(e)}
               />
-            </div>
+            </div> */}
           </fieldset>
 
           <div>
