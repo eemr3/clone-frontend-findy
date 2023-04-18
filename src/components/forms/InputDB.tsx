@@ -1,4 +1,5 @@
 import {
+  ChangeEvent,
   DetailedHTMLProps,
   FormEvent,
   ForwardRefRenderFunction,
@@ -42,7 +43,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
     fieldSetBG = "",
     wantInputWidthFull = false,
     className = "",
-
+    onChange,
     ...rest
   },
   ref
@@ -56,9 +57,15 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
   const handleKeyUp = useCallback((e: FormEvent<HTMLInputElement>) => {
     if (mask === "PHONE") {
       e.currentTarget.maxLength = 15 //10
-      rest.value = maskPhone(e.currentTarget.value);
+      e.currentTarget.value = maskPhone(e.currentTarget.value);
     }
-  }, [mask])
+  }, [mask]);
+
+  async function handleOnChange(e: ChangeEvent<HTMLInputElement>) {
+    if (mask === "PHONE") {
+      e.currentTarget.value = maskPhone(e.currentTarget.value);
+    }
+  }
 
   return (
     <fieldset
@@ -95,9 +102,15 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
           type={type}
           maxLength={mask && getMaxLength(mask)}
           placeholder={placeholder}
-          className={`ml-[2rem] w-[32.2rem] ${fieldSetBG}  border-none text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2 md:w-[80%] sm:w-[70%] mbl:max-w-[17rem] mbl:text-[1.2rem] ${className} ${wantInputWidthFull ? "w-[96%]" : ""
+          className={`ml-[2rem] w-[32.2rem] border-none text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2 disabled:bg-white md:w-[80%] sm:w-[70%] mbl:max-w-[17rem] mbl:text-[1.2rem] ${className} ${fieldSetBG} ${wantInputWidthFull ? "w-[96%]" : ""
             }`}
           onKeyUp={mask && handleKeyUp}
+          onChange={(event) => {
+            handleOnChange(event);
+
+            onChange &&
+              onChange(event);
+          }}
           {...rest}
         />
       </div>

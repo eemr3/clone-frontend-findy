@@ -12,7 +12,7 @@ import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
 import { TelephoneIcon } from "../../components/icons/TelephoneIcon";
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useImperativeHandle, useRef, useState } from "react";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -78,15 +78,14 @@ export function Profile() {
   const [activeSubmit, setActiveSubmit] = useState(false);
   const [occupations, setOccupations] = useState<Role[]>([]);
   const [candidateUser, setCandidateUser] = useState<any>();
-  const [othersArray, setOthersArray] = useState<string[]>([]);
+  const [others, setOthers] = useState("");
+  /* const [othersArray, setOthersArray] = useState<string[]>([]); */
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     setValue,
-    setError,
     getValues,
-    watch,
     formState: { errors }, // Adicione essa propriedade na desestruturação
   } = useForm<ProfileFormValues>({
     resolver: yupResolver(schema),
@@ -100,8 +99,6 @@ export function Profile() {
   });
 
   const [disableOtherDescription, setDisableOtherDescription] = useState(true);
-
-
 
   const handleUpdateProfile: SubmitHandler<ProfileFormValues> = async (
     values,
@@ -119,10 +116,13 @@ export function Profile() {
         ...newValues,
 
       };
-      const resposta = await updateProfile(body);
+
+      console.log("Dados do Form: ", body)
+
+      /* const resposta = await updateProfile(body);
       if (resposta?.status === 201) {
         navigate("/project");
-      }
+      } */
     } catch (error) {
 
     }
@@ -137,10 +137,6 @@ export function Profile() {
       setOccupations(pos.data);
       console.log(pos);
 
-      /* const user = await getCandidateUser("20");
-      setCandidateUser(user.data);
-      console.log("user: ", user); */
-
       const token: string | any = localStorage.getItem("token");
       const { sub }: any = jwt_decode(token);
 
@@ -151,10 +147,11 @@ export function Profile() {
     fetchData();
   }, []);
 
-  function handleOthersInputChange(e: ChangeEvent<HTMLInputElement>) {
-    const inputValue = e.target.value;
-    const othersArray = inputValue.split(",").map((item) => item.trim().charAt(0).toUpperCase() + item.slice(1));
-    setOthersArray(othersArray);
+  function handleOthersInputChange(e: ChangeEvent<HTMLInputElement> | string) {
+    const inputValue = typeof e === "string" ? e : e.target.value;
+    setOthers(inputValue);
+    /* const othersArray = inputValue.split(",").map((item) => item.trim().charAt(0).toUpperCase() + item.trim().slice(1));
+    setOthersArray(othersArray); */
   }
 
   useEffect(() => {
@@ -163,8 +160,15 @@ export function Profile() {
     setValue("name", candidateUser?.name);
     setValue("email", candidateUser?.email);
     setValue("candidateUserId", candidateUser?.id);
-    setValue("others", othersArray)
-  }, [candidateUser, othersArray]);
+    /* setValue("others", othersArray) */
+  }, [candidateUser/* , othersArray */]);
+
+  useEffect(() => {
+    if (others.trim() == "")
+      return
+    const newOthersArray = others.split(",").map((item) => item.trim().charAt(0).toUpperCase() + item.trim().slice(1));
+    setValue("others", newOthersArray)
+  }, [others])
 
 
 
@@ -212,10 +216,13 @@ export function Profile() {
               fieldSetClassName={"ml-auto "}
               error={errors.phone?.message}
               mask="PHONE"
-              /* type="number" */
               {...register("phone"/* , {
-                valueAsNumber: true
-              } */)}
+                onChange: (e) => {
+                  /* setValue("phone", e.currentTarget.value); /
+                  console.log("Phone[input]: ", getValues("phone"))
+                }
+              } */
+              )}
             />
 
 
@@ -287,9 +294,25 @@ export function Profile() {
 
             {/* <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col "> */}
             <div className="mt-[2.5rem] flex gap-16 mbl:flex-col ">
-              <Checkbox id="10" label="Outro:" {...register("occupationArea")} />
+              <Checkbox
+                id="10"
+                label="Outro:"
+                value="Outro"
+                {...register("occupationArea")}
+                onChange={(event) => {
+                  setDisableOtherDescription(!event.currentTarget.checked);
+                  if (!event.currentTarget.checked &&
+                    getValues().others.length > 0)
+                    setOthers("");
+                }}
+              />
 
-              <InputDB placeholder="'Tech Lead','Gestor'"  {...register("others")} error={errors.others?.message}
+              <InputDB
+                placeholder="'Tech Lead','Gestor'"
+                value={others}
+                disabled={disableOtherDescription}
+                /* {...register("others")} */
+                error={errors.others?.message}
                 fieldSetClassName="h-[6rem]"
 
                 onChange={(e) => handleOthersInputChange(e)}
