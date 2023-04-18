@@ -23,7 +23,7 @@ $ npm  run dev
 ## Manter contato
 
 - Autores -
-<table>
+<table style="display: flex">
      <tr>
        <td align="center">
          <a href="https://github.com/MarioLucas0"
