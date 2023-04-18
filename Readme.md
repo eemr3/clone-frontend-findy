@@ -8,7 +8,7 @@ aplicação fornt-end da Findy.
 
 ## Instalação
 
-- Clone o repositŕoio, entre na pasta do projeto `findy.backend`
+- Clone o repositŕoio, entre na pasta do projeto `findy.frontend`
 
 ```bash
 $ npm install
