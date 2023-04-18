@@ -35,7 +35,8 @@ $ npm  run dev
            /><br /><sub><b>Mario Lucas</b></sub></a
          >
        </td>
- 
+       </tr>
+  <tr>
        <td align="center">
          <a href="https://github.com/VMatiasDev"
            ><img
