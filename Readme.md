@@ -4,7 +4,7 @@
 
 ## Descrição
 
-API responsável por prover os dados que serão consumidos pela aplicação fornt-end da Findy.
+aplicação fornt-end da Findy.
 
 ## Instalação
 
