@@ -1,8 +1,18 @@
-import { Button } from "../../components/Button";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
+
+import { SubmitHandler, useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import { CandidateProfile } from "../../types/CandidateProfile";
+import { Role } from "../../types/Role";
+
+import { Header } from "../../components/Header";
 import { Heading } from "../../components/Heading";
 import { Text } from "../../components/Text";
-
-import jwt_decode from "jwt-decode";
+import { Button } from "../../components/Button";
 import { Checkbox } from "../../components/forms/Checkbox";
 import { InputDB } from "../../components/forms/InputDB";
 import { TextErrorMessage } from "../../components/forms/TextErrorMessage";
@@ -12,21 +22,11 @@ import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
 import { TelephoneIcon } from "../../components/icons/TelephoneIcon";
 
-import { ChangeEvent, useEffect, useImperativeHandle, useRef, useState } from "react";
-
-import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
-import * as yup from "yup";
-
-import { useNavigate } from "react-router-dom";
-import { Header } from "../../components/Header";
 import {
   getCandidateUser,
   getPositions,
   updateProfile,
 } from "../../services/api";
-import { CandidateProfile } from "../../types/CandidateProfile";
-import { Role } from "../../types/Role";
 
 type ProfileFormValues = CandidateProfile & {
   name: string;
@@ -64,11 +64,15 @@ const schema = yup
       then: (schema) =>
         schema.min(1, "Precisa escolher pelo menos uma área de atuação"),
     }),
-    others: yup.array(yup.string()),
+    others: yup.array(yup.string()).when("occupationArea", {
+      is: (occupationArea: string[]) => occupationArea && occupationArea.includes("Outro"),
+      then: (schema) =>
+        schema.min(1, "Precisa informar pelo menos uma área de atuação"),
+    }),
     areaOfInterest: yup
       .string()
       .required("Interesse na sua área de atuação obrigatória"),
-  })
+  }, [["others", "occupationArea"]])
   .required();
 
 
@@ -86,6 +90,7 @@ export function Profile() {
     handleSubmit,
     setValue,
     getValues,
+    trigger,
     formState: { errors }, // Adicione essa propriedade na desestruturação
   } = useForm<ProfileFormValues>({
     resolver: yupResolver(schema),
@@ -117,12 +122,12 @@ export function Profile() {
 
       };
 
-      console.log("Dados do Form: ", body)
+      //console.log("Dados do Form: ", body)
 
-      /* const resposta = await updateProfile(body);
+      const resposta = await updateProfile(body);
       if (resposta?.status === 201) {
         navigate("/project");
-      } */
+      }
     } catch (error) {
 
     }
@@ -164,10 +169,11 @@ export function Profile() {
   }, [candidateUser/* , othersArray */]);
 
   useEffect(() => {
-    if (others.trim() == "")
-      return
-    const newOthersArray = others.split(",").map((item) => item.trim().charAt(0).toUpperCase() + item.trim().slice(1));
-    setValue("others", newOthersArray)
+    const newOthersArray = !others.trim().length ? [] :
+      others.split(",").map((item) => item.trim().charAt(0).toUpperCase() + item.trim().slice(1));
+    setValue("others", newOthersArray);
+
+    trigger("others");
   }, [others])
 
 
@@ -296,15 +302,24 @@ export function Profile() {
             <div className="mt-[2.5rem] flex gap-16 mbl:flex-col ">
               <Checkbox
                 id="10"
+                labelClassName={errors.others?.message?.length ? "mb-[4.4rem]" : ""}
                 label="Outro:"
                 value="Outro"
-                {...register("occupationArea")}
-                onChange={(event) => {
-                  setDisableOtherDescription(!event.currentTarget.checked);
-                  if (!event.currentTarget.checked &&
-                    getValues().others.length > 0)
-                    setOthers("");
-                }}
+                {...register("occupationArea", {
+                  onChange: (event) => {
+                    setDisableOtherDescription(!event.currentTarget.checked);
+                    if (!event.currentTarget.checked &&
+                      getValues().others.length > 0)
+                      setOthers("");
+                  }
+                })}
+
+              /* onChange={(event) => {
+                setDisableOtherDescription(!event.currentTarget.checked);
+                if (!event.currentTarget.checked &&
+                  getValues().others.length > 0)
+                  setOthers("");
+              }} */
               />
 
               <InputDB
@@ -313,7 +328,6 @@ export function Profile() {
                 disabled={disableOtherDescription}
                 /* {...register("others")} */
                 error={errors.others?.message}
-                fieldSetClassName="h-[6rem]"
 
                 onChange={(e) => handleOthersInputChange(e)}
               />
