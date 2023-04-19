@@ -82,7 +82,7 @@ export function Profile() {
     register,
     handleSubmit,
     setValue,
-    
+
     formState: { errors }, // Adicione essa propriedade na desestruturação
   } = useForm<ProfileFormValues>({
     resolver: yupResolver(schema),
@@ -93,10 +93,9 @@ export function Profile() {
       name: candidateUser ? candidateUser.name : "",
       email: candidateUser ? candidateUser.email : "",
       others: [],
-      othersName: []
+      othersName: [],
     },
   });
- 
 
   const [disableOtherDescription, setDisableOtherDescription] = useState(true);
 
@@ -108,9 +107,8 @@ export function Profile() {
     setActiveSubmit(true);
     values.description = `Profile ${values.description}`;
     values.profileSkills = [1];
-console.log(values)
+    console.log(values);
     try {
-    
       const { ...newValues } = values;
 
       const body = {
@@ -145,9 +143,8 @@ console.log(values)
     const othersArray = inputValue
       .split(",")
       .map((item) => item.trim().charAt(0).toUpperCase() + item.slice(1));
-    setOthersArray(othersArray)
+    setOthersArray(othersArray);
     setValue("othersName", othersArray);
-   
   }
 
   useEffect(() => {
@@ -156,7 +153,6 @@ console.log(values)
     setValue("name", candidateUser?.name);
     setValue("email", candidateUser?.email);
     setValue("candidateUserId", candidateUser?.id);
-   
   }, [candidateUser]);
 
   return (

@@ -49,7 +49,7 @@ export const loginUser = async (email: string, password: string) => {
       return { success: false, message: "Erro desconhecido" };
     }
   } catch (error: any) {
-    console.log(error)
+    console.log(error);
     if (error?.response.data.statusCode === 401) {
       toast.error(
         "O endereço de e-mail ou a senha fornecidos estão incorretos.",

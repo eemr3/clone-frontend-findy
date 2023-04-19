@@ -22,9 +22,9 @@ export function ProjectRegistred() {
   const [projects, setProjects] = useState<any[]>([]);
   const [nameUser, setNameUser] = useState("");
   const [languageNames, setlanguageNames] = useState<any[]>([]);
-  const [count,setCount] =useState<number>(100) 
-  const [indexCount,setIndex] = useState<number>(0)
- 
+  const [count, setCount] = useState<number>(100);
+  const [indexCount, setIndex] = useState<number>(0);
+
   useEffect(() => {
     async function fetchData() {
       const response = await getProjects();
@@ -41,7 +41,6 @@ export function ProjectRegistred() {
           return languageNames;
         })
       );
-     
 
       setlanguageNames(languages);
     }
@@ -49,8 +48,6 @@ export function ProjectRegistred() {
     const { name }: any = jwt_decode(token);
     const token2: any = jwt_decode(token);
     setNameUser(name);
- 
-
 
     fetchData();
   }, []);
@@ -77,7 +74,7 @@ export function ProjectRegistred() {
       return newCounts;
     });
   };
- 
+
   /*   async function getLanguageNames(projectId: number): Promise<string[]> {
     const languageIds = projects.find((project) => project.id === projectId)?.languagesIds || [];
     const languagePromises = languageIds.map(async (languageId: string) => {
@@ -125,8 +122,6 @@ export function ProjectRegistred() {
       <section className=" mbl:  mt-[10.2rem] flex flex-col gap-[3rem] bg-[#FFFFFF] pb-[10rem] pt-[8rem] xl:px-[2rem]  md:px-[2rem]  mbl:px-[1.5rem]  mbl:pt-[2rem] ">
         <div className="mx-auto flex h-[100%] w-[100%] flex-col items-center  gap-[3rem] ">
           {projects?.map((project: Projects, index) => {
-
-           
             return (
               <div
                 key={index}
@@ -139,7 +134,8 @@ export function ProjectRegistred() {
                   </h3>
 
                   <p className="mb-[3rem] text-[3.2rem] xl:text-[2.5rem] lg:text-[1.5rem] lg:text-[1.7rem]">
-                  {project?.projectScope.substring(0, counts[index] ?? 100) + "..."}
+                    {project?.projectScope.substring(0, counts[index] ?? 100) +
+                      "..."}
                   </p>
 
                   <div className="mb-[2rem] flex gap-[2rem]">
@@ -150,28 +146,34 @@ export function ProjectRegistred() {
                     })}
                   </div>
                   <div className="mb-[3rem] flex items-end justify-end gap-[4rem]">
-                    
-                    <Button className="flex items-center justify-center px-[0] justify-center h-[6rem] w-[60%] max-w-[40.6rem] rounded-[3.2rem] border  border-[#01A195] bg-[#ffffff]  xl:h-[5rem] lg:h-[4rem] lg:w-[48%]   md:h-[3rem]  md:w-[75%] md:max-w-[27rem] mbl:h-[2.5rem] mbl:w-[65%] mbl:max-w-[16rem] " >
-
-                    <Link className="w-full h-full flex items-center justify-center " to={project?.urlTeamSelection}>
-                      <p className="text-[2.4rem] text-[#01A195] xl:text-[2rem]   lg:text-[1.5rem] md:text-[1.5rem] mbl:text-[0.9rem] ">
-                        CADASTRE-SE NESSE PROJETO
-                      </p>
+                    <Button className="flex h-[6rem] w-[60%] max-w-[40.6rem] items-center justify-center justify-center rounded-[3.2rem] border border-[#01A195]  bg-[#ffffff] px-[0]  xl:h-[5rem] lg:h-[4rem] lg:w-[48%]   md:h-[3rem]  md:w-[75%] md:max-w-[27rem] mbl:h-[2.5rem] mbl:w-[65%] mbl:max-w-[16rem] ">
+                      <Link
+                        className="flex h-full w-full items-center justify-center "
+                        to={project?.urlTeamSelection}
+                      >
+                        <p className="text-[2.4rem] text-[#01A195] xl:text-[2rem]   lg:text-[1.5rem] md:text-[1.5rem] mbl:text-[0.9rem] ">
+                          CADASTRE-SE NESSE PROJETO
+                        </p>
                       </Link>
                     </Button>
-                  
-                    <button className=" h-[6rem] w-[60%] max-w-[15.6rem] rounded-[3.2rem] bg-[#01A195] px-[2.5rem] xl:h-[5rem]  lg:h-[4rem]  lg:w-[45%]   lg:px-[1rem] md:h-[3rem] md:w-[30%] md:max-w-[10rem] mbl:h-[2.5rem] mbl:w-[30%] mbl:px-[0.1rem] " onClick={() => {
-                      handleShowMore(index)
-                      if(showMoreIndex !== null) {
-                        handleShowLess()
-                      }
-                      }}>
-                      <p className="text-[2.4rem] text-[#FFFFFF] xl:text-[2rem] lg:text-[1.5rem]  lg:text-[1.5rem] md:text-[1.3rem] mbl:text-[1.1rem]" >
-                      {showMoreIndex === index ? (
-            <button onClick={handleShowLess}>Ver Menos</button>
-          ) : (
-            <button onClick={() => handleShowMore(index)}>Ver Mais</button>
-          )}
+
+                    <button
+                      className=" h-[6rem] w-[60%] max-w-[15.6rem] rounded-[3.2rem] bg-[#01A195] px-[2.5rem] xl:h-[5rem]  lg:h-[4rem]  lg:w-[45%]   lg:px-[1rem] md:h-[3rem] md:w-[30%] md:max-w-[10rem] mbl:h-[2.5rem] mbl:w-[30%] mbl:px-[0.1rem] "
+                      onClick={() => {
+                        handleShowMore(index);
+                        if (showMoreIndex !== null) {
+                          handleShowLess();
+                        }
+                      }}
+                    >
+                      <p className="text-[2.4rem] text-[#FFFFFF] xl:text-[2rem] lg:text-[1.5rem]  lg:text-[1.5rem] md:text-[1.3rem] mbl:text-[1.1rem]">
+                        {showMoreIndex === index ? (
+                          <button onClick={handleShowLess}>Ver Menos</button>
+                        ) : (
+                          <button onClick={() => handleShowMore(index)}>
+                            Ver Mais
+                          </button>
+                        )}
                       </p>
                     </button>
                   </div>
@@ -179,7 +181,7 @@ export function ProjectRegistred() {
               </div>
             );
           })}
-           {/*  {showMoreIndex !== null && <button onClick={handleShowLess}>Ver Menos</button>} */}
+          {/*  {showMoreIndex !== null && <button onClick={handleShowLess}>Ver Menos</button>} */}
         </div>
       </section>
     </section>

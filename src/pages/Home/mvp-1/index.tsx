@@ -28,7 +28,7 @@ export function Home() {
 
       const user = await getCandidateUser(sub);
       setCandidateUser(user?.data);
-      console.log(user)
+      console.log(user);
     }
     fetchData();
     return () => {
@@ -37,32 +37,27 @@ export function Home() {
   }, []);
 
   const handleVerification = () => {
-    
-    if (authenticated) {
-      if (
-        typeof candidateUser?.profile === "object" &&
-        Object.entries(candidateUser?.profile || {}).length === 0
-      ) {
-        return "/profile";
-      } 
-      if(typeof candidateUser?.profile === "object" &&
-      Object.entries(candidateUser?.profile || {}).length > 0){
-        return "/project_registered";
-      }
-
-    } else {
+    if (!authenticated) {
       toast.error("Você precisa estar logado para continuar", {
         style: { fontSize: "1.8rem" },
         autoClose: 1600,
       });
-
+  
       setTimeout(() => {
-        navigate("/login")
-      },3000)
-     
+        navigate("/login");
+      }, 3000);
+  
+      return;
     }
+  
+    if (!candidateUser || !candidateUser.profile || Object.keys(candidateUser.profile).length === 0) {
+      return "/profile";
+    }
+  
+    return "/project_registered";
   };
 
+  
   return (
     <section className="flex h-[100%] flex-col bg-blue-dark pb-[5rem] ">
       <Header showJustify={true} />
@@ -82,7 +77,7 @@ export function Home() {
               <Button
                 fill={true}
                 className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem]"
-               url={handleVerification}
+                url={handleVerification}
               >
                 CLIQUE PARA COMEÇAR
               </Button>
