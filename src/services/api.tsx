@@ -2,7 +2,8 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 export const api = axios.create({
-  baseURL: "https://findybackend-development.up.railway.app",
+  //baseURL: "https://findybackend-development.up.railway.app",
+  baseURL: "https://findy-app.onrender.com",
 });
 
 export const createUser = async (body: any) => {
