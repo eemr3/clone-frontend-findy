@@ -63,90 +63,48 @@ export const Header = (props: { showJustify: boolean }) => {
             ) : (
               <>
                 <Button url="/login">
-                  Login
+                  <p> Login</p>
                 </Button>
 
-                {/* <Link to="/login">
-                  <Button>
-                    <p> Login</p>
-                  </Button>
-                </Link> */}
-
-                <Button fill={true} url="/cadastro">
-                  Cadastre-se
+                <Button url="/cadastro" fill={true}>
+                  <p> Cadastre-se</p>
                 </Button>
-                {/* <Link to="/cadastro">
-                  <Button>
-                    <p> Cadastre-se</p>
-                  </Button>
-                </Link> */}
-
-
               </>
             )}
-
-            {/* {props.showJustify && authenticated ? (
-              ""
-            ) : (
-              <>
-                <Button>
-                  <Link to="/project">
-                    <p>novo projeto</p>{" "}
-                  </Link>
-                </Button>
-                <Button>
-                  <Link to="/profile">
-                    <p> profile</p>
-                  </Link>
-                </Button>
-                <Button>
-                  <Link to="/project_registered">
-                    {" "}
-                    <p> Projetos Registrados</p>
-                  </Link>
-                </Button>
-              </>
-            )} */}
           </nav>
         </div>
-      </div >
-      {
-        showContent ? (
-          <div className=" bg-gray-800 absolute right-5 top-[8rem] flex w-[20rem] items-center justify-center bg-blue-dark shadow-shadow-#2 lg:block " >
-            <nav className=" mr-[3rem] w-[max-content] text-3xl font-bold text-white">
+      </div>
+      {showContent ? (
+        <div className=" bg-gray-800 absolute right-5 top-[8rem] flex w-[20rem] items-center justify-center bg-blue-dark shadow-shadow-#2 lg:block ">
+          <nav className=" mr-[3rem] w-[max-content] text-3xl font-bold text-white">
+            {authenticated ? (
+              <ul>
+                <li className=" border-b border-black p-[1rem]">
+                  <button className="bg " onClick={() => handleLogout()}>
+                    <p className="hover:text-green-dark">Logout</p>
+                  </button>
+                </li>
+              </ul>
+            ) : (
+              <ul>
+                <li className="border-b border-black p-[1rem]">
+                  <Link to="/login" className="hover:text-green-dark">
+                    <button className="bg">Login</button>
+                  </Link>
+                </li>
 
-              {authenticated ? (
-                <ul>
-                  <li className=" border-b border-black p-[1rem]">
-                    <button className="bg " onClick={() => handleLogout()}>
-                      <p className="hover:text-green-dark">Logout</p>
-                    </button>
-                  </li>
-                </ul>
-              ) : (
-                <ul>
-                  <li className="border-b border-black p-[1rem]">
-                    <Link to="/login" className="hover:text-green-dark">
-                      <button className="bg">
-                        Login
-                      </button>
-                    </Link>
-                  </li>
-
-                  <li className="border-b border-black p-[1rem]">
-                    <Link to="/cadastro" className="hover:text-green-dark">
-                      <button className="bg">
-                        Cadastro
-                      </button>
-                    </Link>
-                  </li>
-                </ul>
-              )}
-            </nav>
-          </div>
-        ) : (
-          ""
-        )}
+                <li className="border-b border-black p-[1rem]">
+                  <Link to="/cadastro" className="hover:text-green-dark">
+                    <button className="bg">Cadastro</button>
+                  </Link>
+                </li>
+              </ul>
+            )}
+          </nav>
+        </div>
+      ) : (
+        ""
+      )}
     </>
   );
 };

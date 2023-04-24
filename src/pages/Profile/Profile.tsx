@@ -76,7 +76,6 @@ const schema = yup
   .required();
 
 
-
 export function Profile() {
   // Teste de Error no nome e e-mail
   const [activeSubmit, setActiveSubmit] = useState(false);
@@ -95,11 +94,13 @@ export function Profile() {
   } = useForm<ProfileFormValues>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
+    mode: "onBlur",
     defaultValues: {
       occupationArea: [],
       name: candidateUser ? candidateUser.name : "",
       email: candidateUser ? candidateUser.email : "",
       others: [],
+      othersName: [],
     },
   });
 
@@ -113,7 +114,7 @@ export function Profile() {
     setActiveSubmit(true);
     values.description = `${values.name}'s Profile`;
     values.profileSkills = [1];
-
+    console.log(values);
     try {
       const { ...newValues } = values;
 
@@ -174,7 +175,7 @@ export function Profile() {
     setValue("others", newOthersArray);
 
     trigger("others");
-  }, [others])
+  }, [others]);
 
 
 
@@ -259,8 +260,7 @@ export function Profile() {
               fieldSetClassName={"even:ml-auto"}
               error={errors.email?.message}
               {...register("email")}
-              fieldSetBG={`${candidateUser?.email != "" || undefined ? "bg-[#d3d3d3!important]" : ""
-                }`}
+              fieldSetBG={`${candidateUser?.email != "" || undefined ? "bg-[#d3d3d3!important]" : ""}`}
             />
 
             <InputDB
@@ -271,8 +271,6 @@ export function Profile() {
               error={errors.availableTime?.message}
               {...register("availableTime")}
             />
-
-
           </div>
           <fieldset className="max-[80%] mb-[6.8rem] mt-[8rem] lg:px-[2rem] mbl:mt-[3rem]">
             <p className=" text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1 md:text-[2rem] mbl:text-[1.5rem] mbl:font-bold">
@@ -343,7 +341,6 @@ export function Profile() {
               error={errors.areaOfInterest?.message}
               {...register("areaOfInterest")}
               type="textarea"
-
             />
 
             <Button
@@ -369,7 +366,7 @@ export function Profile() {
             /* JSON.stringify(errors, null, 2) /
           }
         </pre>
-      </div> */}
+        </div> */}
 
     </div>
   );
