@@ -1,15 +1,20 @@
 import jwt_decode from "jwt-decode";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import c from "../../../assets/c.svg";
 import mulherPagePrincipal from "../../../assets/mulher-page-principal.svg";
 import mulherPagePrincipal3 from "../../../assets/mulher-page-principal3.svg";
 import { Button } from "../../../components/Button";
 import { Header } from "../../../components/Header";
+import { AuthContext } from "../../../context/auth";
 import { getCandidateUser } from "../../../services/api";
 export function Home() {
   const [larguraTela, setLarguraTela] = useState(window.innerWidth);
   const [candidateUser, setCandidateUser] = useState<any>();
+  const { authenticated } = useContext(AuthContext);
+  const navigate = useNavigate();
+
   useEffect(() => {
     const handleResize = () => {
       setLarguraTela(window.innerWidth);
@@ -23,13 +28,35 @@ export function Home() {
 
       const user = await getCandidateUser(sub);
       setCandidateUser(user.data);
-    
+
     }
     fetchData();
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const handleVerification = () => {
+    if (!authenticated) {
+      toast.error("Você precisa estar logado para continuar", {
+        style: { fontSize: "1.8rem" },
+        autoClose: 1600,
+      });
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 3000);
+
+      return;
+    }
+
+    if (!candidateUser || !candidateUser.profile || Object.keys(candidateUser.profile).length === 0) {
+      return "/profile";
+    }
+
+    return "/project_registered";
+  };
+
 
   return (
     <section className="flex h-[100%] flex-col bg-blue-dark pb-[5rem] ">
@@ -47,20 +74,13 @@ export function Home() {
                 tecnologia? Então conheça a Findy!
               </span>
 
-              <Link
-  to={`${
-    typeof candidateUser?.profile === "object" && Object.entries(candidateUser?.profile || {}).length === 0
-      ? "/profile"
-      : "/project"
-  }`}
->
-  <Button
-    fill={true}
-    className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem]"
-    >
-                  CLIQUE PARA COMEÇAR
+              <Button
+                fill={true}
+                className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem]"
+                url={handleVerification}
+              >
+                CLIQUE PARA COMEÇAR
               </Button>
-                </Link>
             </div>
 
             <img
@@ -88,33 +108,36 @@ export function Home() {
                 className="right-[4rem] top-[-1rem] mt-[2.4rem]  object-cover "
               />
 
+              {/* <Button
+    fill={true}
+    className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem]"
+    url="https://docs.google.com/forms/d/1GZBzYZRTHoU-waL6NLZ6BDHZsS6SrvjWAgf_YUC-eZQ/viewform?edit_requested=true"
+  >
+    CLIQUE PARA COMEÇAR
+  
+  </Button> */}
+
+
               <div className="flex justify-center sm:h-[4.2rem] sm:w-[100%] sm:px-[0] sm:pb-[3.8rem] sm:pt-[2.8rem]">
-              <Link
-  to={`${
-    typeof candidateUser?.profile === "object" && Object.entries(candidateUser?.profile || {}).length === 0
-      ? "/profile"
-      : "/project"
-  }`}
->
                 <Button
                   fill={true}
                   className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem] sm:m-[0] sm:w-[100%]"
+                  url={handleVerification}
                 >
-     
-                    CLIQUE PARA COMEÇAR
+                  CLIQUE PARA COMEÇAR
                 </Button>
-                  </Link>
               </div>
-            </div>
-          </div>
-        )}
-      </div>
+            </div >
+          </div >
+        )
+        }
+      </div >
       <div className="flex h-full w-full items-end justify-center  gap-[1rem] bg-blue-dark  pb-[5rem] xl:justify-center  mbl:min-h-[10rem] ">
         <img src={c} alt="direitos reservados" className="w-[3rem] " />
         <p className="text-[2.4rem] text-white sm:text-[1.4rem]">
           Todos os direitos reservados a Findy
         </p>
       </div>
-    </section>
+    </section >
   );
 }
