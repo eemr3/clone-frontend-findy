@@ -77,7 +77,7 @@ export function Home() {
               <Button
                 fill={true}
                 className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem]"
-                url={handleVerification()}
+                url={handleVerification}
               >
                 CLIQUE PARA COMEÇAR
               </Button>
@@ -122,7 +122,7 @@ export function Home() {
                 <Button
                   fill={true}
                   className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem] sm:m-[0] sm:w-[100%]"
-                  url={handleVerification()}
+                  url={handleVerification}
                 >
                   CLIQUE PARA COMEÇAR
                 </Button>
