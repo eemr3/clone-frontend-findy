@@ -1,8 +1,18 @@
-import { Button } from "../../components/Button";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
+
+import { SubmitHandler, useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import { CandidateProfile } from "../../types/CandidateProfile";
+import { Role } from "../../types/Role";
+
+import { Header } from "../../components/Header";
 import { Heading } from "../../components/Heading";
 import { Text } from "../../components/Text";
-
-import jwt_decode from "jwt-decode";
+import { Button } from "../../components/Button";
 import { Checkbox } from "../../components/forms/Checkbox";
 import { InputDB } from "../../components/forms/InputDB";
 import { TextErrorMessage } from "../../components/forms/TextErrorMessage";
@@ -12,21 +22,11 @@ import { PencilIcon } from "../../components/icons/PencilIcon";
 import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
 import { TelephoneIcon } from "../../components/icons/TelephoneIcon";
 
-import { ChangeEvent, useEffect, useState } from "react";
-
-import { yupResolver } from "@hookform/resolvers/yup";
-import { SubmitHandler, useForm } from "react-hook-form";
-import * as yup from "yup";
-
-import { useNavigate } from "react-router-dom";
-import { Header } from "../../components/Header";
 import {
   getCandidateUser,
   getPositions,
   updateProfile,
 } from "../../services/api";
-import { CandidateProfile } from "../../types/CandidateProfile";
-import { Role } from "../../types/Role";
 
 type ProfileFormValues = CandidateProfile & {
   name: string;
@@ -38,10 +38,11 @@ const schema = yup
   .object()
   .shape({
     name: yup.string().required("Nome obrigatório"),
-    phone: yup
-      .string()
+    phone: yup.string()
       .required("Número do Whatsapp obrigatório")
-      .matches(/^[0-9]+$/, "Este campo deve conter apenas números"),
+      .min(14, "Número de Whatsapp inválido"),
+    /* 
+    .matches(/^[0-9]+$/, "Este campo deve conter apenas números") */
     urlLinkedin: yup
       .string()
       .required("Endereço do Linkedin obrigatório")
@@ -63,26 +64,32 @@ const schema = yup
       then: (schema) =>
         schema.min(1, "Precisa escolher pelo menos uma área de atuação"),
     }),
-    others: yup.array(yup.string()),
-    othersName: yup.array(yup.string()),
+    others: yup.array(yup.string()).when("occupationArea", {
+      is: (occupationArea: string[]) => occupationArea && occupationArea.includes("Outro"),
+      then: (schema) =>
+        schema.min(1, "Precisa informar pelo menos uma área de atuação"),
+    }),
     areaOfInterest: yup
       .string()
       .required("Interesse na sua área de atuação obrigatória"),
-  })
+  }, [["others", "occupationArea"]])
   .required();
+
 
 export function Profile() {
   // Teste de Error no nome e e-mail
   const [activeSubmit, setActiveSubmit] = useState(false);
   const [occupations, setOccupations] = useState<Role[]>([]);
   const [candidateUser, setCandidateUser] = useState<any>();
-  const [othersArray, setOthersArray] = useState<string[]>([]);
+  const [others, setOthers] = useState("");
+  /* const [othersArray, setOthersArray] = useState<string[]>([]); */
   const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     setValue,
-
+    getValues,
+    trigger,
     formState: { errors }, // Adicione essa propriedade na desestruturação
   } = useForm<ProfileFormValues>({
     resolver: yupResolver(schema),
@@ -105,7 +112,7 @@ export function Profile() {
   ) => {
     event?.preventDefault();
     setActiveSubmit(true);
-    values.description = `Profile ${values.description}`;
+    values.description = `${values.name}'s Profile`;
     values.profileSkills = [1];
     console.log(values);
     try {
@@ -113,12 +120,18 @@ export function Profile() {
 
       const body = {
         ...newValues,
+
       };
+
+      //console.log("Dados do Form: ", body)
+
       const resposta = await updateProfile(body);
       if (resposta?.status === 201) {
-        navigate("/project_registered");
+        navigate("/project");
       }
-    } catch (error) {}
+    } catch (error) {
+
+    }
 
     setActiveSubmit(false);
   };
@@ -128,23 +141,23 @@ export function Profile() {
       const pos = await getPositions();
 
       setOccupations(pos.data);
+      console.log(pos);
 
       const token: string | any = localStorage.getItem("token");
       const { sub }: any = jwt_decode(token);
 
       const user = await getCandidateUser(sub);
       setCandidateUser(user.data);
+      console.log("user: ", user);
     }
     fetchData();
   }, []);
 
-  function handleOthersInputChange(e: ChangeEvent<HTMLInputElement>) {
-    const inputValue = e.target.value;
-    const othersArray = inputValue
-      .split(",")
-      .map((item) => item.trim().charAt(0).toUpperCase() + item.slice(1));
-    setOthersArray(othersArray);
-    setValue("othersName", othersArray);
+  function handleOthersInputChange(e: ChangeEvent<HTMLInputElement> | string) {
+    const inputValue = typeof e === "string" ? e : e.target.value;
+    setOthers(inputValue);
+    /* const othersArray = inputValue.split(",").map((item) => item.trim().charAt(0).toUpperCase() + item.trim().slice(1));
+    setOthersArray(othersArray); */
   }
 
   useEffect(() => {
@@ -153,7 +166,18 @@ export function Profile() {
     setValue("name", candidateUser?.name);
     setValue("email", candidateUser?.email);
     setValue("candidateUserId", candidateUser?.id);
-  }, [candidateUser]);
+    /* setValue("others", othersArray) */
+  }, [candidateUser/* , othersArray */]);
+
+  useEffect(() => {
+    const newOthersArray = !others.trim().length ? [] :
+      others.split(",").map((item) => item.trim().charAt(0).toUpperCase() + item.trim().slice(1));
+    setValue("others", newOthersArray);
+
+    trigger("others");
+  }, [others]);
+
+
 
   return (
     <div className="w-max-[144rem] flex flex-col bg-blue-dark">
@@ -186,11 +210,8 @@ export function Profile() {
               readOnly
               placeholder="Nome"
               fieldSetClassName={"even:ml-auto"}
-              fieldSetBG={`${
-                candidateUser?.name != "" || undefined
-                  ? "bg-[#d3d3d3!important]"
-                  : ""
-              }`}
+              fieldSetBG={`${candidateUser?.name != "" || undefined ? "bg-[#d3d3d3!important]" : ""
+                }`}
               error={errors.name?.message}
               {...register("name")}
             />
@@ -198,14 +219,19 @@ export function Profile() {
             <InputDB
               icon={<TelephoneIcon className={"mbl:max-w-[2rem] "} />}
               label="Insira o seu número do WhatsApp"
-              placeholder="Ex: 9999999999"
+              placeholder="Ex: (99) 99999-9999"
               fieldSetClassName={"ml-auto "}
               error={errors.phone?.message}
-              type="number"
-              {...register("phone", {
-                valueAsNumber: true,
-              })}
+              mask="PHONE"
+              {...register("phone"/* , {
+                onChange: (e) => {
+                  /* setValue("phone", e.currentTarget.value); /
+                  console.log("Phone[input]: ", getValues("phone"))
+                }
+              } */
+              )}
             />
+
 
             <InputDB
               icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
@@ -234,11 +260,7 @@ export function Profile() {
               fieldSetClassName={"even:ml-auto"}
               error={errors.email?.message}
               {...register("email")}
-              fieldSetBG={`${
-                candidateUser?.email != "" || undefined
-                  ? "bg-[#d3d3d3!important]"
-                  : ""
-              }`}
+              fieldSetBG={`${candidateUser?.email != "" || undefined ? "bg-[#d3d3d3!important]" : ""}`}
             />
 
             <InputDB
@@ -274,18 +296,38 @@ export function Profile() {
               ))}
             </div>
 
-            <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col ">
+            {/* <div className="mt-[2.5rem] flex items-start items-center items-baseline gap-16 mbl:flex-col "> */}
+            <div className="mt-[2.5rem] flex gap-16 mbl:flex-col ">
               <Checkbox
                 id="10"
+                labelClassName={errors.others?.message?.length ? "mb-[4.4rem]" : ""}
                 label="Outro:"
-                {...register("occupationArea")}
+                value="Outro"
+                {...register("occupationArea", {
+                  onChange: (event) => {
+                    setDisableOtherDescription(!event.currentTarget.checked);
+                    if (!event.currentTarget.checked &&
+                      getValues().others.length > 0)
+                      setOthers("");
+                  }
+                })}
+
+              /* onChange={(event) => {
+                setDisableOtherDescription(!event.currentTarget.checked);
+                if (!event.currentTarget.checked &&
+                  getValues().others.length > 0)
+                  setOthers("");
+              }} */
               />
 
               <InputDB
-                placeholder="Tech Lead,Gestor"
+                placeholder="'Tech Lead','Gestor'"
+                value={others}
+                disabled={disableOtherDescription}
+                /* {...register("others")} */
                 error={errors.others?.message}
-                fieldSetClassName="h-[6rem]"
-                onChange={handleOthersInputChange}
+
+                onChange={(e) => handleOthersInputChange(e)}
               />
             </div>
           </fieldset>
@@ -312,6 +354,20 @@ export function Profile() {
           </div>
         </form>
       </section>
+
+      {/* <div className="flex flex-col gap-4 ml-[100px]">
+        <h1 className="text-[30px] font-black">ERROR</h1>
+        <pre>
+          {
+            Object.keys(errors).map((key, index) => (
+              key
+            ))
+
+            /* JSON.stringify(errors, null, 2) /
+          }
+        </pre>
+        </div> */}
+
     </div>
   );
 }

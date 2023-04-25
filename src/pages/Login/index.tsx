@@ -107,13 +107,15 @@ export function Login() {
                 className="mr-[1.2rem] h-[2.5rem] w-[2.8rem] border-green-medium mbl:mr-[0.5rem] mbl:h-[2.2rem] "
                 type="checkbox"
               />
-              <p className="text-[1.6rem]  mbl:text-[1.3rem] mbl:text-[1rem]">
+              <p className="text-[1.6rem]  mbl:text-[1.3rem]">
+                {/* <p className="text-[1.6rem]  mbl:text-[1.3rem] mbl:text-[1rem]"> */}
                 Matenha-me logado
               </p>
             </div>
             <Link
               to="#"
-              className="text-[1.6rem] text-green-medium  mbl:text-[1.3rem] mbl:text-[1rem] "
+              className="text-[1.6rem] text-green-medium  mbl:text-[1.3rem]"
+            /* className="text-[1.6rem] text-green-medium  mbl:text-[1.3rem] mbl:text-[1rem] " */
             >
               Esqueceu a senha?
             </Link>

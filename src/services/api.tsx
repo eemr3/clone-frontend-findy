@@ -1,6 +1,9 @@
 import axios from "axios";
 import { toast } from "react-toastify";
 
+/* const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIzLCJuYW1lIjoiRGFyY2lvIENhcnZhbGhvIiwiZW1haWwiOiJkYXJjaW8uY2FydmFsaG8uZGV2QGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxNDc5ODY4LCJleHAiOjE2ODE0ODc4Njh9.BP4yluPsDNGFGzMYn6Wuv6JQArxTnbiDJA4PU_-l3fQ"; */
+
+
 export const api = axios.create({
   //baseURL: "https://findybackend-development.up.railway.app",
   baseURL: "https://findy-app.onrender.com",
@@ -44,7 +47,7 @@ export const loginUser = async (email: string, password: string) => {
         data: response,
         status: 200,
         success: true,
-        message: "Conta criada com sucesso!",
+        message: "Conta conectada com sucesso!",
       };
     } else {
       return { success: false, message: "Erro desconhecido" };
@@ -67,7 +70,7 @@ export const loginUser = async (email: string, password: string) => {
 export const formProject = async (body: any) => {
   try {
     return await api.post("/api/candidate-projects", body);
-  } catch (error: any) {}
+  } catch (error: any) { }
 };
 
 export const getProjects = async () => {

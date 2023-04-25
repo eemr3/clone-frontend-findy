@@ -27,8 +27,8 @@ export function Home() {
       const { sub }: any = jwt_decode(token);
 
       const user = await getCandidateUser(sub);
-      setCandidateUser(user?.data);
-      console.log(user);
+      setCandidateUser(user.data);
+
     }
     fetchData();
     return () => {
@@ -42,22 +42,22 @@ export function Home() {
         style: { fontSize: "1.8rem" },
         autoClose: 1600,
       });
-  
+
       setTimeout(() => {
         navigate("/login");
       }, 3000);
-  
+
       return;
     }
-  
+
     if (!candidateUser || !candidateUser.profile || Object.keys(candidateUser.profile).length === 0) {
       return "/profile";
     }
-  
+
     return "/project_registered";
   };
 
-  
+
   return (
     <section className="flex h-[100%] flex-col bg-blue-dark pb-[5rem] ">
       <Header showJustify={true} />
@@ -108,6 +108,16 @@ export function Home() {
                 className="right-[4rem] top-[-1rem] mt-[2.4rem]  object-cover "
               />
 
+              {/* <Button
+    fill={true}
+    className="mb-[4rem] mt-[6.4rem] h-[4.2rem] w-[35.6rem] text-[2.2rem]"
+    url="https://docs.google.com/forms/d/1GZBzYZRTHoU-waL6NLZ6BDHZsS6SrvjWAgf_YUC-eZQ/viewform?edit_requested=true"
+  >
+    CLIQUE PARA COMEÇAR
+  
+  </Button> */}
+
+
               <div className="flex justify-center sm:h-[4.2rem] sm:w-[100%] sm:px-[0] sm:pb-[3.8rem] sm:pt-[2.8rem]">
                 <Button
                   fill={true}
@@ -117,16 +127,17 @@ export function Home() {
                   CLIQUE PARA COMEÇAR
                 </Button>
               </div>
-            </div>
-          </div>
-        )}
-      </div>
+            </div >
+          </div >
+        )
+        }
+      </div >
       <div className="flex h-full w-full items-end justify-center  gap-[1rem] bg-blue-dark  pb-[5rem] xl:justify-center  mbl:min-h-[10rem] ">
         <img src={c} alt="direitos reservados" className="w-[3rem] " />
         <p className="text-[2.4rem] text-white sm:text-[1.4rem]">
           Todos os direitos reservados a Findy
         </p>
       </div>
-    </section>
+    </section >
   );
 }
