@@ -112,13 +112,12 @@ export function Login() {
                 Matenha-me logado
               </p>
             </div>
-            <Link
+            {/* <Link
               to="#"
               className="text-[1.6rem] text-green-medium  mbl:text-[1.3rem]"
-            /* className="text-[1.6rem] text-green-medium  mbl:text-[1.3rem] mbl:text-[1rem] " */
             >
               Esqueceu a senha?
-            </Link>
+            </Link> */}
           </div>
           <button
             className="mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195] mbl:mt-[4.5rem]  mbl:h-[4rem] mbl:max-w-[100%]"
