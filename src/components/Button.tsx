@@ -5,7 +5,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: ReactNode;
   fill?: boolean;
   disabled?: boolean;
-  url?: string;
+  url?: string | (() => string | undefined);
 }
 
 export function Button({
@@ -27,17 +27,28 @@ export function Button({
       : "shadow-shadow-button text-green-medium border-green-medium hover:text-green-dark hover:border-green-dark"
     }`;
 
+  /* const navigate = useNavigate(); */
+
   const navigate = useNavigate();
 
   return (
     <button
       className={`h-[3.341rem] w-fit rounded-[2.324rem] px-[1.743rem] uppercase ${className} ${buttonStyle}`}
       onClick={(event) => {
-        url &&
-          navigate(url);
+        /* url &&
+          navigate(url); */
 
-        onClick &&
-          onClick(event);
+
+        if (typeof url === "string") {
+          navigate(url);
+        } else if (typeof url === "function") {
+          const urlResult = url.call(null);
+          if (typeof urlResult === "string") {
+            navigate(urlResult);
+          }
+        }
+
+        onClick && onClick(event);
       }}
       {...rest}
     >

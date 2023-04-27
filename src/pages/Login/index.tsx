@@ -43,7 +43,7 @@ export function Login() {
 
         setTimeout(() => {
           navigate("/");
-        }, 1000);
+        }, 2000);
       }
     }
     setIsSuccess(true);
