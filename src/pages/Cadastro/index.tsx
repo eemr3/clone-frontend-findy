@@ -29,6 +29,9 @@ const schema = yup
     password_confirmation: yup
       .string()
       .oneOf([undefined, yup.ref("password")], "As senhas precisam ser iguais"),
+    accept_terms: yup
+      .boolean()
+      .oneOf([true], "Você precisa concordar com os Termos de Uso e com as Políticas de Privacidade"),  
   })
   .required();
 
@@ -281,18 +284,23 @@ export function Cadastro() {
                 className="mr-[1.2rem] h-[2.9rem] w-[2.8rem]"
                 type="checkbox"
                 checked={isChecked}
+                {...register("accept_terms")}
                 onChange={(e) => setIsChecked(e.target.checked)}
               />
-              <p className="text-[1.7rem] mbl:text-[1.3rem]">
-                Eu concordo com os{" "}
-                <Link to="#" className="mdl:text-[2rem] text-[#01A195]">
-                  Termos de Uso
-                </Link>{" "}
-                da plataforma e com as{" "}
-                <Link to="#" className="mdl:text-[1rem] text-[#01A195]">
-                  Políticas de Privacidade.
-                </Link>{" "}
-              </p>
+              <div className="flex flex-col gap-[0.75rem]">
+                <p className="text-[1.7rem] mbl:text-[1.3rem]">
+                  Eu concordo com os{" "}
+                  <Link to="#" className="mdl:text-[2rem] text-[#01A195]">
+                    Termos de Uso
+                  </Link>{" "}
+                  da plataforma e com as{" "}
+                  <Link to="#" className="mdl:text-[1rem] text-[#01A195]">
+                    Políticas de Privacidade.
+                  </Link>{" "}
+                </p>
+                {errors.accept_terms && (
+                <span className="text-red text-[1.6rem]">{errors.accept_terms.message}</span>)}
+              </div>
             </div>
           </div>
           <button className="mdl:mt-[3rem] mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195] mbl:h-[4rem]">
