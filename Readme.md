@@ -16,9 +16,9 @@ $ npm install
 
 ## Running the app
 
-````bash
+```bash
 $ npm  run dev
-````
+```
 
 ## Manter contato
 
@@ -38,13 +38,13 @@ $ npm  run dev
        </tr>
   <tr>
        <td align="center">
-         <a href="https://github.com/VMatiasDev"
+         <a href="https://github.com/Tiago-92"
            ><img
              style="border-radius: 50%"
-             src="https://avatars.githubusercontent.com/u/109880266?v=4"
+             src="https://avatars.githubusercontent.com/u/99975837?v=4"
              width="100px;"
-             alt="Avatar Vitor Matias"
-           /><br /><sub><b>Vitor Matias</b></sub></a
+             alt="Avatar Tiago Amaral"
+           /><br /><sub><b>Tiago Amaral</b></sub></a
          >
        </td>
      </tr>
@@ -57,6 +57,30 @@ $ npm  run dev
              width="100px;"
              alt="Avatar Dárcio Carvalho"
            /><br /><sub><b>Dárcio Carvalho</b></sub></a
+         >
+       </td>
+     </tr>
+     <tr>
+       <td align="center">
+         <a href="https://github.com/SARAFRANCA83"
+           ><img
+             style="border-radius: 50%"
+             src="https://avatars.githubusercontent.com/u/111992494?v=4"
+             width="100px;"
+             alt="Avatar Sara França"
+           /><br /><sub><b>Sara França</b></sub></a
+         >
+       </td>
+     </tr>
+     <tr>
+       <td align="center">
+         <a href="https://github.com/estercarvalhocv"
+           ><img
+             style="border-radius: 50%"
+             src="https://avatars.githubusercontent.com/u/94876224?v=4"
+             width="100px;"
+             alt="Avatar Ester Borges de Carvalho"
+           /><br /><sub><b>Ester Borges de Carvalho</b></sub></a
          >
        </td>
      </tr>
