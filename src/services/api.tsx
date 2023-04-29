@@ -1,5 +1,6 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
+import { CandidateUserRegister } from "../types/CandidateUserRegister";
 
 /* const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIzLCJuYW1lIjoiRGFyY2lvIENhcnZhbGhvIiwiZW1haWwiOiJkYXJjaW8uY2FydmFsaG8uZGV2QGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxNDc5ODY4LCJleHAiOjE2ODE0ODc4Njh9.BP4yluPsDNGFGzMYn6Wuv6JQArxTnbiDJA4PU_-l3fQ"; */
 
@@ -9,7 +10,16 @@ export const api = axios.create({
   baseURL: "https://findy-app.onrender.com",
 });
 
-export const createUser = async (body: any) => {
+
+export const createUser = async (body: CandidateUserRegister) => {
+  return await api.post("/api/candidate-users", body, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+}
+
+export const createUserOld = async (body: any) => {
   try {
     const response = await api.post("/api/candidate-users", body, {
       headers: {
