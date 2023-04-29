@@ -68,7 +68,7 @@ export function Login() {
           <div className="w-[70%] sm:justify-center mbl:flex mbl:w-[85%]">
             <input
               type="email"
-              placeholder="insira seu email"
+              placeholder="Insira seu email"
               {...register("email")}
               className={
                 errors.email
