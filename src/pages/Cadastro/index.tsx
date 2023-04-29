@@ -100,7 +100,7 @@ export function Cadastro() {
           <div className="w-[70%] sm:justify-center  mbl:w-[85%]  ">
             <input
               type="name"
-              placeholder="insira seu Nome"
+              placeholder="Insira seu nome"
               {...register("nome")}
               className={
                 errors.nome
@@ -116,7 +116,7 @@ export function Cadastro() {
           <div className="w-[70%]  sm:justify-center  mbl:w-[85%]  ">
             <input
               type="email"
-              placeholder="insira seu email"
+              placeholder="Insira seu email"
               {...register("email")}
               className={
                 errors.email
@@ -136,7 +136,7 @@ export function Cadastro() {
           <div className="w-[70%] sm:justify-center mbl:w-[85%] mbl:flex-col mbl:items-center ">
             <input
               type="password"
-              placeholder="insira sua senha"
+              placeholder="Insira sua senha"
               {...register("password")}
               className={
                 errors.password
