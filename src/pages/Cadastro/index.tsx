@@ -31,7 +31,7 @@ const schema = yup
       .oneOf([undefined, yup.ref("password")], "As senhas precisam ser iguais"),
     accept_terms: yup
       .boolean()
-      .oneOf([true], "Você precisa concordar com os Termos de Uso e com as Políticas de Privacidade"),  
+      .oneOf([true], "Você precisa concordar com os Termos de Uso e com as Políticas de Privacidade."),  
   })
   .required();
 
@@ -44,6 +44,7 @@ export function Cadastro() {
     handleSubmit,
     watch,
     setError,
+    clearErrors,
     formState: { errors }, // Adicione essa propriedade na desestruturação
   } = useForm<Register>({
     resolver: yupResolver(schema),
@@ -285,7 +286,10 @@ export function Cadastro() {
                 type="checkbox"
                 checked={isChecked}
                 {...register("accept_terms")}
-                onChange={(e) => setIsChecked(e.target.checked)}
+                onChange={(e) => {
+                  setIsChecked(e.target.checked)
+                  clearErrors("accept_terms")
+                }}
               />
               <div className="flex flex-col gap-[0.75rem]">
                 <p className="text-[1.7rem] mbl:text-[1.3rem]">
@@ -299,7 +303,12 @@ export function Cadastro() {
                   </Link>{" "}
                 </p>
                 {errors.accept_terms && (
-                <span className="text-red text-[1.6rem]">{errors.accept_terms.message}</span>)}
+                  <span 
+                    className="text-red text-[1.6rem]"
+                  >
+                    {errors.accept_terms.message}
+                  </span>)
+                }
               </div>
             </div>
           </div>
