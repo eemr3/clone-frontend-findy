@@ -48,6 +48,7 @@ export function Cadastro() {
     handleSubmit,
     watch,
     setError,
+    clearErrors,
     formState: { errors }, // Adicione essa propriedade na desestruturação
   } = useForm<CandidateUserRegister>({
     resolver: yupResolver(schema),
@@ -120,7 +121,7 @@ export function Cadastro() {
           <div className="w-[70%] sm:justify-center  mbl:w-[85%]  ">
             <input
               type="name"
-              placeholder="insira seu Nome"
+              placeholder="Insira seu nome"
               {...register("name")}
               className={
                 errors.name
@@ -136,7 +137,7 @@ export function Cadastro() {
           <div className="w-[70%]  sm:justify-center  mbl:w-[85%]  ">
             <input
               type="email"
-              placeholder="insira seu email"
+              placeholder="Insira seu email"
               {...register("email")}
               className={
                 errors.email
@@ -156,7 +157,7 @@ export function Cadastro() {
           <div className="w-[70%] sm:justify-center mbl:w-[85%] mbl:flex-col mbl:items-center ">
             <input
               type="password"
-              placeholder="insira sua senha"
+              placeholder="Insira sua senha"
               {...register("password")}
               className={
                 errors.password
@@ -304,10 +305,15 @@ export function Cadastro() {
                 className="mr-[1.2rem] h-[2.9rem] w-[2.8rem]"
                 type="checkbox"
                 checked={isChecked}
-                {...register("accept_terms", {
+                /* {...register("accept_terms", {
                   onChange: (e) => setIsChecked(e.target.checked)
-                })}
+                })} */
 
+                {...register("accept_terms")}
+                onChange={(e) => {
+                  setIsChecked(e.target.checked)
+                  clearErrors("accept_terms")
+                }}
               />
               <div className="flex flex-col gap-[0.75rem]">
                 <p className="text-[1.7rem] mbl:text-[1.3rem]">
@@ -321,7 +327,12 @@ export function Cadastro() {
                   </Link>{" "}
                 </p>
                 {errors.accept_terms && (
-                  <span className="text-red text-[1.6rem]">{errors.accept_terms.message}</span>)}
+                  <span
+                    className="text-red text-[1.6rem]"
+                  >
+                    {errors.accept_terms.message}
+                  </span>)
+                }
               </div>
             </div>
           </div>
