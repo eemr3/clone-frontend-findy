@@ -1,5 +1,5 @@
-import { FormEvent, useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -9,7 +9,9 @@ import * as yup from "yup";
 import { CandidateUserRegister } from "../../types/CandidateUserRegister";
 import { Header } from "../../components/Header";
 import IconLock from "../../components/icons/IconConfirm";
+
 import { createUser } from "../../services/api";
+import { getErrorMessage } from "../../utils/ErrorMessageUtil";
 import mulherPagePrincipal from "../../assets/mulher-page-principal2.svg";
 
 const schema = yup
@@ -42,12 +44,12 @@ export function Cadastro() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [activeSubmit, setActiveSubmit] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     watch,
-    setError,
     clearErrors,
     formState: { errors }, // Adicione essa propriedade na desestruturação
   } = useForm<CandidateUserRegister>({
@@ -63,12 +65,6 @@ export function Cadastro() {
   );
 
   const handleSubmitRegister: SubmitHandler<CandidateUserRegister> = async (data, event) => {
-    /* const body = {
-      name: data.name,
-      email: data.email,
-      password: data.password,
-      confirmPassword: data.confirmPassword,
-    }; */
     setActiveSubmit(true);
     event?.preventDefault();
 
@@ -77,23 +73,11 @@ export function Cadastro() {
 
     try {
       const response = await createUser(data);
-      console.log('Success: ', response)
+      toast.success(getErrorMessage(response));
+      navigate("/");
     } catch (error) {
-      console.log('Error: ', error);
-      //toast.error(error.message);
+      toast.error(getErrorMessage(error));
     }
-
-    /*     if (data != null && isChecked) {
-          let result = await createUser(data);
-    
-          if (result.status === 409) {
-            setError("email", {
-              message: result.message,
-            });
-            toast.error(result.message);
-          }
-        } */
-
 
     setIsSuccess(true);
     setActiveSubmit(false);
@@ -149,7 +133,7 @@ export function Cadastro() {
               {
                 errors.email
                   ? errors.email.message
-                  : "" /* (result?.message === "" ? "" : result.message) */
+                  : ""
               }
             </span>
           </div>
@@ -275,7 +259,7 @@ export function Cadastro() {
                         : "text-[#01A195]"
                   }
                 >
-                  A senha deve ter pelo menos um caracter especial
+                  A senha deve ter pelo menos um caractere especial
                 </p>
               </div>
             </div>
