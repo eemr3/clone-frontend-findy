@@ -74,7 +74,7 @@ export function Cadastro() {
     try {
       const response = await createUser(data);
       toast.success(getErrorMessage(response));
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
