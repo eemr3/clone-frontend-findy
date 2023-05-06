@@ -47,10 +47,6 @@ const schema = yup
       .string()
       .required("Endereço do Linkedin obrigatório")
       .url("Endereço do Linkedin inválido"),
-    urlGithub: yup
-      .string()
-      .required("Endereço do Github obrigatório")
-      .url("Endereço do Github inválido"),
     email: yup
       .string()
       .required("Endereço de e-mail obrigatório")
@@ -114,20 +110,11 @@ export function Profile() {
     setActiveSubmit(true);
     values.description = `${values.name}'s Profile`;
     values.profileSkills = [1];
-    console.log(values);
+
     try {
-      const { ...newValues } = values;
-
-      const body = {
-        ...newValues,
-
-      };
-
-      //console.log("Dados do Form: ", body)
-
-      const resposta = await updateProfile(body);
+      const resposta = await updateProfile(values);
       if (resposta?.status === 201) {
-        navigate("/project");
+        navigate("/");
       }
     } catch (error) {
 
@@ -223,13 +210,7 @@ export function Profile() {
               fieldSetClassName={"ml-auto "}
               error={errors.phone?.message}
               mask="PHONE"
-              {...register("phone"/* , {
-                onChange: (e) => {
-                  /* setValue("phone", e.currentTarget.value); /
-                  console.log("Phone[input]: ", getValues("phone"))
-                }
-              } */
-              )}
+              {...register("phone")}
             />
 
 
@@ -247,7 +228,6 @@ export function Profile() {
               label="Insira o seu GitHub"
               placeholder="GitHub"
               fieldSetClassName={"ml-auto"}
-              error={errors.urlGithub?.message}
               {...register("urlGithub")}
             />
 
