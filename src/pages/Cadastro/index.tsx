@@ -73,7 +73,7 @@ export function Cadastro() {
 
     try {
       const response = await createUser(data);
-      toast.success(getErrorMessage(response));
+      toast.success("Conta criada com sucesso!");
       navigate("/login");
     } catch (error) {
       toast.error(getErrorMessage(error));

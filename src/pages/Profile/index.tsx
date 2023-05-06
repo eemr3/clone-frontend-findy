@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import jwt_decode from "jwt-decode";
 
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -27,6 +28,7 @@ import {
   getPositions,
   updateProfile,
 } from "../../services/api";
+import { getErrorMessage } from "../../utils/ErrorMessageUtil";
 
 type ProfileFormValues = CandidateProfile & {
   name: string;
@@ -112,12 +114,11 @@ export function Profile() {
     values.profileSkills = [1];
 
     try {
-      const resposta = await updateProfile(values);
-      if (resposta?.status === 201) {
-        navigate("/");
-      }
+      const response = await updateProfile(values);
+      toast.success(getErrorMessage(response));
+      navigate("/");
     } catch (error) {
-
+      toast.error(getErrorMessage(error));
     }
 
     setActiveSubmit(false);
