@@ -50,8 +50,10 @@ export function Home() {
       return;
     }
 
+    //localStorage.removeItem("complete_profile")
+    
     if (!candidateUser || !candidateUser.profile || Object.keys(candidateUser.profile).length === 0) {
-      return "/profile";
+      return "/first_access";
     }
 
     return "/project_registered";
