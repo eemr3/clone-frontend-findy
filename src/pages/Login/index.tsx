@@ -9,6 +9,8 @@ import mulherPagePrincipal from "../../assets/mulher-page-principal2.svg";
 import { Header } from "../../components/Header";
 import { AuthContext } from "../../context/auth";
 import { loginUser } from "../../services/api";
+import { getErrorMessage } from "../../utils/ErrorMessageUtil";
+import { toast } from "react-toastify";
 interface FormValues {
   email: string;
   password: string;
@@ -38,6 +40,7 @@ export function Login() {
   const onSubmit = async (data: any) => {
     if (data != null) {
       let result = await loginUser(data.email, data.password);
+      toast.success(getErrorMessage(result));
       if (result?.status === 200) {
         login(result);
 
@@ -68,7 +71,7 @@ export function Login() {
           <div className="w-[70%] sm:justify-center mbl:flex mbl:w-[85%]">
             <input
               type="email"
-              placeholder="insira seu email"
+              placeholder="Insira seu email"
               {...register("email")}
               className={
                 errors.email
@@ -112,13 +115,12 @@ export function Login() {
                 Matenha-me logado
               </p>
             </div>
-            <Link
+            {/* <Link
               to="#"
               className="text-[1.6rem] text-green-medium  mbl:text-[1.3rem]"
-            /* className="text-[1.6rem] text-green-medium  mbl:text-[1.3rem] mbl:text-[1rem] " */
             >
               Esqueceu a senha?
-            </Link>
+            </Link> */}
           </div>
           <button
             className="mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195] mbl:mt-[4.5rem]  mbl:h-[4rem] mbl:max-w-[100%]"

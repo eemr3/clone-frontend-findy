@@ -1,25 +1,25 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import jwt_decode from "jwt-decode";
-import { useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
-import * as yup from "yup";
-import { HeaderProfile } from "../../components/HeaderProfile";
-import { Heading } from "../../components/Heading";
-import { Text } from "../../components/Text";
-import { Checkbox } from "../../components/forms/Checkbox";
-import { InputDB } from "../../components/forms/InputDB";
-import { SelectDB } from "../../components/forms/SelectDB";
-import { TextErrorMessage } from "../../components/forms/TextErrorMessage";
-import { CodeIcon } from "../../components/icons/CodeIcon";
-import { PencilIcon } from "../../components/icons/PencilIcon";
-import { SocialMediaIcon } from "../../components/icons/SocialMediaIcon";
+import { yupResolver } from '@hookform/resolvers/yup';
+import jwt_decode from 'jwt-decode';
+import { useEffect, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
+import * as yup from 'yup';
+import { HeaderProfile } from '../../components/HeaderProfile';
+import { Heading } from '../../components/Heading';
+import { Text } from '../../components/Text';
+import { Checkbox } from '../../components/forms/Checkbox';
+import { InputDB } from '../../components/forms/InputDB';
+import { SelectDB } from '../../components/forms/SelectDB';
+import { TextErrorMessage } from '../../components/forms/TextErrorMessage';
+import { CodeIcon } from '../../components/icons/CodeIcon';
+import { PencilIcon } from '../../components/icons/PencilIcon';
+import { SocialMediaIcon } from '../../components/icons/SocialMediaIcon';
 import {
   formProject,
   getCandidateUser,
   getLanguages,
   getPositions,
-} from "../../services/api";
+} from '../../services/api';
 interface FormValues {
   name: string;
   urlTeamSelection: string;
@@ -38,25 +38,21 @@ interface FormValues {
 const schema = yup
   .object()
   .shape({
-    name: yup.string().required("Nome Obrigatorio"),
-    urlTeamSelection: yup.string().required("Link Obrigatorio"),
+    name: yup.string().required('Nome Obrigatorio'),
+    urlTeamSelection: yup.string().required('Link Obrigatorio'),
     projectScope: yup
       .string()
-      .required(
-        "Escopo Obrigatorio"
-      ) /* .required("Escopo do projeto obrigatório") */,
+      .required('Escopo Obrigatorio') /* .required("Escopo do projeto obrigatório") */,
     language: yup
       .array(yup.number())
-      .required("Obrigatório Pelos menos 1 liguagem ou ferramenta"),
+      .required('Obrigatório Pelos menos 1 liguagem ou ferramenta'),
     data_inicio: yup.string(),
-    responsible: yup.string().required("Responsavel Obrigatorio"),
-    contactResponsible: yup.string().required("Contato Obrigatorio"),
-    urlLinkediResponsible: yup.string().url("URL do LinkedIn inválida"),
+    responsible: yup.string().required('Responsavel Obrigatorio'),
+    contactResponsible: yup.string().required('Contato Obrigatorio'),
+    urlLinkediResponsible: yup.string().url('URL do LinkedIn inválida'),
     contactLeaders: yup.string(),
     findyHelp: yup.string(),
-    professional: yup
-      .array(yup.string())
-      .min(1, "Precisa escolher pelo menos um cargo."),
+    professional: yup.array(yup.string()).min(1, 'Precisa escolher pelo menos um cargo.'),
     /* others: yup.string().when("professional", {
         is: (area: string[]) => !!area && area.indexOf("Outro") > -1,
         then: (schema) => schema.required("Cargo obrigatório"),
@@ -85,16 +81,13 @@ export function Project() {
     resolver: yupResolver(schema),
     shouldFocusError: true,
     defaultValues: {
-      responsible: candidateUser ? candidateUser.name : "",
-      contactResponsible: candidateUser ? candidateUser.email : "",
+      responsible: candidateUser ? candidateUser.name : '',
+      contactResponsible: candidateUser ? candidateUser.email : '',
       language: [],
     },
   });
 
-  const handleUpdateProject: SubmitHandler<FormValues> = async (
-    values,
-    event
-  ) => {
+  const handleUpdateProject: SubmitHandler<FormValues> = async (values, event) => {
     event?.preventDefault();
     setActiveSubmit(true);
     console.log(values);
@@ -107,16 +100,14 @@ export function Project() {
       };
       let result = await formProject(body);
       if (result?.status === 201) {
-        navigate("/project_registered");
+        navigate('/project_registered');
       }
     } catch (error) {}
 
     setActiveSubmit(false);
   };
   const [selectedLanguageIds, setSelectedLanguageIds] = useState<any>([]);
-  const [selectedLanguageNames, setSelectedLanguageNames] = useState<string[]>(
-    []
-  );
+  const [selectedLanguageNames, setSelectedLanguageNames] = useState<string[]>([]);
   console.log(selectedLanguageIds);
 
   const handleLanguageChange = (event: any) => {
@@ -134,16 +125,16 @@ export function Project() {
 
   const handleRemoveLanguage = (index: number) => {
     setSelectedLanguageIds(
-      selectedLanguageIds.filter((_id: number, i: number) => i !== index)
+      selectedLanguageIds.filter((_id: number, i: number) => i !== index),
     );
     setSelectedLanguageNames(
-      selectedLanguageNames.filter((_name: string, i: number) => i !== index)
+      selectedLanguageNames.filter((_name: string, i: number) => i !== index),
     );
   };
 
   useEffect(() => {
     async function fetchData() {
-      const token: string | any = localStorage.getItem("token");
+      const token: string | any = localStorage.getItem('token');
       const { sub }: any = jwt_decode(token);
       const user = await getCandidateUser(sub);
       const pos = await getPositions();
@@ -159,13 +150,13 @@ export function Project() {
 
   useEffect(() => {
     if (!candidateUser) return;
-    setValue("responsible", candidateUser?.name);
-    setValue("contactResponsible", candidateUser?.email);
-    setValue("urlLinkediResponsible", candidateUser?.profile?.urlLinkedin);
-    setValue("language", selectedLanguageIds);
+    setValue('responsible', candidateUser?.name);
+    setValue('contactResponsible', candidateUser?.email);
+    setValue('urlLinkediResponsible', candidateUser?.profile?.urlLinkedin);
+    setValue('language', selectedLanguageIds);
   }, [candidateUser, selectedLanguageIds]);
 
-  const dataAtual = new Date().toLocaleDateString("pt-BR");
+  const dataAtual = new Date().toLocaleDateString('pt-BR');
 
   return (
     <div className="w-max-[144rem] flex flex-col overflow-x-hidden bg-blue-dark ">
@@ -177,11 +168,11 @@ export function Project() {
         </Heading>
 
         <Text type="md" className="mt-[6.4rem] inline-block mbl:text-[2rem]">
-          Preencha o formulário abaixo com todas as informações relevantes
-          acerca do projeto.
+          Preencha o formulário abaixo com todas as informações relevantes acerca do
+          projeto.
           <br />
-          <br />O formulário será submetido aos administradores da Findy, para
-          aprovação. O prazo para devolução é de XX dias.
+          <br />O formulário será submetido aos administradores da Findy, para aprovação.
+          O prazo para devolução é de XX dias.
         </Text>
       </article>
 
@@ -189,21 +180,21 @@ export function Project() {
         <div className="mx-auto mb-[16rem] mt-[7.4rem] w-[100%] max-w-[112.4rem]">
           <div className="grid grid-cols-2 lg:flex lg:flex-col lg:items-start lg:justify-center lg:gap-y-[6.469rem] mbl:gap-y-[4rem]">
             <InputDB
-              icon={<PencilIcon className={"mbl:max-w-[2rem] "} />}
-              {...register("name")}
+              icon={<PencilIcon className={'mbl:max-w-[2rem] '} />}
+              {...register('name')}
               label="Nome do Projeto"
               placeholder="Nome"
-              fieldSetClassName={"even:ml-auto"}
-              error={errors ? errors.name?.message : ""}
+              fieldSetClassName={'even:ml-auto'}
+              error={errors ? errors.name?.message : ''}
             />
 
             <InputDB
-              icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
+              icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
               label="Link para seleção da equipe"
-              {...register("urlTeamSelection")}
+              {...register('urlTeamSelection')}
               placeholder="Link"
-              fieldSetClassName={"ml-auto"}
-              error={errors ? errors.urlTeamSelection?.message : ""}
+              fieldSetClassName={'ml-auto'}
+              error={errors ? errors.urlTeamSelection?.message : ''}
             />
           </div>
           <div className="mb-[4rem] mt-[4rem] flex w-[100%] flex-col gap-[2rem] ">
@@ -212,39 +203,39 @@ export function Project() {
               htmlFor="nome_completo "
               placeholder="Escopo"
             >
-              Escopo do Projeto:{" "}
+              Escopo do Projeto:{' '}
             </label>
             <div className=" mt-[3.2rem]flex h-[22.2rem] w-[100%] max-w-[112.4rem] rounded-[0.8rem] border-[0.15rem] border-grey-#1 bg-white p-[1rem]">
               <textarea
-                {...register("projectScope")}
+                {...register('projectScope')}
                 className=" h-[100%] w-[100%]  resize-none p-[0.6rem]  text-[2.2rem] outline-none lg:text-[1.8rem] mbl:text-[1rem]"
               />
             </div>
             <span className=" mb-[1rem] mt-[0.8rem] block  pl-[1rem] text-[1.8rem] text-red">
-              {errors ? errors.projectScope?.message : ""}{" "}
+              {errors ? errors.projectScope?.message : ''}{' '}
             </span>
           </div>
 
-          <div className="grid h-[100%] grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] overflow-x-hidden  overflow-y-hidden  lg:flex sm:w-[32rem]  sm:max-w-[100%]  mbl:max-w-[100%] mbl:gap-y-[4rem]  ">
+          <div className="grid h-[100%] grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] overflow-x-hidden  overflow-y-hidden  sm:w-[32rem] sm:max-w-[100%]  lg:flex  mbl:max-w-[100%] mbl:gap-y-[4rem]  ">
             <SelectDB
-              icon={<CodeIcon className={"mbl:max-w-[2rem] "} />}
+              icon={<CodeIcon className={'mbl:max-w-[2rem] '} />}
               label="Selecione as linguagens de programação"
               placeholder="Selecione as linguagens"
-              fieldSetClassName={"even:ml-auto"}
+              fieldSetClassName={'even:ml-auto'}
               options={languages.map((language: any) => ({
                 value: language?.id,
                 label: language?.title,
                 name: language?.title,
               }))}
               onChange={handleLanguageChange}
-              error={errors ? errors.language?.message : ""}
+              error={errors ? errors.language?.message : ''}
             />
 
             <InputDB
-              icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
+              icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
               label="Data do inicio do projeto"
               placeholder="Data"
-              fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
+              fieldSetClassName={'even:ml-auto  even:lg:ml-[0]'}
               value={dataAtual}
               disabled
             />
@@ -256,15 +247,19 @@ export function Project() {
               htmlFor="nome_completo "
               placeholder="Deixe sua mensagem"
             >
-              Linguagens{" "}
+              Linguagens{' '}
             </label>
-            <div className="mt-[3.2rem]flex flex h-[22.2rem] w-[100%] max-w-[112.4rem] gap-[1rem] rounded-[0.8rem] border-[0.15rem] border-grey-#1 bg-white p-[1rem]">
+            <div
+              className="mt-[3.2rem]flex flex h-[22.2rem] w-[100%] max-w-[112.4rem] flex-wrap gap-[1rem] 
+             rounded-[0.8rem] border-[0.15rem] border-grey-#1 bg-white p-[1rem] md:h-auto"
+            >
               {selectedLanguageNames.map((lang: string, index: number) => (
                 <div
                   key={selectedLanguageIds[index]}
-                  className="selected-language flex h-[3rem] items-center justify-between bg-[lightgray] px-[1rem] pl-[1rem]"
+                  className="selected-language flex h-[3rem] items-center justify-between 
+                  bg-[lightgray] px-[1rem] pl-[1rem]"
                   data-index={index}
-                  {...register("language")}
+                  {...register('language')}
                 >
                   <p className="mr-[2rem] text-[2rem]">{lang}</p>
                   <button
@@ -297,7 +292,7 @@ export function Project() {
                   id={String(occupation.id)}
                   label={occupation.title}
                   value={occupation.title}
-                  {...register("professional")}
+                  {...register('professional')}
                 />
               ))}
             </div>
@@ -305,50 +300,46 @@ export function Project() {
 
           <div className="grid grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] lg:flex mbl:gap-y-[4rem]">
             <InputDB
-              icon={<PencilIcon className={"mbl:max-w-[2rem] "} />}
+              icon={<PencilIcon className={'mbl:max-w-[2rem] '} />}
               label="Insira o nome da pessoa responsável pelo projeto"
               placeholder="Nome"
-              fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
-              error={errors ? errors.responsible?.message : ""}
-              {...register("responsible")}
-              fieldSetBG={`${
-                candidateUser?.name ? "bg-[#d3d3d3!important]" : ""
-              }`}
+              fieldSetClassName={'even:ml-auto  even:lg:ml-[0]'}
+              error={errors ? errors.responsible?.message : ''}
+              {...register('responsible')}
+              fieldSetBG={`${candidateUser?.name ? 'bg-[#d3d3d3!important]' : ''}`}
             />
 
             <InputDB
-              icon={<SocialMediaIcon className={"mbl:max-w-[2rem]"} />}
+              icon={<SocialMediaIcon className={'mbl:max-w-[2rem]'} />}
               label="Insira o contato da pessoa responsável"
               placeholder="Contato"
-              fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
-              {...register("contactResponsible")}
-              error={errors ? errors.contactResponsible?.message : ""}
+              fieldSetClassName={'even:ml-auto  even:lg:ml-[0]'}
+              {...register('contactResponsible')}
+              error={errors ? errors.contactResponsible?.message : ''}
               fieldSetBG={`${
-                candidateUser?.email != undefined
-                  ? "bg-[#d3d3d3!important]"
-                  : ""
+                candidateUser?.email != undefined ? 'bg-[#d3d3d3!important]' : ''
               }`}
             />
             <InputDB
-              icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
+              icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
               label="Linkedin do Responsável"
               placeholder="LinkedIn"
-              fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
-              {...register("urlLinkediResponsible")}
-              error={errors ? errors.urlLinkediResponsible?.message : ""}
+              fieldSetClassName={'even:ml-auto  even:lg:ml-[0]'}
+              {...register('urlLinkediResponsible')}
+              error={errors ? errors.urlLinkediResponsible?.message : ''}
               fieldSetBG={`${
                 candidateUser?.profile?.urlLinkedin != undefined
-                  ? "bg-[#d3d3d3!important]"
-                  : ""
+                  ? 'bg-[#d3d3d3!important]'
+                  : ''
               }`}
             />
             <InputDB
-              icon={<SocialMediaIcon className={"mbl:max-w-[2rem] "} />}
+              icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
               label="Contato de outros responsaveis"
               placeholder="LinkedIn"
-              fieldSetClassName={"even:ml-auto  even:lg:ml-[0]"}
-              {...register("contactLeaders")}
-              error={errors ? errors.urlLinkediResponsible?.message : ""}
+              fieldSetClassName={'even:ml-auto  even:lg:ml-[0]'}
+              {...register('contactLeaders')}
+              error={errors ? errors.urlLinkediResponsible?.message : ''}
             />
           </div>
 
@@ -358,11 +349,11 @@ export function Project() {
               htmlFor="nome_completo "
               placeholder="Deixe sua mensagem"
             >
-              Como a Findy pode apoiar o seu projeto?{" "}
+              Como a Findy pode apoiar o seu projeto?{' '}
             </label>
             <div className=" mt-[3.2rem]flex h-[22.2rem] w-[100%] max-w-[112.4rem] rounded-[0.8rem] border-[0.15rem] border-grey-#1 bg-white p-[1rem]">
               <textarea
-                {...register("findyHelp")}
+                {...register('findyHelp')}
                 className="h-[100%]  w-[100%] resize-none p-[0.6rem] outline-none"
               />
             </div>
