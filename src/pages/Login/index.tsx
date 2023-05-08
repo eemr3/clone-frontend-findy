@@ -9,6 +9,8 @@ import mulherPagePrincipal from "../../assets/mulher-page-principal2.svg";
 import { Header } from "../../components/Header";
 import { AuthContext } from "../../context/auth";
 import { loginUser } from "../../services/api";
+import { getErrorMessage } from "../../utils/ErrorMessageUtil";
+import { toast } from "react-toastify";
 interface FormValues {
   email: string;
   password: string;
@@ -38,6 +40,7 @@ export function Login() {
   const onSubmit = async (data: any) => {
     if (data != null) {
       let result = await loginUser(data.email, data.password);
+      toast.success(getErrorMessage(result));
       if (result?.status === 200) {
         login(result);
 

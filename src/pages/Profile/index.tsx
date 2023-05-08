@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import jwt_decode from "jwt-decode";
 
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -27,6 +28,7 @@ import {
   getPositions,
   updateProfile,
 } from "../../services/api";
+import { getErrorMessage } from "../../utils/ErrorMessageUtil";
 
 type ProfileFormValues = CandidateProfile & {
   name: string;
@@ -47,10 +49,6 @@ const schema = yup
       .string()
       .required("Endereço do Linkedin obrigatório")
       .url("Endereço do Linkedin inválido"),
-    urlGithub: yup
-      .string()
-      .required("Endereço do Github obrigatório")
-      .url("Endereço do Github inválido"),
     email: yup
       .string()
       .required("Endereço de e-mail obrigatório")
@@ -113,7 +111,6 @@ export function Profile() {
     setActiveSubmit(true);
     values.description = `${values.name}'s Profile`;
     values.profileSkills = [1];
-    //console.log(values);
     try {
       const { ...newValues } = values;
 
@@ -121,27 +118,24 @@ export function Profile() {
         ...newValues,
 
       };
-
-      //console.log("Dados do Form: ", body)
-
+      
       const resposta = await updateProfile(body);
+      toast.success(getErrorMessage(response));
+      
       if (resposta?.status === 201) {
         navigate("/project");
       }
 
       //localStorage.setItem("complete_profile", candidateUser);
-
-
     } catch (error) {
-
+      toast.error(getErrorMessage(error));
     }
 
     setActiveSubmit(false);
   };
 
   const candidate = JSON.stringify(candidateUser)
-
-  //console.log(candidateUser)
+  
   localStorage.setItem("complete_profile", candidate);
 
   useEffect(() => {
@@ -149,14 +143,12 @@ export function Profile() {
       const pos = await getPositions();
 
       setOccupations(pos.data);
-      //console.log(pos);
 
       const token: string | any = localStorage.getItem("token");
       const { sub }: any = jwt_decode(token);
 
       const user = await getCandidateUser(sub);
       setCandidateUser(user.data);
-      //console.log("user: ", user);
     }
     fetchData();
   }, []);
@@ -231,13 +223,7 @@ export function Profile() {
               fieldSetClassName={"ml-auto "}
               error={errors.phone?.message}
               mask="PHONE"
-              {...register("phone"/* , {
-                onChange: (e) => {
-                  /* setValue("phone", e.currentTarget.value); /
-                  console.log("Phone[input]: ", getValues("phone"))
-                }
-              } */
-              )}
+              {...register("phone")}
             />
 
 
@@ -255,7 +241,6 @@ export function Profile() {
               label="Insira o seu GitHub"
               placeholder="GitHub"
               fieldSetClassName={"ml-auto"}
-              error={errors.urlGithub?.message}
               {...register("urlGithub")}
             />
 

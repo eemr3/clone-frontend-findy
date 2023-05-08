@@ -10,3 +10,4 @@ export type CandidateUser = Omit<CandidateUserRegister, "password" | "confirmPas
   updatedAt: string;
   profile?: CandidateProfile;
 }
+

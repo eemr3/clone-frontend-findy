@@ -46,40 +46,41 @@ module.exports = {
     extend: {
       backgroundImage: {
         'frame-one': 'url(/assets/bg-frame1.png)'
-      }
-    }/* ,
-    boxShadow: {
-      'shadow-#1': '0px 10px 30px 5px rgba(1, 161, 149, 0.24)',
-      'shadow-#2': '1px 1px 2px 2px black',
-      
-    } */,
-    screens: {
-      '4xl': { 'max': '2170px' },
-      // => @media (max-width: 2170px) { ... }
-      // => @media (max-width: 2170px) { ... }
-      '3xl': { 'max': '1770px' },
-      // => @media (max-width: 1870px) { ... }
-      '2xl': { 'max': '1600px' },
-      // => @media (max-width: 1670px) { ... }
+      },
 
-      'xl': { 'max': '1350px' },
-      // => @media (max-width: 1279px) and (max-height: 1350px) { ... }
+      keyframes: {
+        marquee: {
+          '0%': { transform: 'translateX(-100%)' },
+        },
+      },
+      screens: {
+        '4xl': { 'max': '2170px' },
+        // => @media (max-width: 2170px) { ... }
+        // => @media (max-width: 2170px) { ... }
+        '3xl': { 'max': '1770px' },
+        // => @media (max-width: 1870px) { ... }
+        '2xl': { 'max': '1600px' },
+        // => @media (max-width: 1670px) { ... }
 
-      'lg': { 'max': '1200px' },
-      // => @media (max-width: 1023px) { ... }
+        'xl': { 'max': '1350px' },
+        // => @media (max-width: 1279px) and (max-height: 1350px) { ... }
 
-      'md': { 'max': '767px' },
-      // => @media (max-width: 767px)  { ... }
+        'lg': { 'max': '1200px' },
+        // => @media (max-width: 1023px) { ... }
 
-      'sm': { 'max': '639px' },
-      // => @media (max-width: 639px) { ... }
+        'md': { 'max': '767px' },
+        // => @media (max-width: 767px)  { ... }
 
-      'mbl': { 'max': '500px' },
-      // => @media (max-width: 500px) { ... }
-      'md-h': { 'raw': '(max-height: 1110px)' },
-      // => @media (min-height: 800px) { ... }
+        'sm': { 'max': '639px' },
+        // => @media (max-width: 639px) { ... }
+
+        'mbl': { 'max': '500px' },
+        // => @media (max-width: 500px) { ... }
+        'md-h': { 'raw': '(max-height: 1110px)' },
+        // => @media (min-height: 800px) { ... }
+      },
     },
-  },
 
-  plugins: [],
+    plugins: [],
+  }
 }
