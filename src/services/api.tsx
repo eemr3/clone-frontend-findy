@@ -5,7 +5,7 @@ import { CandidateUserRegister } from "../types/CandidateUserRegister";
 /* const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIzLCJuYW1lIjoiRGFyY2lvIENhcnZhbGhvIiwiZW1haWwiOiJkYXJjaW8uY2FydmFsaG8uZGV2QGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxNDc5ODY4LCJleHAiOjE2ODE0ODc4Njh9.BP4yluPsDNGFGzMYn6Wuv6JQArxTnbiDJA4PU_-l3fQ"; */
 
 export const api = axios.create({
-  //baseURL: "https://findybackend-development.up.railway.app",
+  //baseURL: "http://localhost:3001",
   baseURL: 'https://findy-api.onrender.com',
 });
 
