@@ -5,3 +5,4 @@ export type CandidateUserRegister = LoginUser & {
   confirmPassword: string;
   accept_terms: boolean;
 }
+

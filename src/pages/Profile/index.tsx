@@ -103,7 +103,6 @@ export function Profile() {
   });
 
   const [disableOtherDescription, setDisableOtherDescription] = useState(true);
-
   const handleUpdateProfile: SubmitHandler<ProfileFormValues> = async (
     values,
     event
@@ -112,11 +111,22 @@ export function Profile() {
     setActiveSubmit(true);
     values.description = `${values.name}'s Profile`;
     values.profileSkills = [1];
-
     try {
-      const response = await updateProfile(values);
+      const { ...newValues } = values;
+
+      const body = {
+        ...newValues,
+
+      };
+      
+      const resposta = await updateProfile(body);
       toast.success(getErrorMessage(response));
-      navigate("/");
+      
+      if (resposta?.status === 201) {
+        navigate("/project");
+      }
+
+      //localStorage.setItem("complete_profile", candidateUser);
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -124,19 +134,21 @@ export function Profile() {
     setActiveSubmit(false);
   };
 
+  const candidate = JSON.stringify(candidateUser)
+  
+  localStorage.setItem("complete_profile", candidate);
+
   useEffect(() => {
     async function fetchData() {
       const pos = await getPositions();
 
       setOccupations(pos.data);
-      console.log(pos);
 
       const token: string | any = localStorage.getItem("token");
       const { sub }: any = jwt_decode(token);
 
       const user = await getCandidateUser(sub);
       setCandidateUser(user.data);
-      console.log("user: ", user);
     }
     fetchData();
   }, []);
