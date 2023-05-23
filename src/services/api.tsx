@@ -1,12 +1,13 @@
 import axios, { AxiosError } from "axios";
 import { toast } from "react-toastify";
 import { CandidateUserRegister } from "../types/CandidateUserRegister";
+import { RecoveryPassword } from "../types/RecoveryPassword";
 
 /* const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIzLCJuYW1lIjoiRGFyY2lvIENhcnZhbGhvIiwiZW1haWwiOiJkYXJjaW8uY2FydmFsaG8uZGV2QGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxNDc5ODY4LCJleHAiOjE2ODE0ODc4Njh9.BP4yluPsDNGFGzMYn6Wuv6JQArxTnbiDJA4PU_-l3fQ"; */
 
 export const api = axios.create({
   //baseURL: "http://localhost:3001",
-  baseURL: 'https://findy-api.onrender.com',
+  baseURL: 'http://52.255.206.198:3001',
 });
 
 
@@ -110,6 +111,29 @@ export const updateProfile = async (body: any) => {
     return await api.post('/api/candidate-profile', body);
   } catch (error: any) {
     console.log(error);
+  }
+};
+
+export const recoveryPassword = async (email: string) => {
+  try {
+    const response = await api.post('/api/send-recover-password', {email});
+    
+    return response
+    
+  } catch (error: any) {
+    console.log(error)
+   
+  }
+};
+
+export const resetPassword = async (body: RecoveryPassword, id: string) => {
+  try {
+    const response = await api.patch(`/api/reset-password/${id}`, body);
+    
+    return response
+
+  } catch (error: any) {
+    console.log(error)
   }
 };
 
