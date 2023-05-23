@@ -12,6 +12,8 @@ import { ProjectRegistred } from "../pages/ProjectsRegistered";
 import { getCandidateUser } from "../services/api";
 import { CandidateUser } from "../types/CandidateUser";
 import { Loading } from "../components/Loading";
+import { ForgotPassword } from "../pages/ForgotPassword";
+import { PasswordRecovery } from "../pages/PasswordRecovery";
 
 
 export const AppRouter = () => {
@@ -117,8 +119,9 @@ export const AppRouter = () => {
 
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/forgot_password" element={<ForgotPassword />} />
+          <Route path="/password_recovery" element={<PasswordRecovery />} />
         </Routes>
-
       )
       }
     </>
