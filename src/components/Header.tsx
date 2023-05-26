@@ -1,36 +1,25 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import IconMenu from "../assets/hamburger.svg";
-import { AuthContext } from "../context/auth";
+
 import { Button } from "./Button";
 import { Logo } from "./Logo";
+import { AuthContext } from "../context/auth";
+
+import IconMenu from "../assets/hamburger.svg";
 
 export const Header = (props: { showJustify: boolean }) => {
   const [showContent, setShowContent] = React.useState<boolean>(false);
-  const { logout, authenticated } = useContext(AuthContext);
+  const { signOut, isAuthenticated } = useContext(AuthContext);
   function handleMenu() {
     setShowContent(!showContent);
   }
 
   function handleLogout() {
-    logout();
-
-    setTimeout(() => { });
+    signOut();
   }
+
+
   return (
-
-    /* <header className="flex h-[9.977rem] items-center bg-blue-dark">
-          <div
-            className={`flex w-full items-center md:mx-[0] ${props.showJustify ? "justify-between" : ""
-              }`}
-          >
-            <Link
-              className={`ml-[4.624rem] ${props.showJustify ? "" : "mr-[12.3rem] sm:mr-[6rem]"}`}
-              to="/"
-            >
-              <Logo />
-            </Link> */
-
 
     <>
       <div className="bg-gray-800 py-3 pt-[2rem]">
@@ -45,16 +34,13 @@ export const Header = (props: { showJustify: boolean }) => {
           >
             <Logo />
           </Link>
-          {/* <Link to="/" className="pointer">
-            <Logo className="ml-[4.624rem] sm:h-[3.5rem] sm:max-w-[10.5rem]" />
-          </Link> */}
 
           <button className="hidden pr-[4rem] lg:block" onClick={handleMenu}>
             <img src={IconMenu} alt="Menu" className="  h-[4rem] w-auto" />
           </button>
-          {/* <nav className="flex items-center gap-5 "> */}
+
           <nav className={"mt-5 flex gap-[2rem] pl-[5rem] pr-[3rem] lg:hidden"}>
-            {authenticated ? (
+            {isAuthenticated ? (
               <Link to="/" onClick={() => handleLogout()}>
                 <Button>
                   <p> Logout</p>
@@ -77,7 +63,7 @@ export const Header = (props: { showJustify: boolean }) => {
       {showContent ? (
         <div className=" bg-gray-800 absolute right-5 top-[8rem] flex w-[20rem] items-center justify-center bg-blue-dark shadow-shadow-#2 lg:block ">
           <nav className=" mr-[3rem] w-[max-content] text-3xl font-bold text-white">
-            {authenticated ? (
+            {isAuthenticated ? (
               <ul>
                 <li className=" border-b border-black p-[1rem]">
                   <button className="bg " onClick={() => handleLogout()}>

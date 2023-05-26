@@ -1,16 +1,17 @@
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import mulherPagePrincipal from "../../assets/mulher-page-principal2.svg";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { toast } from "react-toastify";
+
 import { Header } from "../../components/Header";
 import { AuthContext } from "../../context/auth";
 import { loginUser } from "../../services/api";
 import { getErrorMessage } from "../../utils/ErrorMessageUtil";
-import { toast } from "react-toastify";
+
+import mulherPagePrincipal from "../../assets/mulher-page-principal2.svg";
+
 interface FormValues {
   email: string;
   password: string;
@@ -26,7 +27,7 @@ const schema = yup
 
 export function Login() {
   const [isSuccess, setIsSuccess] = useState(false);
-  const { login } = useContext(AuthContext);
+  const { signIn } = useContext(AuthContext);
   const navigate = useNavigate();
   const {
     register,
@@ -42,7 +43,7 @@ export function Login() {
       let result = await loginUser(data.email, data.password);
       toast.success(getErrorMessage(result));
       if (result?.status === 200) {
-        login(result);
+        signIn(result)
 
         setTimeout(() => {
           navigate("/");
@@ -83,7 +84,7 @@ export function Login() {
               {
                 errors.email
                   ? errors.email.message
-                  : "" /* (result?.message === "" ? "" : result.message) */
+                  : ""
               }
             </span>
           </div>
@@ -111,7 +112,6 @@ export function Login() {
                 type="checkbox"
               />
               <p className="text-[1.6rem]  mbl:text-[1.3rem]">
-                {/* <p className="text-[1.6rem]  mbl:text-[1.3rem] mbl:text-[1rem]"> */}
                 Matenha-me logado
               </p>
             </div>

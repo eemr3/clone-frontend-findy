@@ -1,16 +1,29 @@
 import { createContext, useEffect, useState } from "react";
 import api from "../services/api";
+import jwt_decode from "jwt-decode";
 
 interface User {
   email?: string;
 }
 
+export interface Token {
+  sub: number;
+  name: string;
+  email: string;
+  roles: string;
+  iat: number;
+  exp: number
+}
+
 interface AuthContextData {
-  authenticated: boolean;
-  user: User | null;
+  user: User;
+  isAuthenticated: boolean;
   loading: boolean;
-  login: (data: object) => void;
-  logout: () => void;
+  isTokenExpired: () => boolean;
+  hasToken: () => boolean;
+  signOutIfTokenIsExpiredOrNotExist: () => string;
+  signIn: (data: object) => void;
+  signOut: () => void;
   setLoggedUser: (user: User) => void;
 }
 
@@ -22,60 +35,83 @@ export const AuthContext = createContext<AuthContextData>(
 );
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User>({} as User);
+  const isAuthenticated = JSON.stringify(user) !== "{}"
   const [loading, setLoading] = useState(true);
-  const [authenticated, setAuthenticated] = useState(false);
+
+  function handleSetUser(token: string) {
+    const { email } = jwt_decode<Token>(token);
+    setUser({ email });
+  }
 
   useEffect(() => {
-    //const recoveredUser = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
 
-    if (/* recoveredUser && */ token) {
-      api.defaults.headers.Authorization = `Bearer ${token}`;
-      /*  setUser(JSON.parse(recoveredUser)); */
-      setAuthenticated(true);
+    async function configureToken() {
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        api.defaults.headers.Authorization = `Bearer ${token}`;
+        handleSetUser(token);
+      }
     }
 
+    configureToken();
     setLoading(false);
   }, []);
 
-  const login = ({ data }: any) => {
-    /*   const loggedUser = {
-      data,
-    }; */
+  const isTokenExpired = () => {
+    const token = localStorage.getItem("token");
 
-    const token = data.data.access_token;
+    if (!token)
+      return true;
 
-    /*  localStorage.setItem("user", JSON.stringify(loggedUser)); */
+    const { exp }/* : any */ = jwt_decode<Token>(token);
+    const isExpired = (exp * 1000) < Date.now();
+    return isExpired;
+  }
+
+  const hasToken = () => !!localStorage.getItem("token");
+
+  const signOutIfTokenIsExpiredOrNotExist = () => {
+    const tokenNotExists = !hasToken();
+    if (isTokenExpired() || (tokenNotExists && isAuthenticated)) {
+      signOut();
+      return tokenNotExists ? "Login não identificado" : "Login está expirado";
+    }
+    return ""
+  }
+
+  const signIn = async ({ data }: any) => {
+
+    const { access_token: token } = data.data;
+
     localStorage.setItem("token", token);
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
-
-    setAuthenticated(true);
-    /*  setUser(loggedUser); */
+    handleSetUser(token);
   };
 
-  const logout = () => {
-    /*  localStorage.removeItem("user"); */
+  const signOut = () => {
     localStorage.removeItem("token");
     api.defaults.headers.Authorization = null;
-    setAuthenticated(false);
-    setUser(null);
+    setUser({} as User);
   };
 
   const setLoggedUser = (user: User) => {
     setUser(user);
-    setAuthenticated(true);
   };
 
   return (
     <AuthContext.Provider
       value={{
-        authenticated,
         user,
+        isAuthenticated,
         loading,
-        login,
-        logout,
+        isTokenExpired,
+        hasToken,
+        signOutIfTokenIsExpiredOrNotExist,
+        signIn,
+        signOut,
         setLoggedUser,
       }}
     >

@@ -1,36 +1,52 @@
 import { useContext, useEffect, useState } from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import { toast } from "react-toastify";
 
-import { AuthContext } from "../context/auth";
+import { CandidateUser } from "../types/CandidateUser";
+
+import { Loading } from "../components/Loading";
 import { Cadastro } from "../pages/Cadastro";
 import { Home } from "../pages/Home/mvp-1/index";
 import { Login } from "../pages/Login";
 import { Profile } from "../pages/Profile";
 import { Project } from "../pages/Project/index";
 import { ProjectRegistred } from "../pages/ProjectsRegistered";
+import { AuthContext, Token } from "../context/auth";
 import { getCandidateUser } from "../services/api";
-import { CandidateUser } from "../types/CandidateUser";
-import { Loading } from "../components/Loading";
+import { getErrorMessage } from "../utils/ErrorMessageUtil";
 
 
 export const AppRouter = () => {
   const [candidateUser, setCandidateUser] = useState<CandidateUser>({} as CandidateUser);
   const [isLoading, setIsLoading] = useState(true);
-  //let isFirst = true;
+  const { isAuthenticated, loading, isTokenExpired, hasToken, signOutIfTokenIsExpiredOrNotExist } = useContext(AuthContext);
+
+  const location = useLocation();
+
+  useEffect(() => {
+    if (hasToken() || (!hasToken() && isAuthenticated)) {
+      const response = signOutIfTokenIsExpiredOrNotExist();
+
+      response &&
+        toast.warning(response);
+    }
+  }, [location])
 
   interface RouteElementProps {
     children: JSX.Element;
   }
 
-  const Private = ({ children }: RouteElementProps /* { children }: any */) => {
-    const { authenticated, loading } = useContext(AuthContext);
+
+  const Private = ({ children }: RouteElementProps) => {
+    const token = localStorage.getItem("token");
+
+    if (!token || !isAuthenticated || isTokenExpired()) {
+      return <Navigate to="/login" />;
+    }
 
     if (loading) {
       return <div>Carregando...</div>;
-    }
-    if (!authenticated) {
-      return <Navigate to="/login" />;
     }
 
     return children;
@@ -45,47 +61,42 @@ export const AppRouter = () => {
     if (candidateUser.profile && Object.keys(candidateUser.profile).length > 0)
       return <Navigate to="/" />
 
-
     return children;
   }
 
   useEffect(() => {
     async function getUserToken() {
-      const token: string | any = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        //setIsLoading(false);
+        return
+      }
 
       try {
-        const { sub }: any = await jwt_decode(token);
-        //const response = await getCandidateUser(sub);
-        await getCandidateUser(sub)
-        .then(response => {
-          setCandidateUser(response.data)
-          setIsLoading(false);
-        })
-        
-      } catch(error) {
-        setIsLoading(false);
+        const { sub } = jwt_decode<Token>(token);
+
+        await getCandidateUser(String(sub))
+          .then(response => {
+            setCandidateUser(response.data)
+          })
+
+      } catch (error) {
+        toast.error(getErrorMessage(error));
       }
     }
 
-    /*if(isFirst) {
-      
-      isFirst = false
-    }*/
-
     getUserToken();
-    
+    setIsLoading(false);
+
   }, []);
 
-  useEffect(() => {
-    console.log("isLoading : ", isLoading)
-  },[isLoading])
 
   return (
     <>
       {isLoading ? (
         <Loading type="3Dot" />
       ) : (
-
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
@@ -117,8 +128,8 @@ export const AppRouter = () => {
 
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-
       )
       }
     </>
