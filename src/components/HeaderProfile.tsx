@@ -6,14 +6,14 @@ import { Button } from "./Button";
 import { Logo } from "./Logo";
 export function HeaderProfile(props: { showJustify: boolean }) {
   const [showContent, setShowContent] = React.useState<boolean>(false);
-  const { logout, authenticated } = useContext(AuthContext);
+  const { signOut, isAuthenticated } = useContext(AuthContext);
   function handleMenu() {
     setShowContent(!showContent);
   }
   function handleLogout() {
-    logout();
+    signOut();
 
-    setTimeout(() => {});
+    setTimeout(() => { });
   }
   return (
     <>
@@ -32,7 +32,7 @@ export function HeaderProfile(props: { showJustify: boolean }) {
           <nav
             className={"mt-5 flex gap-[2rem] pl-[5rem] pr-[4rem] lg:hidden "}
           >
-            {authenticated ? (
+            {isAuthenticated ? (
               <>
                 <Button>
                   <Link to="/">
@@ -106,7 +106,7 @@ export function HeaderProfile(props: { showJustify: boolean }) {
               </button>
             </li>
  */}
-            {authenticated ? (
+            {isAuthenticated ? (
               <>
                 <li className=" border-b border-black p-[1rem]">
                   <button className="bg" onClick={() => handleLogout()}>

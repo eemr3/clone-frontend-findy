@@ -1,18 +1,22 @@
-import jwt_decode from "jwt-decode";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 import { toast } from "react-toastify";
+
+import { Button } from "../../../components/Button";
+import { Header } from "../../../components/Header";
+import { AuthContext, Token } from "../../../context/auth";
+import { getCandidateUser } from "../../../services/api";
+
 import c from "../../../assets/c.svg";
 import mulherPagePrincipal from "../../../assets/mulher-page-principal.svg";
 import mulherPagePrincipal3 from "../../../assets/mulher-page-principal3.svg";
-import { Button } from "../../../components/Button";
-import { Header } from "../../../components/Header";
-import { AuthContext } from "../../../context/auth";
-import { getCandidateUser } from "../../../services/api";
+
+
 export function Home() {
   const [larguraTela, setLarguraTela] = useState(window.innerWidth);
   const [candidateUser, setCandidateUser] = useState<any>();
-  const { authenticated } = useContext(AuthContext);
+  const { isAuthenticated } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,11 +27,13 @@ export function Home() {
     window.addEventListener("resize", handleResize);
 
     async function fetchData() {
-      const token: string | any = localStorage.getItem("token");
-      const { sub }: any = jwt_decode(token);
+      const token = localStorage.getItem("token");
 
-      const user = await getCandidateUser(sub);
-      setCandidateUser(user.data);
+      if (token) {
+        const { sub } = jwt_decode<Token>(token);
+        const user = await getCandidateUser(String(sub));
+        setCandidateUser(user.data);
+      }
 
     }
     fetchData();
@@ -37,7 +43,7 @@ export function Home() {
   }, []);
 
   const handleVerification = () => {
-    if (!authenticated) {
+    if (!isAuthenticated) {
       toast.error("Você precisa estar logado para continuar", {
         style: { fontSize: "1.8rem" },
         autoClose: 1600,
@@ -50,8 +56,6 @@ export function Home() {
       return;
     }
 
-    //localStorage.removeItem("complete_profile")
-    
     if (!candidateUser || !candidateUser.profile || Object.keys(candidateUser.profile).length === 0) {
       return "/first_access";
     }
