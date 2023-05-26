@@ -21,7 +21,7 @@ const schema = yup
   .object()
   .shape({
     email: yup.string().required("E-mail obrigatório").email("E-mail inválido"),
-    password: yup.string().required("Senha obrigatório"),
+    password: yup.string().required("Senha obrigatória"),
   })
   .required();
 
@@ -106,21 +106,24 @@ export function Login() {
           </div>
 
           <div className="mt-[2rem] flex w-[70%] justify-between mbl:mt-[0] mbl:w-[80%]">
-            <div className="flex">
-              <input
-                className="mr-[1.2rem] h-[2.5rem] w-[2.8rem] border-green-medium mbl:mr-[0.5rem] mbl:h-[2.2rem] "
-                type="checkbox"
-              />
-              <p className="text-[1.6rem]  mbl:text-[1.3rem]">
-                Matenha-me logado
-              </p>
+            <div className="flex justify-between items-center w-full">
+              <div className="flex items-center">
+                <input
+                  className="mr-[1.2rem] h-[2.5rem] w-[2.8rem] border-green-medium mbl:mr-[0rem] mbl:h-[1.31rem] mbl-w-[1.35rem] "
+                  type="checkbox"
+                />
+                <p className="text-[1.6rem] mbl:text-[1.3rem]">
+                  Matenha-me logado
+                </p>
+              </div>
+              <Link
+                to="/forgot_password"
+                className="text-[1.6rem] text-green-medium  mbl:text-[1.3rem]"
+              >
+                Esqueceu a senha?
+              </Link>
             </div>
-            {/* <Link
-              to="#"
-              className="text-[1.6rem] text-green-medium  mbl:text-[1.3rem]"
-            >
-              Esqueceu a senha?
-            </Link> */}
+
           </div>
           <button
             className="mt-[6.6rem] h-[6rem] w-[70%] rounded-[3.2rem] bg-[#01A195] mbl:mt-[4.5rem]  mbl:h-[4rem] mbl:max-w-[100%]"

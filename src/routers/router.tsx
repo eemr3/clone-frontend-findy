@@ -15,6 +15,8 @@ import { ProjectRegistred } from "../pages/ProjectsRegistered";
 import { AuthContext, Token } from "../context/auth";
 import { getCandidateUser } from "../services/api";
 import { getErrorMessage } from "../utils/ErrorMessageUtil";
+import { ForgotPassword } from "../pages/ForgotPassword";
+import { PasswordRecovery } from "../pages/PasswordRecovery";
 
 
 export const AppRouter = () => {
@@ -69,7 +71,6 @@ export const AppRouter = () => {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        //setIsLoading(false);
         return
       }
 
@@ -128,6 +129,8 @@ export const AppRouter = () => {
 
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
+          <Route path="/forgot_password" element={<ForgotPassword />} />
+          <Route path="/password_recovery" element={<PasswordRecovery />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       )
