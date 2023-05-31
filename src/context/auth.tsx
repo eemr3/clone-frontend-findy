@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import api from "../services/api";
 import jwt_decode from "jwt-decode";
+import { destroyCookie, parseCookies, setCookie } from 'nookies';
 
 interface User {
   email?: string;
@@ -19,6 +20,7 @@ interface AuthContextData {
   user: User;
   isAuthenticated: boolean;
   loading: boolean;
+  getToken: () => string;
   isTokenExpired: () => boolean;
   hasToken: () => boolean;
   signOutIfTokenIsExpiredOrNotExist: () => string;
@@ -37,17 +39,19 @@ export const AuthContext = createContext<AuthContextData>(
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User>({} as User);
   const isAuthenticated = JSON.stringify(user) !== "{}"
+  const [tokenExpiration, setTokenExpiration] = useState(0);
   const [loading, setLoading] = useState(true);
 
   function handleSetUser(token: string) {
-    const { email } = jwt_decode<Token>(token);
+    const { email, exp } = jwt_decode<Token>(token);
     setUser({ email });
+    setTokenExpiration(exp * 1000);
   }
 
   useEffect(() => {
 
     async function configureToken() {
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
       if (token) {
         api.defaults.headers.Authorization = `Bearer ${token}`;
@@ -59,24 +63,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     setLoading(false);
   }, []);
 
+  const getToken = () => {
+    const { 'findy.token': token } = parseCookies();
+    return token;
+  }
+
   const isTokenExpired = () => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
 
     if (!token)
       return true;
 
-    const { exp }/* : any */ = jwt_decode<Token>(token);
+    const { exp } = jwt_decode<Token>(token);
     const isExpired = (exp * 1000) < Date.now();
     return isExpired;
   }
 
-  const hasToken = () => !!localStorage.getItem("token");
+  const hasToken = () => !!getToken();
 
   const signOutIfTokenIsExpiredOrNotExist = () => {
     const tokenNotExists = !hasToken();
+
     if (isTokenExpired() || (tokenNotExists && isAuthenticated)) {
       signOut();
-      return tokenNotExists ? "Login não identificado" : "Login está expirado";
+      return tokenNotExists && (tokenExpiration > Date.now()) ? "Login não identificado" : "Login está expirado";
     }
     return ""
   }
@@ -85,14 +95,20 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const { access_token: token } = data.data;
 
-    localStorage.setItem("token", token);
+    const { exp } = jwt_decode<Token>(token);
+    const expirationTime = Math.ceil(((exp * 1000) - Date.now()) / 1000);
+
+    setCookie(undefined, "findy.token", token, {
+      maxAge: expirationTime, //60 * 60 * 24, // 24 hours
+      path: '/'
+    });
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
     handleSetUser(token);
   };
 
   const signOut = () => {
-    localStorage.removeItem("token");
+    destroyCookie(undefined, "findy.token");
     api.defaults.headers.Authorization = null;
     setUser({} as User);
   };
@@ -107,6 +123,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         user,
         isAuthenticated,
         loading,
+        getToken,
         isTokenExpired,
         hasToken,
         signOutIfTokenIsExpiredOrNotExist,

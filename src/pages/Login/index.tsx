@@ -41,6 +41,7 @@ export function Login() {
   const onSubmit = async (data: any) => {
     if (data != null) {
       let result = await loginUser(data.email, data.password);
+
       toast.success(getErrorMessage(result));
       if (result?.status === 200) {
         signIn(result)

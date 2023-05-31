@@ -22,7 +22,7 @@ import { PasswordRecovery } from "../pages/PasswordRecovery";
 export const AppRouter = () => {
   const [candidateUser, setCandidateUser] = useState<CandidateUser>({} as CandidateUser);
   const [isLoading, setIsLoading] = useState(true);
-  const { isAuthenticated, loading, isTokenExpired, hasToken, signOutIfTokenIsExpiredOrNotExist } = useContext(AuthContext);
+  const { isAuthenticated, loading, getToken, isTokenExpired, hasToken, signOutIfTokenIsExpiredOrNotExist } = useContext(AuthContext);
 
   const location = useLocation();
 
@@ -41,7 +41,7 @@ export const AppRouter = () => {
 
 
   const Private = ({ children }: RouteElementProps) => {
-    const token = localStorage.getItem("token");
+    const token = getToken();
 
     if (!token || !isAuthenticated || isTokenExpired()) {
       return <Navigate to="/login" />;
@@ -68,9 +68,9 @@ export const AppRouter = () => {
 
   useEffect(() => {
     async function getUserToken() {
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
-      if (!token) {
+      if (!token || !isAuthenticated) {
         return
       }
 

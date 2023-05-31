@@ -7,8 +7,8 @@ import { RecoveryPassword } from '../types/RecoveryPassword';
 
 export const api = axios.create({
   //baseURL: "http://localhost:3001",
-  //baseURL: 'https://findy-api.onrender.com',
-  baseURL: 'http://20.169.167.3:3001' // 'http://52.255.206.198:3001',
+  baseURL: 'https://findy-api.onrender.com',
+  //baseURL: 'http://20.169.167.3:3001' // 'http://52.255.206.198:3001',
 });
 
 export const createUser = async (body: CandidateUserRegister) => {
