@@ -136,7 +136,6 @@ export function Project() {
 
   useEffect(() => {
     async function fetchData() {
-      //const token: string | any = localStorage.getItem('token');
       const token = getToken();
       const { sub }: any = jwt_decode(token);
       const user = await getCandidateUser(sub);
@@ -330,8 +329,8 @@ export function Project() {
               {...register('urlLinkediResponsible')}
               error={errors ? errors.urlLinkediResponsible?.message : ''}
               fieldSetBG={`${candidateUser?.profile?.urlLinkedin != undefined
-                  ? 'bg-[#d3d3d3!important]'
-                  : ''
+                ? 'bg-[#d3d3d3!important]'
+                : ''
                 }`}
             />
             <InputDB
