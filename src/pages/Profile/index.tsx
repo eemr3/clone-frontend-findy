@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import jwt_decode from 'jwt-decode';
@@ -25,6 +25,7 @@ import { TelephoneIcon } from '../../components/icons/TelephoneIcon';
 
 import { getCandidateUser, getPositions, updateProfile } from '../../services/api';
 import { getErrorMessage } from '../../utils/ErrorMessageUtil';
+import { AuthContext } from '../../context/auth';
 
 type ProfileFormValues = CandidateProfile & {
   name: string;
@@ -79,6 +80,7 @@ export function Profile() {
   const [candidateUser, setCandidateUser] = useState<any>();
   const [others, setOthers] = useState('');
   /* const [othersArray, setOthersArray] = useState<string[]>([]); */
+  const { getToken } = useContext(AuthContext);
   const navigate = useNavigate();
   const {
     register,
@@ -120,7 +122,6 @@ export function Profile() {
         navigate('/project');
       }
 
-      //localStorage.setItem("complete_profile", candidateUser);
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -128,17 +129,13 @@ export function Profile() {
     setActiveSubmit(false);
   };
 
-  const candidate = JSON.stringify(candidateUser);
-
-  localStorage.setItem('complete_profile', candidate);
-
   useEffect(() => {
     async function fetchData() {
       const pos = await getPositions();
 
       setOccupations(pos.data);
 
-      const token: string | any = localStorage.getItem('token');
+      const token = getToken();
       const { sub }: any = jwt_decode(token);
 
       const user = await getCandidateUser(sub);
@@ -167,8 +164,8 @@ export function Profile() {
     const newOthersArray = !others.trim().length
       ? []
       : others
-          .split(',')
-          .map((item) => item.trim().charAt(0).toUpperCase() + item.trim().slice(1));
+        .split(',')
+        .map((item) => item.trim().charAt(0).toUpperCase() + item.trim().slice(1));
     setValue('others', newOthersArray);
 
     trigger('others');
@@ -204,9 +201,8 @@ export function Profile() {
               readOnly
               placeholder="Nome"
               fieldSetClassName={'even:ml-auto'}
-              fieldSetBG={`${
-                candidateUser?.name != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
-              }`}
+              fieldSetBG={`${candidateUser?.name != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
+                }`}
               error={errors.name?.message}
               {...register('name')}
             />
@@ -247,9 +243,8 @@ export function Profile() {
               fieldSetClassName={'even:ml-auto'}
               error={errors.email?.message}
               {...register('email')}
-              fieldSetBG={`${
-                candidateUser?.email != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
-              }`}
+              fieldSetBG={`${candidateUser?.email != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
+                }`}
             />
 
             <InputDB
@@ -300,12 +295,12 @@ export function Profile() {
                   },
                 })}
 
-                /* onChange={(event) => {
-                setDisableOtherDescription(!event.currentTarget.checked);
-                if (!event.currentTarget.checked &&
-                  getValues().others.length > 0)
-                  setOthers("");
-              }} */
+              /* onChange={(event) => {
+              setDisableOtherDescription(!event.currentTarget.checked);
+              if (!event.currentTarget.checked &&
+                getValues().others.length > 0)
+                setOthers("");
+            }} */
               />
 
               <InputDB

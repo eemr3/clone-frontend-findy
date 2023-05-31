@@ -16,7 +16,7 @@ import mulherPagePrincipal3 from "../../../assets/mulher-page-principal3.svg";
 export function Home() {
   const [larguraTela, setLarguraTela] = useState(window.innerWidth);
   const [candidateUser, setCandidateUser] = useState<any>();
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, getToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -27,10 +27,11 @@ export function Home() {
     window.addEventListener("resize", handleResize);
 
     async function fetchData() {
-      const token = localStorage.getItem("token");
+      const token = getToken();
 
       if (token) {
         const { sub } = jwt_decode<Token>(token);
+
         const user = await getCandidateUser(String(sub));
         setCandidateUser(user.data);
       }

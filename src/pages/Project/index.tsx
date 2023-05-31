@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import jwt_decode from 'jwt-decode';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
@@ -20,6 +20,7 @@ import {
   getLanguages,
   getPositions,
 } from '../../services/api';
+import { AuthContext } from '../../context/auth';
 interface FormValues {
   name: string;
   urlTeamSelection: string;
@@ -69,6 +70,7 @@ export function Project() {
   const [languages, setLanguages] = useState<number[]>([]);
   const [candidateUser, setCandidateUser] = useState<any>();
   const [activeSubmit, setActiveSubmit] = useState(false);
+  const { getToken } = useContext(AuthContext);
   const navigate = useNavigate();
   const {
     register,
@@ -102,7 +104,7 @@ export function Project() {
       if (result?.status === 201) {
         navigate('/project_registered');
       }
-    } catch (error) {}
+    } catch (error) { }
 
     setActiveSubmit(false);
   };
@@ -134,7 +136,8 @@ export function Project() {
 
   useEffect(() => {
     async function fetchData() {
-      const token: string | any = localStorage.getItem('token');
+      //const token: string | any = localStorage.getItem('token');
+      const token = getToken();
       const { sub }: any = jwt_decode(token);
       const user = await getCandidateUser(sub);
       const pos = await getPositions();
@@ -316,9 +319,8 @@ export function Project() {
               fieldSetClassName={'even:ml-auto  even:lg:ml-[0]'}
               {...register('contactResponsible')}
               error={errors ? errors.contactResponsible?.message : ''}
-              fieldSetBG={`${
-                candidateUser?.email != undefined ? 'bg-[#d3d3d3!important]' : ''
-              }`}
+              fieldSetBG={`${candidateUser?.email != undefined ? 'bg-[#d3d3d3!important]' : ''
+                }`}
             />
             <InputDB
               icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
@@ -327,11 +329,10 @@ export function Project() {
               fieldSetClassName={'even:ml-auto  even:lg:ml-[0]'}
               {...register('urlLinkediResponsible')}
               error={errors ? errors.urlLinkediResponsible?.message : ''}
-              fieldSetBG={`${
-                candidateUser?.profile?.urlLinkedin != undefined
+              fieldSetBG={`${candidateUser?.profile?.urlLinkedin != undefined
                   ? 'bg-[#d3d3d3!important]'
                   : ''
-              }`}
+                }`}
             />
             <InputDB
               icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
