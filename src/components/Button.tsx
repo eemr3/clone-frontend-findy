@@ -12,7 +12,7 @@ export function Button({
   children,
   fill = false,
   disabled = false,
-  url = "",
+  url = undefined,
   className = "text-[1.4rem] leading-[1.162rem] tracking-[0.091rem] font-bold",
   onClick,
   ...rest
