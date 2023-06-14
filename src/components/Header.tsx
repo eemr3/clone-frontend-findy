@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
-import { Link } from "react-router-dom";
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 
-import { Button } from "./Button";
-import { Logo } from "./Logo";
-import { AuthContext } from "../context/auth";
+import { Button } from './Button';
+import { Logo } from './Logo';
+import { AuthContext } from '../context/auth';
 
-import IconMenu from "../assets/hamburger.svg";
+import IconMenu from '../assets/hamburger.svg';
 
 export const Header = (props: { showJustify: boolean }) => {
   const [showContent, setShowContent] = React.useState<boolean>(false);
@@ -18,18 +18,18 @@ export const Header = (props: { showJustify: boolean }) => {
     signOut();
   }
 
-
   return (
-
     <>
       <div className="bg-gray-800 py-3 pt-[2rem]">
         <div
-          className={`flex w-[51%]  items-center  justify-between 4xl:w-[49%] 3xl:w-[41%]  2xl:w-[51%] xl:w-full lg:justify-between  md:mx-[0] 
-          ${props.showJustify ? "" : " pr-[2rem] xl:w-[100%!important]"}
+          className={`flex w-[51%]  items-center  justify-between md:mx-[0] lg:justify-between 
+          ${props.showJustify ? '' : ' pr-[2rem] xl:w-[100%!important]'}
           `}
         >
           <Link
-            className={`ml-[4.624rem] ${props.showJustify ? "" : "mr-[12.3rem] sm:mr-[6rem]"}`}
+            className={`ml-[4.624rem] ${
+              props.showJustify ? '' : 'mr-[12.3rem] sm:mr-[6rem]'
+            }`}
             to="/"
           >
             <Logo />
@@ -39,19 +39,23 @@ export const Header = (props: { showJustify: boolean }) => {
             <img src={IconMenu} alt="Menu" className="  h-[4rem] w-auto" />
           </button>
 
-          <nav className={"mt-5 flex gap-[2rem] pl-[5rem] pr-[3rem] lg:hidden"}>
+          <nav
+            className={
+              'mt-5 flex justify-between gap-[2rem] pl-[5rem] pr-[3rem] lg:hidden'
+            }
+          >
             {isAuthenticated ? (
               <Link to="/" onClick={() => handleLogout()}>
-                <Button>
-                  <p> Logout</p>
-                </Button>
+                <p> Logout</p>
               </Link>
             ) : (
               <>
-                <Button url="/login">
-                  <p> Login</p>
-                </Button>
-
+                <Link className="text-[1.125rem] uppercase text-[#01A195]" to="/#">
+                  A Findy
+                </Link>
+                <Link className="text-[1.125rem] uppercase text-[#01A195]" to="/login">
+                  Login
+                </Link>
                 <Button url="/cadastro" fill={true}>
                   <p> Cadastre-se</p>
                 </Button>
@@ -89,7 +93,7 @@ export const Header = (props: { showJustify: boolean }) => {
           </nav>
         </div>
       ) : (
-        ""
+        ''
       )}
     </>
   );

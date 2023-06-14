@@ -1,28 +1,34 @@
-import { useContext, useEffect, useState } from "react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import jwt_decode from "jwt-decode";
-import { toast } from "react-toastify";
+import { useContext, useEffect, useState } from 'react';
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+import jwt_decode from 'jwt-decode';
+import { toast } from 'react-toastify';
 
-import { CandidateUser } from "../types/CandidateUser";
+import { CandidateUser } from '../types/CandidateUser';
 
-import { Loading } from "../components/Loading";
-import { Cadastro } from "../pages/Cadastro";
-import { Home } from "../pages/Home/mvp-1/index";
-import { Login } from "../pages/Login";
-import { Profile } from "../pages/Profile";
-import { Project } from "../pages/Project/index";
-import { ProjectRegistred } from "../pages/ProjectsRegistered";
-import { AuthContext, Token } from "../context/auth";
-import { getCandidateUser } from "../services/api";
-import { getErrorMessage } from "../utils/ErrorMessageUtil";
-import { ForgotPassword } from "../pages/ForgotPassword";
-import { PasswordRecovery } from "../pages/PasswordRecovery";
-
+import { Loading } from '../components/Loading';
+import { Cadastro } from '../pages/Cadastro';
+import { Home } from '../pages/Home/mvp-1/index';
+import { Login } from '../pages/Login';
+import { Profile } from '../pages/Profile';
+import { Project } from '../pages/Project/index';
+import { ProjectRegistred } from '../pages/ProjectsRegistered';
+import { AuthContext, Token } from '../context/auth';
+import { getCandidateUser } from '../services/api';
+import { getErrorMessage } from '../utils/ErrorMessageUtil';
+import { ForgotPassword } from '../pages/ForgotPassword';
+import { PasswordRecovery } from '../pages/PasswordRecovery';
 
 export const AppRouter = () => {
   const [candidateUser, setCandidateUser] = useState<CandidateUser>({} as CandidateUser);
   const [isLoading, setIsLoading] = useState(true);
-  const { isAuthenticated, loading, getToken, isTokenExpired, hasToken, signOutIfTokenIsExpiredOrNotExist } = useContext(AuthContext);
+  const {
+    isAuthenticated,
+    loading,
+    getToken,
+    isTokenExpired,
+    hasToken,
+    signOutIfTokenIsExpiredOrNotExist,
+  } = useContext(AuthContext);
 
   const location = useLocation();
 
@@ -30,15 +36,13 @@ export const AppRouter = () => {
     if (hasToken() || (!hasToken() && isAuthenticated)) {
       const response = signOutIfTokenIsExpiredOrNotExist();
 
-      response &&
-        toast.warning(response);
+      response && toast.warning(response);
     }
-  }, [location])
+  }, [location]);
 
   interface RouteElementProps {
     children: JSX.Element;
   }
-
 
   const Private = ({ children }: RouteElementProps) => {
     const token = getToken();
@@ -54,34 +58,29 @@ export const AppRouter = () => {
     return children;
   };
 
-
   const CanAccessProfile = ({ children }: RouteElementProps) => {
-
-    if (!candidateUser)
-      return <Navigate to="/login" />
+    if (!candidateUser) return <Navigate to="/login" />;
 
     if (candidateUser.profile && Object.keys(candidateUser.profile).length > 0)
-      return <Navigate to="/" />
+      return <Navigate to="/" />;
 
     return children;
-  }
+  };
 
   useEffect(() => {
     async function getUserToken() {
       const token = getToken();
 
       if (!token || !isAuthenticated) {
-        return
+        return;
       }
 
       try {
         const { sub } = jwt_decode<Token>(token);
 
-        await getCandidateUser(String(sub))
-          .then(response => {
-            setCandidateUser(response.data)
-          })
-
+        await getCandidateUser(String(sub)).then((response) => {
+          setCandidateUser(response.data);
+        });
       } catch (error) {
         toast.error(getErrorMessage(error));
       }
@@ -89,9 +88,7 @@ export const AppRouter = () => {
 
     getUserToken();
     setIsLoading(false);
-
   }, []);
-
 
   return (
     <>
@@ -133,8 +130,7 @@ export const AppRouter = () => {
           <Route path="/password_recovery" element={<PasswordRecovery />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
-      )
-      }
+      )}
     </>
   );
-}
+};
