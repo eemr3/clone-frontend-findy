@@ -1,9 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "./index.html",
-  ],
+  content: ['./src/**/*.{js,jsx,ts,tsx}', './index.html'],
   theme: {
     colors: {
       'blue-dark': '#252C43',
@@ -18,7 +15,7 @@ module.exports = {
       'grey-#3': '#E0E0E0',
       'grey-#4': '#F9F9F9',
       'grey-#5': '#FFFFFF',
-
+      'grey-#6': 'rgba(217, 217, 217, 0.5)',
       'tag-blue': '#5EC5FF',
       'tag-green': '#6EFF6B',
       'tag-pink': '#FF4DC2',
@@ -26,18 +23,18 @@ module.exports = {
       'tag-red': '#FF6868',
       'tag-yellow': '#FFEF5F',
 
-      'black': '#000000',
-      'blue': '#326BFF',
-      'red': '#C32323',
-      'white': '#FFFFFF'
+      black: '#000000',
+      blue: '#326BFF',
+      red: '#C32323',
+      white: '#FFFFFF',
     },
     boxShadow: {
       'shadow-#1': '0rem 0.2rem 0.5rem 0rem #01A1953D',
       'shadow-#2': '0rem 0.5rem 2rem 0.5rem #01A1953D',
       'shadow-#2-card': '0rem 0.25rem 1rem 0.25rem #01A1953D',
       'shadow-#3': '0rem 1rem 3rem 0.5rem #01A1953D',
-      'shadow-button': '0rem 0.14526855945587158rem 0.36317138671875rem 0rem #0000001A: ',
-      'shadow-tag': ' 0rem 0.17773873805999756rem 0.44434685707092285rem 0rem #0000001A'
+      'shadow-button': '0rem 0.14526855945587158rem 0.36317138671875rem 0rem #0000001A',
+      'shadow-tag': ' 0rem 0.17773873805999756rem 0.44434685707092285rem 0rem #0000001A',
     },
 
     fontFamily: {
@@ -46,7 +43,7 @@ module.exports = {
     },
     extend: {
       backgroundImage: {
-        'frame-one': 'url(/assets/bg-frame1.png)'
+        'frame-one': 'url(/assets/bg-frame1.png)',
       },
 
       keyframes: {
@@ -55,33 +52,33 @@ module.exports = {
         },
       },
       screens: {
-        '4xl': { 'max': '2170px' },
+        '4xl': { max: '2170px' },
         // => @media (max-width: 2170px) { ... }
         // => @media (max-width: 2170px) { ... }
-        '3xl': { 'max': '1770px' },
+        '3xl': { max: '1770px' },
         // => @media (max-width: 1870px) { ... }
-        '2xl': { 'max': '1600px' },
+        '2xl': { max: '1440px' },
         // => @media (max-width: 1670px) { ... }
 
-        'xl': { 'max': '1350px' },
+        xl: { max: '1350px' },
         // => @media (max-width: 1279px) and (max-height: 1350px) { ... }
 
-        'lg': { 'max': '1200px' },
-        // => @media (max-width: 1023px) { ... }
+        lg: { max: '1024px' },
+        // => @media (max-width: 1024px) { ... }
 
-        'md': { 'max': '767px' },
+        md: { max: '767px' },
         // => @media (max-width: 767px)  { ... }
 
-        'sm': { 'max': '639px' },
+        sm: { max: '639px' },
         // => @media (max-width: 639px) { ... }
 
-        'mbl': { 'max': '500px' },
+        mbl: { max: '500px' },
         // => @media (max-width: 500px) { ... }
-        'md-h': { 'raw': '(max-height: 1110px)' },
+        'md-h': { raw: '(max-height: 1110px)' },
         // => @media (min-height: 800px) { ... }
       },
     },
 
     plugins: [],
-  }
-}
+  },
+};
