@@ -36,12 +36,13 @@ module.exports = {
       'shadow-#2': '0rem 0.5rem 2rem 0.5rem #01A1953D',
       'shadow-#2-card': '0rem 0.25rem 1rem 0.25rem #01A1953D',
       'shadow-#3': '0rem 1rem 3rem 0.5rem #01A1953D',
-      'shadow-button': '0rem 0.14526855945587158rem 0.36317138671875rem 0rem #0000001A',
+      'shadow-button': '0rem 0.14526855945587158rem 0.36317138671875rem 0rem #0000001A: ',
       'shadow-tag': ' 0rem 0.17773873805999756rem 0.44434685707092285rem 0rem #0000001A'
     },
 
     fontFamily: {
-      sans: ['roboto flex', 'sans-serif']
+      sans: ['roboto flex', 'sans-serif'],
+      mont: ['Montserrat', 'sans-serif'],
     },
     extend: {
       backgroundImage: {

@@ -79,7 +79,7 @@ export function PasswordRecovery() {
 
   return (
     <div className="w-max-[144rem] flex h-[100%] flex-col overflow-x-hidden bg-blue-dark">
-      <Header showJustify={true} />
+      <Header />
 
       <div className="my-auto  flex w-[55%] items-center justify-end  xl:w-[100%] xl:justify-center md:px-[2rem] mbl:w-[100%] ">
         <img

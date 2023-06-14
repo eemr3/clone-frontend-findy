@@ -67,7 +67,7 @@ export function Home() {
 
   return (
     <section className="flex h-[100%] flex-col bg-blue-dark pb-[5rem] ">
-      <Header showJustify={true} />
+      <Header />
       <div className="w-max-[144rem]  h-[calc(100vh - 10rem)]  border-none bg-blue-dark pt-[10rem]">
         {larguraTela > 1350 ? (
           <div className=" flex h-[90%] items-center xl:flex xl:flex-col-reverse xl:items-start ">
