@@ -4,4 +4,7 @@ export type CandidateUserRegister = LoginUser & {
   name: string;
   confirmPassword: string;
   accept_terms: boolean;
+  recoverToken: string;
+  id: string;
 }
+

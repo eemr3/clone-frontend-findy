@@ -7,7 +7,8 @@ html {
   font-size: 62.5%;
   overflow-x: hidden;
 }
-body, #root {
+body,
+#root {
   height: 100%;
   background-color: white !important;
 }

@@ -1,3 +1,4 @@
+import { CandidateProfile } from "./CandidateProfile";
 import { CandidateUserRegister } from "./CandidateUserRegister";
 
 export type CandidateUser = Omit<CandidateUserRegister, "password" | "confirmPassword"> & {
@@ -7,4 +8,6 @@ export type CandidateUser = Omit<CandidateUserRegister, "password" | "confirmPas
   providerId: string;
   createdAt: string;
   updatedAt: string;
+  profile?: CandidateProfile;
 }
+

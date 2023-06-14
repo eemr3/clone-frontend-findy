@@ -1,19 +1,21 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import IconMenu from "../assets/hamburger.svg";
-import { AuthContext } from "../context/auth";
+
 import { Button } from "./Button";
 import { Logo } from "./Logo";
+import { AuthContext } from "../context/auth";
+import IconMenu from "../assets/hamburger.svg";
+
 export function HeaderProfile(props: { showJustify: boolean }) {
   const [showContent, setShowContent] = React.useState<boolean>(false);
-  const { logout, authenticated } = useContext(AuthContext);
+  const { signOut, isAuthenticated } = useContext(AuthContext);
   function handleMenu() {
     setShowContent(!showContent);
   }
   function handleLogout() {
-    logout();
+    signOut();
 
-    setTimeout(() => {});
+    setTimeout(() => { });
   }
   return (
     <>
@@ -32,7 +34,7 @@ export function HeaderProfile(props: { showJustify: boolean }) {
           <nav
             className={"mt-5 flex gap-[2rem] pl-[5rem] pr-[4rem] lg:hidden "}
           >
-            {authenticated ? (
+            {isAuthenticated ? (
               <>
                 <Button>
                   <Link to="/">
@@ -89,7 +91,7 @@ export function HeaderProfile(props: { showJustify: boolean }) {
         </div>
       </div>
       {showContent ? (
-        <div className=" bg-gray-800 absolute right-5 top-[8rem] flex hidden w-[20rem] items-center justify-center bg-blue-dark shadow-shadow-#2 lg:block ">
+        <div className=" bg-gray-800 absolute right-5 top-[8rem] flex w-[20rem] items-center justify-center bg-blue-dark shadow-shadow-#2 lg:block ">
           <ul className=" w-[max-content] text-3xl font-bold text-white">
             {/* <li className=" border-b border-black p-[1rem]">
               <button className="bg">
@@ -106,7 +108,7 @@ export function HeaderProfile(props: { showJustify: boolean }) {
               </button>
             </li>
  */}
-            {authenticated ? (
+            {isAuthenticated ? (
               <>
                 <li className=" border-b border-black p-[1rem]">
                   <button className="bg" onClick={() => handleLogout()}>
@@ -140,7 +142,7 @@ export function HeaderProfile(props: { showJustify: boolean }) {
                     </Link>
                   </button>
                 </li>
-                <li className="border-b border-black p-[1rem] p-[1rem]">
+                <li className="border-b border-black p-[1rem]">
                   <button className="bg">
                     <Link to="/cadastro" className="hover:text-green-dark">
                       Cadastro

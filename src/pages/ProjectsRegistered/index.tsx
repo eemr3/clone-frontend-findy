@@ -1,5 +1,5 @@
 import jwt_decode from 'jwt-decode';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../../components/Button';
 import { Header } from '../../components/Header';
@@ -7,6 +7,7 @@ import { Heading } from '../../components/Heading';
 import { Tag } from '../../components/Tag';
 import { Text } from '../../components/Text';
 import { getLanguagesById, getProjects } from '../../services/api';
+import { AuthContext } from '../../context/auth';
 
 interface Projects {
   id: number;
@@ -24,6 +25,7 @@ export function ProjectRegistred() {
   const [languageNames, setlanguageNames] = useState<any[]>([]);
   const [count, setCount] = useState<number>(100);
   const [indexCount, setIndex] = useState<number>(0);
+  const { getToken } = useContext(AuthContext);
 
   useEffect(() => {
     async function fetchData() {
@@ -43,9 +45,8 @@ export function ProjectRegistred() {
 
       setlanguageNames(languages);
     }
-    const token: string | any = localStorage.getItem('token');
+    const token = getToken();
     const { name }: any = jwt_decode(token);
-    const token2: any = jwt_decode(token);
     setNameUser(name);
 
     fetchData();

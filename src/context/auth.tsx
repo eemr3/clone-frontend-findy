@@ -1,16 +1,31 @@
 import { createContext, useEffect, useState } from "react";
 import api from "../services/api";
+import jwt_decode from "jwt-decode";
+import { destroyCookie, parseCookies, setCookie } from 'nookies';
 
 interface User {
   email?: string;
 }
 
+export interface Token {
+  sub: number;
+  name: string;
+  email: string;
+  roles: string;
+  iat: number;
+  exp: number
+}
+
 interface AuthContextData {
-  authenticated: boolean;
-  user: User | null;
+  user: User;
+  isAuthenticated: boolean;
   loading: boolean;
-  login: (data: object) => void;
-  logout: () => void;
+  getToken: () => string;
+  isTokenExpired: () => boolean;
+  hasToken: () => boolean;
+  signOutIfTokenIsExpiredOrNotExist: () => string;
+  signIn: (data: object) => void;
+  signOut: () => void;
   setLoggedUser: (user: User) => void;
 }
 
@@ -22,60 +37,98 @@ export const AuthContext = createContext<AuthContextData>(
 );
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User>({} as User);
+  const isAuthenticated = JSON.stringify(user) !== "{}"
+  const [tokenExpiration, setTokenExpiration] = useState(0);
   const [loading, setLoading] = useState(true);
-  const [authenticated, setAuthenticated] = useState(false);
+
+  function handleSetUser(token: string) {
+    const { email, exp } = jwt_decode<Token>(token);
+    setUser({ email });
+    setTokenExpiration(exp * 1000);
+  }
 
   useEffect(() => {
-    //const recoveredUser = localStorage.getItem("user");
-    const token = localStorage.getItem("token");
 
-    if (/* recoveredUser && */ token) {
-      api.defaults.headers.Authorization = `Bearer ${token}`;
-      /*  setUser(JSON.parse(recoveredUser)); */
-      setAuthenticated(true);
+    async function configureToken() {
+      const token = getToken();
+
+      if (token) {
+        api.defaults.headers.Authorization = `Bearer ${token}`;
+        handleSetUser(token);
+      }
     }
 
+    configureToken();
     setLoading(false);
   }, []);
 
-  const login = ({ data }: any) => {
-    /*   const loggedUser = {
-      data,
-    }; */
+  const getToken = () => {
+    const { 'findy.token': token } = parseCookies();
+    return token;
+  }
 
-    const token = data.data.access_token;
+  const isTokenExpired = () => {
+    const token = getToken();
 
-    /*  localStorage.setItem("user", JSON.stringify(loggedUser)); */
-    localStorage.setItem("token", token);
+    if (!token)
+      return true;
+
+    const { exp } = jwt_decode<Token>(token);
+    const isExpired = (exp * 1000) < Date.now();
+    return isExpired;
+  }
+
+  const hasToken = () => !!getToken();
+
+  const signOutIfTokenIsExpiredOrNotExist = () => {
+    const tokenNotExists = !hasToken();
+
+    if (isTokenExpired() || (tokenNotExists && isAuthenticated)) {
+      signOut();
+      return tokenNotExists && (tokenExpiration > Date.now()) ? "Login não identificado" : "Login está expirado";
+    }
+    return ""
+  }
+
+  const signIn = async ({ data }: any) => {
+
+    const { access_token: token } = data.data;
+
+    const { exp } = jwt_decode<Token>(token);
+    const expirationTime = Math.ceil(((exp * 1000) - Date.now()) / 1000);
+
+    setCookie(undefined, "findy.token", token, {
+      maxAge: expirationTime, //60 * 60 * 24, // 24 hours
+      path: '/'
+    });
 
     api.defaults.headers.Authorization = `Bearer ${token}`;
-
-    setAuthenticated(true);
-    /*  setUser(loggedUser); */
+    handleSetUser(token);
   };
 
-  const logout = () => {
-    /*  localStorage.removeItem("user"); */
-    localStorage.removeItem("token");
+  const signOut = () => {
+    destroyCookie(undefined, "findy.token");
     api.defaults.headers.Authorization = null;
-    setAuthenticated(false);
-    setUser(null);
+    setUser({} as User);
   };
 
   const setLoggedUser = (user: User) => {
     setUser(user);
-    setAuthenticated(true);
   };
 
   return (
     <AuthContext.Provider
       value={{
-        authenticated,
         user,
+        isAuthenticated,
         loading,
-        login,
-        logout,
+        getToken,
+        isTokenExpired,
+        hasToken,
+        signOutIfTokenIsExpiredOrNotExist,
+        signIn,
+        signOut,
         setLoggedUser,
       }}
     >
