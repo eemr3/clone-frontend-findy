@@ -39,6 +39,7 @@ module.exports = {
 
     fontFamily: {
       sans: ['roboto flex', 'sans-serif'],
+      mont: ['Montserrat', 'sans-serif'],
     },
     extend: {
       backgroundImage: {

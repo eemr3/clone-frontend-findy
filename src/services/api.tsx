@@ -57,19 +57,22 @@ export const loginUser = async (email: string, password: string) => {
         data: response,
         status: 200,
         success: true,
-        message: 'Conta conectada com sucesso!',
+        //message: 'Conta conectada com sucesso!',
       };
     } else {
-      return { success: false, message: 'Erro desconhecido' };
+      return {
+        status: response.status,
+        success: false,
+        message: 'Erro desconhecido',
+      };
     }
   } catch (error: any) {
-    console.log(error);
-    if (error?.response.data.statusCode === 401) {
-      toast.error('O endereço de e-mail ou a senha fornecidos estão incorretos.', {
-        style: {
-          fontSize: '1.7rem ',
-        },
-      });
+    if (error?.response?.status === 401) {
+      return {
+        status: 401,
+        success: false,
+        //message: 'Erro de autenticação',
+      };
     }
   }
 };
