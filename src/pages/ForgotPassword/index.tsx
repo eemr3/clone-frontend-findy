@@ -1,11 +1,11 @@
-import { ForgetPassword } from "../../components/ForgetPassword";
-import { Header } from "../../components/Header";
+import { ForgetPassword } from '../../components/ForgetPassword';
+import { NavBar } from '../../components/menu/NavBar';
 
 export function ForgotPassword() {
   return (
-    <div className="w-max-[144rem] flex h-[100%] flex-col bg-blue-dark">
-      <Header />
+    <div className="w-max-[1483px] flex h-[100%] flex-col overflow-x-hidden bg-blue-dark opacity-90">
+      <NavBar home={false} />
       <ForgetPassword />
     </div>
-  ) 
+  );
 }

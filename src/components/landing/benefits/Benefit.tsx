@@ -12,7 +12,10 @@ export function Benefit(props: BenefitsProps) {
       ${props.reverse ? 'flex-row-reverse' : 'sm:flex-row'}`}
     >
       <div className="h-[306px] w-[543px] bg-[#E5E5E5]"></div>
-      <div className="items-centerh-[241px] flex w-[540px] justify-center text-2xl font-medium text-black">
+      <div
+        className="flex h-[241px] w-[540px] items-center justify-center text-[24px] 
+      font-medium text-black"
+      >
         {props.text}
       </div>
     </div>
