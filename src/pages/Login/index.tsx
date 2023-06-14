@@ -1,16 +1,16 @@
-import { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
-import { toast } from 'react-toastify';
 import c from '../../assets/c.svg';
 
-import { Header } from '../../components/Header';
+import IconLockOpen from '../../assets/view_fill.svg';
+import IconLockClose from '../../assets/view_hide_fill.svg';
+import { NavBar } from '../../components/menu/NavBar';
 import { AuthContext } from '../../context/auth';
 import { loginUser } from '../../services/api';
-import { getErrorMessage } from '../../utils/ErrorMessageUtil';
-import { NavBar } from '../../components/menu/NavBar';
+
 interface FormValues {
   email: string;
   password: string;
@@ -29,6 +29,7 @@ const schema = yup
   .required();
 
 export function Login() {
+  const [showPassword, setShowPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [authError, setAuthError] = useState('');
   const { signIn } = useContext(AuthContext);
@@ -93,16 +94,33 @@ export function Login() {
           </div>
 
           <div className="w-[70%] flex-col mbl:flex  mbl:w-[85%] mbl:justify-center ">
-            <input
-              type="password"
-              placeholder="Senha"
-              {...register('password')}
-              className={
-                errors.password
-                  ? 'mt-[4rem] h-[4.7rem] w-[100%] rounded-[0.8rem] border border-red pl-[2.06rem] text-[2.4rem] placeholder-grey-#2 mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]'
-                  : 'h-[4.7rem] w-[100%] rounded-[0.8rem] border border-grey-#2 pl-[2.06rem] text-[2.4rem] text-grey-#2 mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]'
-              }
-            />
+            <div className="relative flex w-full items-center justify-end">
+              <input
+                type={`${showPassword ? 'text' : 'password'}`}
+                placeholder="Senha"
+                {...register('password')}
+                className={
+                  errors.password
+                    ? 'mt-[4rem] h-[4.7rem] w-[100%] rounded-[0.8rem] border border-red pl-[2.06rem] text-[2.4rem] placeholder-grey-#2 mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]'
+                    : 'h-[4.7rem] w-[100%] rounded-[0.8rem] border border-grey-#2 pl-[2.06rem] text-[2.4rem] text-grey-#2 mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]'
+                }
+              />
+              {showPassword ? (
+                <img
+                  src={IconLockClose}
+                  alt="Icone de olho"
+                  className="absolute z-20 mr-2 w-10 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                />
+              ) : (
+                <img
+                  src={IconLockOpen}
+                  alt="Icone de olho"
+                  className="absolute z-20 mr-2 w-10 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                />
+              )}
+            </div>
             <span className="text-[1.8rem] text-red">
               {errors.password ? errors.password?.message : ''}{' '}
             </span>
