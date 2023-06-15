@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, set, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import IconLockOpen from '../../assets/view_fill.svg';
@@ -15,6 +15,7 @@ import { getErrorMessage } from '../../utils/ErrorMessageUtil';
 
 import c from '../../assets/c.svg';
 import { NavBar } from '../../components/menu/NavBar';
+import { RegisterContext } from '../../context/newRegister';
 
 const schema = yup
   .object()
@@ -42,6 +43,7 @@ const schema = yup
   .required();
 
 export function Cadastro() {
+  const { setIsRegistered } = useContext(RegisterContext);
   const [showPassword, setShowPassword] = useState(false);
   const [confirmShowPassword, setConfirmShowPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -77,6 +79,7 @@ export function Cadastro() {
     try {
       const response = await createUser(data);
       toast.success('Conta criada com sucesso!');
+      setIsRegistered(true);
       navigate('/confirmation-account');
     } catch (error) {
       toast.error(getErrorMessage(error));

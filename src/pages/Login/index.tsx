@@ -1,7 +1,7 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import * as yup from 'yup';
 import c from '../../assets/c.svg';
 
@@ -9,7 +9,10 @@ import IconLockOpen from '../../assets/view_fill.svg';
 import IconLockClose from '../../assets/view_hide_fill.svg';
 import { NavBar } from '../../components/menu/NavBar';
 import { AuthContext } from '../../context/auth';
-import { loginUser } from '../../services/api';
+import { confirmationAccount, loginUser } from '../../services/api';
+import { RegisterContext } from '../../context/newRegister';
+import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
 
 interface FormValues {
   email: string;
@@ -33,7 +36,32 @@ export function Login() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [authError, setAuthError] = useState('');
   const { signIn } = useContext(AuthContext);
+  const { isRegistered, setIsRegistered } = useContext(RegisterContext);
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const id = searchParams.get('id');
+    const token = searchParams.get('token') as string;
+    if (id && token) {
+      const activatedUser = async () => {
+        const result = await confirmationAccount(Number(id), token);
+
+        if (result?.status === 200) {
+          setIsRegistered(false);
+
+          return toast.success('Conta ativada com sucesso');
+        }
+
+        if (result?.statusCode === 400) {
+          return toast.error(result.message);
+        }
+      };
+
+      activatedUser();
+    }
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -52,7 +80,7 @@ export function Login() {
       if (result?.status === 200) {
         signIn(result);
         setTimeout(() => {
-          navigate('/');
+          navigate('/dashboard');
         }, 2000);
       }
 
@@ -67,7 +95,7 @@ export function Login() {
   return (
     <div
       className="w-max-[1483px] flex h-[100%] flex-col 
-    overflow-x-hidden bg-[#252C43] opacity-90 mbl:flex-col"
+    overflow-x-hidden bg-blue-dark opacity-90 mbl:flex-col"
     >
       <NavBar home={false} />
 
@@ -142,7 +170,7 @@ export function Login() {
             </div>
             {
               <Link
-                to="/forgot_password"
+                to="/forgot-password"
                 className="text-[2rem] text-blue  mbl:text-[1.3rem]"
               >
                 Esqueceu a senha?

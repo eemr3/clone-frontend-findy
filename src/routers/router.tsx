@@ -18,6 +18,7 @@ import { Project } from '../pages/Project/index';
 import { ProjectRegistred } from '../pages/ProjectsRegistered';
 import { getCandidateUser } from '../services/api';
 import { getErrorMessage } from '../utils/ErrorMessageUtil';
+import { DashboardPage } from '../pages/Dashboard';
 
 export const AppRouter = () => {
   const [candidateUser, setCandidateUser] = useState<CandidateUser>({} as CandidateUser);
@@ -130,6 +131,14 @@ export const AppRouter = () => {
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/password-recovery" element={<PasswordRecovery />} />
           <Route path="/confirmation-account" element={<ConfimationAccount />} />
+          <Route
+            path="/dashboard"
+            element={
+              <Private>
+                <DashboardPage />
+              </Private>
+            }
+          />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       )}

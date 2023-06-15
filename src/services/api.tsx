@@ -1,13 +1,14 @@
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { toast } from 'react-toastify';
 import { CandidateUserRegister } from '../types/CandidateUserRegister';
 import { RecoveryPassword } from '../types/RecoveryPassword';
+import { ResonseConfirmationAccount } from '../types/ConfirmationAccount';
 
 /* const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIzLCJuYW1lIjoiRGFyY2lvIENhcnZhbGhvIiwiZW1haWwiOiJkYXJjaW8uY2FydmFsaG8uZGV2QGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxNDc5ODY4LCJleHAiOjE2ODE0ODc4Njh9.BP4yluPsDNGFGzMYn6Wuv6JQArxTnbiDJA4PU_-l3fQ"; */
 
 export const api = axios.create({
-  //baseURL: "http://localhost:3001",
-  baseURL: 'https://findy-api.onrender.com',
+  baseURL: 'http://localhost:3001',
+  // baseURL: 'https://findy-api.onrender.com',
   //baseURL: 'http://20.169.167.3:3001' // 'http://52.255.206.198:3001',
 });
 
@@ -80,7 +81,7 @@ export const loginUser = async (email: string, password: string) => {
 export const formProject = async (body: any) => {
   try {
     return await api.post('/api/candidate-projects', body);
-  } catch (error: any) { }
+  } catch (error: any) {}
 };
 
 export const getProjects = async () => {
@@ -134,6 +135,27 @@ export const resetPassword = async (body: RecoveryPassword, id: string) => {
     return response;
   } catch (error: any) {
     console.log(error);
+  }
+};
+
+export const confirmationAccount = async (
+  id: number,
+  token: string,
+): Promise<ResonseConfirmationAccount | undefined> => {
+  try {
+    const response = await api.patch(
+      `/api/candidate-users/email-confirmation/${id}?token=${token}`,
+    );
+    console.log(response);
+
+    return { message: response.data.message, status: response.status };
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      return {
+        statusCode: err.response?.data.statusCode,
+        message: err.response?.data.message,
+      };
+    }
   }
 };
 

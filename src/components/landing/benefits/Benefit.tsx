@@ -14,7 +14,7 @@ export function Benefit(props: BenefitsProps) {
       <div className="h-[306px] w-[543px] bg-[#E5E5E5]"></div>
       <div
         className="flex h-[241px] w-[540px] items-center justify-center text-[24px] 
-      font-medium text-black"
+      font-medium text-white"
       >
         {props.text}
       </div>
