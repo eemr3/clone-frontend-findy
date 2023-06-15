@@ -5,7 +5,7 @@ export function Benefits() {
   return (
     <div className="flex w-full flex-col items-center justify-center gap-y-16">
       <div className="ml-[135px] mt-[133px] flex w-full text-left">
-        <h3 className="h-[138px] w-[600px] text-[40px] font-bold text-black">
+        <h3 className="h-[138px] w-[600px] text-[40px] font-bold text-white">
           A Findy te ajuda com o seu desenvolvimento.
         </h3>
       </div>
@@ -20,7 +20,7 @@ export function Benefits() {
       <div className="my-[133px]">
         <Link
           to="/cadastro"
-          className="bg-[#E5E5E5] px-56 py-8 text-[18px] font-semibold uppercase leading-[23.4px]"
+          className="rounded-[31px] bg-green-medium px-56 py-8 text-[18px] font-semibold uppercase leading-[23.4px] text-white"
         >
           Cadastre-se
         </Link>

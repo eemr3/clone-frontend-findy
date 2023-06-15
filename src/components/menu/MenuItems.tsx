@@ -16,8 +16,12 @@ export default function MenuItems(props: MenuItemsProps) {
         props.home ? ' justify-between' : 'justify-end'
       }`}
     >
-      {props.home ? (
-        <HomeMeuItems isAuthenticated={isAuthenticated} signOut={signOut} />
+      {isAuthenticated ? (
+        <Link className="text-[18px] uppercase text-green-medium" onClick={signOut} to="">
+          Logout
+        </Link>
+      ) : props.home ? (
+        <HomeMeuItems />
       ) : (
         <Button url="/">Voltar</Button>
       )}

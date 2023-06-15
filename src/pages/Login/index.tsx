@@ -1,16 +1,19 @@
-import { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useContext, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import * as yup from 'yup';
-import { toast } from 'react-toastify';
 import c from '../../assets/c.svg';
 
-import { Header } from '../../components/Header';
-import { AuthContext } from '../../context/auth';
-import { loginUser } from '../../services/api';
-import { getErrorMessage } from '../../utils/ErrorMessageUtil';
+import IconLockOpen from '../../assets/view_fill.svg';
+import IconLockClose from '../../assets/view_hide_fill.svg';
 import { NavBar } from '../../components/menu/NavBar';
+import { AuthContext } from '../../context/auth';
+import { confirmationAccount, loginUser } from '../../services/api';
+import { RegisterContext } from '../../context/newRegister';
+import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
+
 interface FormValues {
   email: string;
   password: string;
@@ -29,10 +32,36 @@ const schema = yup
   .required();
 
 export function Login() {
+  const [showPassword, setShowPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [authError, setAuthError] = useState('');
   const { signIn } = useContext(AuthContext);
+  const { isRegistered, setIsRegistered } = useContext(RegisterContext);
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    const id = searchParams.get('id');
+    const token = searchParams.get('token') as string;
+    if (id && token) {
+      const activatedUser = async () => {
+        const result = await confirmationAccount(Number(id), token);
+
+        if (result?.status === 200) {
+          setIsRegistered(false);
+
+          return toast.success('Conta ativada com sucesso');
+        }
+
+        if (result?.statusCode === 400) {
+          return toast.error(result.message);
+        }
+      };
+
+      activatedUser();
+    }
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -51,7 +80,7 @@ export function Login() {
       if (result?.status === 200) {
         signIn(result);
         setTimeout(() => {
-          navigate('/');
+          navigate('/dashboard');
         }, 2000);
       }
 
@@ -66,7 +95,7 @@ export function Login() {
   return (
     <div
       className="w-max-[1483px] flex h-[100%] flex-col 
-    overflow-x-hidden bg-[#252C43] opacity-90 mbl:flex-col"
+    overflow-x-hidden bg-blue-dark opacity-90 mbl:flex-col"
     >
       <NavBar home={false} />
 
@@ -93,16 +122,33 @@ export function Login() {
           </div>
 
           <div className="w-[70%] flex-col mbl:flex  mbl:w-[85%] mbl:justify-center ">
-            <input
-              type="password"
-              placeholder="Senha"
-              {...register('password')}
-              className={
-                errors.password
-                  ? 'mt-[4rem] h-[4.7rem] w-[100%] rounded-[0.8rem] border border-red pl-[2.06rem] text-[2.4rem] placeholder-grey-#2 mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]'
-                  : 'h-[4.7rem] w-[100%] rounded-[0.8rem] border border-grey-#2 pl-[2.06rem] text-[2.4rem] text-grey-#2 mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]'
-              }
-            />
+            <div className="relative flex w-full items-center justify-end">
+              <input
+                type={`${showPassword ? 'text' : 'password'}`}
+                placeholder="Senha"
+                {...register('password')}
+                className={
+                  errors.password
+                    ? 'mt-[4rem] h-[4.7rem] w-[100%] rounded-[0.8rem] border border-red pl-[2.06rem] text-[2.4rem] placeholder-grey-#2 mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]'
+                    : 'h-[4.7rem] w-[100%] rounded-[0.8rem] border border-grey-#2 pl-[2.06rem] text-[2.4rem] text-grey-#2 mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem]'
+                }
+              />
+              {showPassword ? (
+                <img
+                  src={IconLockClose}
+                  alt="Icone de olho"
+                  className="absolute z-20 mr-2 w-10 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                />
+              ) : (
+                <img
+                  src={IconLockOpen}
+                  alt="Icone de olho"
+                  className="absolute z-20 mr-2 w-10 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                />
+              )}
+            </div>
             <span className="text-[1.8rem] text-red">
               {errors.password ? errors.password?.message : ''}{' '}
             </span>
@@ -124,7 +170,7 @@ export function Login() {
             </div>
             {
               <Link
-                to="/forgot_password"
+                to="/forgot-password"
                 className="text-[2rem] text-blue  mbl:text-[1.3rem]"
               >
                 Esqueceu a senha?
