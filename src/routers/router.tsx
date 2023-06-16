@@ -17,6 +17,7 @@ import { getCandidateUser } from "../services/api";
 import { getErrorMessage } from "../utils/ErrorMessageUtil";
 import { ForgotPassword } from "../pages/ForgotPassword";
 import { PasswordRecovery } from "../pages/PasswordRecovery";
+import { Survey } from "../pages/Survey";
 
 
 export const AppRouter = () => {
@@ -131,6 +132,7 @@ export const AppRouter = () => {
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/forgot_password" element={<ForgotPassword />} />
           <Route path="/password_recovery" element={<PasswordRecovery />} />
+          <Route path="/survey" element={<Survey />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       )
