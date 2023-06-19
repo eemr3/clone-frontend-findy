@@ -6,7 +6,7 @@ import {
   useImperativeHandle,
   useRef,
   useState,
-  useEffect
+  useEffect,
 } from "react";
 import { SVGIcon } from "../../types/SVGIcon";
 import { Text } from "../Text";
@@ -34,6 +34,8 @@ interface InputDBv2Props
   fieldSetClassName?: string;
   fieldSetBG?: string;
   wantInputWidthFull?: boolean;
+  errorClassName?: string;
+  onClickOption?: (option: string) => void;
 }
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
@@ -51,11 +53,14 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
     wantInputWidthFull = false,
     className = "",
     onChange,
+    errorClassName = "",
+    onClickOption,
     ...rest
   },
   ref
 ) => {
   const [openList, setOpenList] = useState(false);
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const listRef = useRef<HTMLUListElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const inputLabelRef = useRef<HTMLInputElement>(null);
@@ -66,34 +71,70 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
 
   useEffect(() => {
     document.addEventListener("mousedown", closeOpenList);
-  }, [])
+    return () => {
+      document.removeEventListener("mousedown", closeOpenList);
+    };
+  }, []);
 
-  const closeOpenList = (e: any) => {
-    if (!listRef.current || !inputLabelRef.current)
-      return
+  const closeOpenList = (e: MouseEvent) => {
+    if (
+      !listRef.current ||
+      !inputLabelRef.current ||
+      !inputLabelRef.current.parentElement
+    )
+      return;
 
-    if (!listRef.current.contains(e.target) &&
-      !inputLabelRef.current.contains(e.target) &&
-      !inputLabelRef.current.parentElement?.contains(e.target)
+    if (
+      !listRef.current.contains(e.target as Node) &&
+      !inputLabelRef.current.contains(e.target as Node) &&
+      !inputLabelRef.current.parentElement.contains(e.target as Node)
     ) {
       setOpenList(false);
     }
-  }
+  };
 
   function toggleList() {
-    setOpenList(prevState => !prevState);
+    setOpenList((prevState) => !prevState);
   }
 
   function setInputValue(newValue: string | ValueLabel) {
-    if (inputRef.current?.value != undefined &&
-      inputLabelRef.current?.value != undefined) {
-
-      inputRef.current.value = (typeof newValue == 'string') ? newValue : newValue.value;
-      inputLabelRef.current.value = (typeof newValue == 'string') ? newValue : newValue.label;
-
-      setOpenList(false);
+    if (
+      inputRef.current?.value !== undefined &&
+      inputLabelRef.current?.value !== undefined
+    ) {
+      let selectedOption: ValueLabel | string | undefined;
+  
+      if (typeof newValue === "string") {
+        for (const option of options) {
+          if (typeof option === "string" && option === newValue) {
+            selectedOption = option;
+            break;
+          }
+        }
+      } else {
+        const selectedValue = newValue?.value || "";
+        for (const option of options) {
+          if (typeof option !== "string" && option.value === selectedValue) {
+            selectedOption = option;
+            break;
+          }
+        }
+      }
+  
+      if (selectedOption) {
+        const value = typeof selectedOption === "string" ? selectedOption : selectedOption.value;
+        const label = typeof selectedOption === "string" ? selectedOption : selectedOption.label;
+  
+        inputRef.current.value = value;
+        inputLabelRef.current.value = label;
+        setSelectedValue(value);
+        setOpenList(false);
+  
+        if (onClickOption) {
+          onClickOption(value);
+        }
+      }
     }
-
   }
 
   return (
@@ -113,15 +154,18 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
       )}
 
       <div
-        className={`flex h-[3.6rem] w-[50.5rem] py-[0.8rem] px-[1.6rem] border-grey-#2 ${openList ? "rounded-t-[0.8rem] border-x border-t bg-green-light" : "rounded-[0.8rem] border bg-grey-#4"}  ${fieldSetBG} ${wantInputWidthFull ? "w-full" : ""}`}
+        className={`flex h-[3.6rem] w-[50.5rem] py-[0.8rem] px-[1.6rem] border-grey-#2 ${
+          openList
+            ? "rounded-t-[0.8rem] border-x border-t bg-green-light"
+            : errorClassName
+            ? `rounded-[0.8rem] border bg-white ${errorClassName}`
+            : "rounded-[0.8rem] border bg-grey-#4"
+        } ${fieldSetBG} ${wantInputWidthFull ? "w-full" : ""}`}
         onClick={() => toggleList()}
       >
         {icon && (
-          <div
-            className="flex w-[5.3rem] items-center justify-center rounded-bl-[0.3rem] rounded-tl-[0.3rem] bg-blue-dark-#1
-          mbl:max-w-[70%] "
-          >
-            <>{icon}</>
+          <div className="flex w-[5.3rem] items-center justify-center rounded-bl-[0.3rem] rounded-tl-[0.3rem] bg-blue-dark-#1">
+            {/* {icon} */}
           </div>
         )}
 
@@ -130,62 +174,51 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
           type={type}
           placeholder={placeholder}
           readOnly
-          className={`w-full border-none text-[1.4rem] font-medium leading-[1.82rem] outline-none disabled:bg-grey-#3 ${openList ? "bg-green-light text-blue-dark-#1 placeholder:text-blue-dark-#1" : "bg-grey-#4 text-green-medium placeholder:text-grey-#2"}  ${className} ${fieldSetBG} ${wantInputWidthFull ? "w-[96%]" : ""}`}
+          className={`w-full border-none text-[1.4rem] font-medium leading-[1.82rem] outline-none disabled:bg-grey-#3 ${
+            openList
+              ? "bg-green-light text-blue-dark-#1 placeholder:text-blue-dark-#1"
+              : errorClassName
+              ? `bg-white text-red placeholder:text-red`
+              : "bg-grey-#4 text-green-medium placeholder:text-grey-#2"
+          } ${className} ${fieldSetBG} ${wantInputWidthFull ? "w-[96%]" : ""}`}
           {...rest}
         />
 
-        <input
-          name={name}
-          ref={inputRef}
-          className={`hidden`}
-        />
+        <input name={name} ref={inputRef} className="hidden" />
 
-        {openList ? <SelectArrowDownIcon /> : <SelectArrowUpIcon />}
-
+        {openList ? <SelectArrowUpIcon /> : <SelectArrowDownIcon />}
       </div>
 
-      {options && openList &&
-        <div
-          className="bg-white overflow-hidden z-10 border-x border-b border-t-2 border-grey-#2 rounded-b-[0.8rem] "
-        >
+      {options && openList && (
+        <div className="bg-white overflow-hidden z-10 border-x border-b border-t-2 border-grey-#2 rounded-b-[0.8rem]">
           <ul
             className="overflow-y-auto max-h-[14.4rem] text-grey-#2 text-[1.4rem] leading-[1.82rem] font-medium"
             ref={listRef}
           >
-            {options
-              .map((newOption: string | ValueLabel, index: number) => {
-                return typeof newOption === "string" ? (
-                  <li
-                    className="py-[0.85rem] px-4 hover:bg-green-light hover:text-green-medium hover:border-l-green-dark hover:border-l-[0.3rem]"
-                    key={`${name}${newOption ? newOption : Date.now() + index
-                      }`}
-                    value={newOption}
-                    onClick={() => setInputValue(newOption)}
-                  >
-                    {newOption}
-                  </li>
-                ) : (
-                  <li
-                    className="py-[0.85rem] px-4 hover:bg-green-light hover:text-green-medium hover:border-l-green-dark hover:border-l-[0.3rem]"
-                    key={`${name}${newOption.value ? newOption.value : Date.now() + index
-                      }`}
-                    value={newOption.value}
-                    onClick={() => setInputValue(newOption.value)}
-                  >
-                    {newOption.label}
-                  </li>
-                );
-              })}
+            {options.map((newOption: string | ValueLabel, index: number) => {
+              const value = typeof newOption === "string" ? newOption : newOption.value;
+              const label = typeof newOption === "string" ? newOption : newOption.label;
+              return (
+                <li
+                  className="py-[0.85rem] px-4 hover:bg-green-light hover:text-green-medium hover:border-l-green-dark hover:border-l-[0.3rem]"
+                  key={`${name}${value ? value : Date.now() + index}`}
+                  onClick={() => setInputValue(newOption)}
+                >
+                  {label}
+                </li>
+              );
+            })}
           </ul>
         </div>
-      }
+      )}
 
-      {!!error && (
+      {error && (
         <Text
           type="sm"
-          className="text-red"
+          color="red"
+          className={`pt-2 px-1 ${errorClassName ? errorClassName : ""}`}
         >
-          {`${error}`}
+          {error}
         </Text>
       )}
     </fieldset>

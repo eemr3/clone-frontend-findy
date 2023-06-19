@@ -30,8 +30,9 @@ import { getCandidateUser, getPositions, updateProfile } from '../../services/ap
 import { getErrorMessage } from '../../utils/ErrorMessageUtil';
 import { AuthContext } from '../../context/auth';
 import { SelectDBv2 } from '../../components/forms/SelectDBv2';
-
-
+import { MarketData } from './components/MarketData';
+import { ProfissionalArea } from './components/ProfissionalArea';
+import { ProfessionalAchievement } from './components/ProfessionalAchievement';
 
 type ProfileFormValues = CandidateProfile & {
   name: string;
@@ -88,7 +89,8 @@ export function Survey() {
   const [candidateUser, setCandidateUser] = useState<any>();
   // Teste de Error no nome e e-mail
   const [others, setOthers] = useState('');
-  /* const [othersArray, setOthersArray] = useState<string[]>([]); */
+  /* const [othersArray, setOthersArray] = useState<string[]>([]); */  
+
   const { getToken } = useContext(AuthContext);
   const navigate = useNavigate();
   const {
@@ -153,6 +155,10 @@ export function Survey() {
     fetchData();
   }, []);
 
+  function handleNextStep() {
+    setStep(step + 1)
+  }
+
   function handleOthersInputChange(e: ChangeEvent<HTMLInputElement> | string) {
     const inputValue = typeof e === 'string' ? e : e.target.value;
     setOthers(inputValue);
@@ -181,7 +187,7 @@ export function Survey() {
   }, [others]);
 
   return (
-    <div className="w-max-[144rem] flex flex-col bg-blue-dark-#1">
+    <div className="w-max-[144rem] flex-col bg-blue-dark-#1">
       <HeaderSurvey />
 
       <ProgressBar stepAmount={5} activeStep={step} />
@@ -246,6 +252,7 @@ export function Survey() {
               className="w-[10.7rem] text-[1.4rem] leading-[1.82rem] tracking-[0.091rem] font-semibold normal-case"
               fill
               disabled={activeSubmit}
+              onClick={handleNextStep}
             >
               Continuar
             </Button>
@@ -255,64 +262,35 @@ export function Survey() {
 
       }
 
+      <div className="flex flex-col">
+        {step == 1 &&
+          <MarketData  
+            nextStep={handleNextStep} 
+          />
+        }
 
-      {step == 1 &&
+        {
+          step == 2 &&
+          <ProfissionalArea
+            nextStep={handleNextStep}        
+          />
+        }
 
-        <form
-          className="mx-auto mt-[2rem] mb-[7.692rem] w-[66rem]"
-          noValidate
+        {
+          step == 3 &&
+          <ProfessionalAchievement
+            nextStep={handleNextStep} 
+          />
+        }
+
+        <Text
+          type="sm"
+          className="text-white mx-auto mt-auto mb-[1.7rem]"
         >
-          <Heading type="xxs" className="text-center text-grey-#4">
-            Como ficou sabendo da Findy?*
-          </Heading>
-
-          <fieldset className="w-full flex flex-col gap-[2rem] mt-4 py-16 pl-[7.7rem] pr-[7.8rem] rounded-[2.233rem] bg-white">
-
-            <SelectDBv2
-              options={['Facebook', 'Instagram', 'Twitter', 'Linkedin', 'Tiktok', 'Anúncio Online', 'Indicação de Amigo ou Colega', 'Eventos ou Workshops', 'Outro']}
-              label="Como ficou sabendo da Findy?*"
-              requiredField
-              placeholder="Selecione uma opção"
-            />
-
-
-          </fieldset>
-
-          <nav className="mt-[4rem] flex gap-[4.1rem] justify-center">
-            <Button
-              className="w-[10.7rem] text-[1.4rem] leading-[1.82rem] tracking-[0.091rem] font-semibold normal-case"
-            >
-              Voltar
-            </Button>
-
-            <Button
-              type="submit"
-              className="w-[10.7rem] text-[1.4rem] leading-[1.82rem] tracking-[0.091rem] font-semibold normal-case"
-              fill
-              disabled={activeSubmit}
-            >
-              Continuar
-            </Button>
-          </nav>
-
-        </form>
-
-      }
-
-
-
-
-
-
-      <Text
-        type="sm"
-        className="text-white mx-auto mt-auto mb-[1.7rem]"
-      >
-        © Todos direitos reservados a Findy.
-      </Text>
-
-
-
+          © Todos direitos reservados a Findy.
+        </Text>
+      </div>
+      
       {/* 
       <article className="ml-[15.9rem] mt-[6.414rem] text-grey-#5 lg:ml-[4rem] mbl:ml-[2rem]">
         <Heading type="lg-leading58" className="mbl:text-[4rem]">
