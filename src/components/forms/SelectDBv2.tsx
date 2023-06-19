@@ -6,7 +6,9 @@ import {
   useImperativeHandle,
   useRef,
   useState,
-  useEffect
+  useEffect,
+  ChangeEvent,
+  FocusEvent
 } from "react";
 import { SVGIcon } from "../../types/SVGIcon";
 import { Text } from "../Text";
@@ -51,6 +53,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
     wantInputWidthFull = false,
     className = "",
     onChange,
+    onBlur,
     ...rest
   },
   ref
@@ -64,8 +67,25 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
     () => inputRef.current
   );
 
+  function updateInputLabelValue() {
+    if (inputRef.current && inputLabelRef.current) {
+
+      const labelFounded = options.map((option: ValueLabel | string) => {
+        if (typeof option === "object") {
+          return option
+        }
+      }).filter(option => option == inputRef.current?.value)[0]?.label as string
+
+      inputLabelRef.current.value = typeof options[0] === "string" ?
+        inputRef.current.value : labelFounded;
+    }
+  }
+
   useEffect(() => {
     document.addEventListener("mousedown", closeOpenList);
+
+    updateInputLabelValue();
+
   }, [])
 
   const closeOpenList = (e: any) => {
@@ -90,6 +110,12 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
 
       inputRef.current.value = (typeof newValue == 'string') ? newValue : newValue.value;
       inputLabelRef.current.value = (typeof newValue == 'string') ? newValue : newValue.label;
+
+      onChange &&
+        onChange(
+          {
+            target: inputRef.current,
+          } as ChangeEvent<HTMLInputElement>);
 
       setOpenList(false);
     }
@@ -137,7 +163,9 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
         <input
           name={name}
           ref={inputRef}
-          className={`hidden`}
+          className="w-0 opacity-0"
+          onChange={onChange}
+          onBlur={onBlur}
         />
 
         {openList ? <SelectArrowDownIcon /> : <SelectArrowUpIcon />}
