@@ -1,18 +1,14 @@
+import jwt_decode from 'jwt-decode';
 import { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
 import { toast } from 'react-toastify';
 
-import { Button } from '../../../components/Button';
-import { Header } from '../../../components/Header';
 import { AuthContext, Token } from '../../../context/auth';
 import { getCandidateUser } from '../../../services/api';
 
-import c from '../../../assets/c.svg';
-import { NavBar } from '../../../components/menu/NavBar';
-import Highlight from '../../../components/landing/Highlight';
 import { Landing } from '../../../components/landing';
 import { FooterLand } from '../../../components/landing/Footer';
+import { NavBar } from '../../../components/menu/NavBar';
 
 // import mulherPagePrincipal from '../../../assets/mulher-page-principal.svg';
 // import mulherPagePrincipal3 from '../../../assets/mulher-page-principal3.svg';

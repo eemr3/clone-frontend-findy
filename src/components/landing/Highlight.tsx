@@ -13,7 +13,7 @@ export default function Highlight() {
             a maneira mais fácil de descobrir e aprimorar seu desenvolvimento
             profissional.
           </div>
-          <div>
+          <div className="ml-[100px] mt-[140px]">
             <Link
               to="/cadastro"
               className="rounded-[31px] bg-green-medium px-52 py-8 text-[14px] font-semibold uppercase text-white"
