@@ -14,6 +14,7 @@ export function Button({
   disabled = false,
   url = undefined,
   className = "text-[1.4rem] leading-[1.162rem] tracking-[0.091rem] font-bold",
+  type = 'button',
   onClick,
   ...rest
 }: ButtonProps) {
@@ -33,11 +34,11 @@ export function Button({
 
   return (
     <button
-      className={`h-[3.341rem] w-fit rounded-[2.324rem] px-[1.743rem] uppercase ${className} ${buttonStyle}`}
+      className={`h-[3.341rem] w-fit rounded-[2.324rem] px-[1.743rem] uppercase disabled:cursor-not-allowed ${className} ${buttonStyle}`}
+      disabled={disabled}
       onClick={(event) => {
         /* url &&
           navigate(url); */
-
 
         if (typeof url === "string") {
           navigate(url);
