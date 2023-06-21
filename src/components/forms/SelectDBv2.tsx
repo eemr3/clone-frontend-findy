@@ -68,13 +68,13 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
   );
 
   function updateInputLabelValue() {
-    if (inputRef.current && inputLabelRef.current) {
+    if (inputRef.current && inputLabelRef.current && inputRef.current?.value !== "") {
 
-      const labelFounded = options.map((option: ValueLabel | string) => {
-        if (typeof option === "object") {
+       const labelFounded = options.map((option: ValueLabel | string) => {
+        if (typeof option !== "string") {
           return option
         }
-      }).filter(option => option == inputRef.current?.value)[0]?.label as string
+      }).filter(option => option?.value == inputRef.current?.value)[0]?.label as string
 
       inputLabelRef.current.value = typeof options[0] === "string" ?
         inputRef.current.value : labelFounded;

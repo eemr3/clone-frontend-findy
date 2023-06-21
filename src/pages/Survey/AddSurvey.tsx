@@ -6,6 +6,8 @@ import { ProgressBar } from '../../components/ProgressBar';
 import { useSteps } from '../../components/ProgressBar/context/useSteps';
 import { MarketData } from './components/MarketData';
 import { PersonalData } from './components/PersonalData';
+import { ProfissionalArea } from './components/ProfissionalArea';
+import { ProfessionalAchievement } from './components/ProfessionalAchievement';
 
 
 export function AddSurvey() {
@@ -16,21 +18,26 @@ export function AddSurvey() {
   }, [])
 
   return (
-    <div className="w-max-[144rem] flex flex-col bg-blue-dark-#1">
+    <div className="w-max-[144rem] min-h-screen flex flex-col bg-blue-dark-#1">
 
       <HeaderSurvey />
 
       <ProgressBar stepAmount={5} activeStep={activeStep} />
 
       {activeStep == 0 &&
-
         <PersonalData />
-
       }
-
 
       {activeStep == 1 &&
         <MarketData />
+      }
+
+      {activeStep == 2 &&
+        <ProfissionalArea />
+      }
+
+      {activeStep == 3 &&
+        <ProfessionalAchievement />
       }
 
       <Text

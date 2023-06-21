@@ -2,8 +2,6 @@ import { useContext, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import jwt_decode from "jwt-decode";
-import { toast } from 'react-toastify';
 
 import { Survey } from '../../../types/Survey';
 import { CandidateUser } from '../../../types/CandidateUser';
@@ -21,8 +19,6 @@ import { getCandidateUser } from '../../../services/api';
 
 import { calculateYears } from "../../../utils/DateUtil";
 import { formatDateISO } from "../../../utils/FormatUtil";
-import { getErrorMessage } from '../../../utils/ErrorMessageUtil';
-
 
 const schema = yup
   .object()
@@ -84,25 +80,24 @@ export function PersonalData() {
 
   useEffect(() => {
 
-    /*     async function getUserToken() {
-          const token = getToken();
-    
-          if (!token) {
-            return;
-          }
-    
-          try {
-            const { sub } = jwt_decode<Token>(token);
-    
-            await getCandidateUser(String(sub)).then((response) => {
-              setCandidateUser(response.data);
-            });
-          } catch (error) {
-            toast.error(getErrorMessage(error));
-          }
-        }
-    
-        getUserToken(); */
+    /* async function getUserToken() {
+      const token = getToken();
+
+      if (!token) {
+        return;
+      }
+
+      try {
+        const { sub } = jwt_decode<Token>(token);
+
+        await getCandidateUser(String(sub)).then((response) => {
+          setCandidateUser(response.data);
+        });
+      } catch (error) {
+        toast.error(getErrorMessage(error));
+      }
+    }
+    getUserToken(); */
 
     setFocus("name");
     setIsLoadingInitial(false);
