@@ -6,12 +6,16 @@ import {
   InputHTMLAttributes,
   forwardRef,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useRef,
 } from "react";
 import { SVGIcon } from "../../types/SVGIcon";
 import { Text } from "../Text";
 import { getMaxLength, maskPhone } from "../../utils/inputdbMasksUtil";
+import { isNumeric } from "../../utils/StringUtil";
+import { formatDateBR } from "../../utils/FormatUtil";
+import { isDate } from "../../utils/DateUtil";
 
 interface InputDBv2Props
   extends DetailedHTMLProps<
@@ -33,7 +37,7 @@ interface InputDBv2Props
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
   {
-    name = "",
+    name = `input${String(Math.random()).substring(2)}`,
     label,
     requiredField = false,
     placeholder,
@@ -46,6 +50,8 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
     wantInputWidthFull = false,
     className = "",
     onChange,
+    onFocus,
+    onBlur,
     ...rest
   },
   ref
@@ -69,17 +75,30 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
     }
   }
 
+  function updateInputTypeDate() {
+    if (type == "date" && inputRef.current) {
+
+      if (isDate(inputRef.current.value)) {
+        const brDate = formatDateBR(new Date(inputRef.current.value));
+
+        inputRef.current.value = brDate;
+      }
+    }
+  }
+
+  useEffect(() => {
+    updateInputTypeDate();
+
+  }, []);
+
   return (
     <fieldset
       className={`h-[7.6rem] flex flex-col ${fieldSetClassName}`}
-      onClick={() => {
-        if (inputRef.current) inputRef.current.focus();
-      }}
     >
       {!!label && (
         <label
           htmlFor={name}
-          className="mb-[0.3rem] text-[1.6rem] font-medium leading-[2.08rem] tracking-[-0.5%] text-black text-opacity-80"
+          className="w-fit mb-[0.3rem] text-[1.6rem] font-medium leading-[2.08rem] tracking-[-0.5%] text-black text-opacity-80"
         >
           {`${label}${requiredField ? "*" : ""}`}
         </label>
@@ -87,6 +106,9 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
 
       <div
         className={`flex h-[3.6rem] w-[50.5rem] py-[0.8rem] px-[1.6rem] rounded-[0.8rem] border-[0.1rem] border-grey-#2 bg-grey-#4 ${fieldSetBG} ${wantInputWidthFull ? "w-full" : ""}`}
+        onClick={() => {
+          if (inputRef.current) inputRef.current.focus();
+        }}
       >
         {icon && (
           <div
@@ -97,9 +119,10 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
           </div>
         )}
         <input
+          id={name}
           name={name}
           ref={inputRef}
-          type={type}
+          type={type == "date" ? "text" : type}
           maxLength={mask && getMaxLength(mask)}
           placeholder={placeholder}
           className={`w-full border-none text-[1.4rem] font-medium leading-[1.82rem] bg-grey-#4 text-green-medium outline-none placeholder:text-grey-#2 disabled:bg-grey-#3  ${className} ${fieldSetBG} ${wantInputWidthFull ? "w-[96%]" : ""}`}
@@ -109,7 +132,36 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
 
             onChange &&
               onChange(event);
+
           }}
+          onFocus={(event) => {
+            if (type == "date") {
+
+              if (isNumeric(event.currentTarget.value.replaceAll("/", ""))) {
+                const usDate = event.currentTarget.value.replace(/(\d{2})\/(\d{2})\/(\d{4})/, "$3-$2-$1");
+                event.currentTarget.value = usDate;
+              }
+              event.currentTarget.type = type;
+
+            }
+
+            onFocus &&
+              onFocus(event);
+          }}
+
+          onBlur={(event) => {
+            onBlur &&
+              onBlur(event);
+
+            if (type == "date") {
+              event.currentTarget.type = "text";
+
+              updateInputTypeDate();
+
+            }
+
+          }}
+
           {...rest}
         />
       </div>

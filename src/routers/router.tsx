@@ -17,7 +17,7 @@ import { getCandidateUser } from "../services/api";
 import { getErrorMessage } from "../utils/ErrorMessageUtil";
 import { ForgotPassword } from "../pages/ForgotPassword";
 import { PasswordRecovery } from "../pages/PasswordRecovery";
-import { Survey } from "../pages/Survey";
+import { Survey } from "../pages/Survey/index";
 
 import { ConfimationAccount } from '../pages/ConfirmationAccount';
 import { DashboardPage } from '../pages/Dashboard';

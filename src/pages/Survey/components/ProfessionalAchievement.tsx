@@ -1,10 +1,7 @@
 import { useState } from 'react';
 import * as Yup from 'yup';
 import { Button } from '../../../components/Button';
-
-interface ProfessionalAchievementProps {
-  nextStep: () => void
-}
+import { useSteps } from '../../../components/ProgressBar/context/useSteps';
 
 const validationSchema = Yup.object().shape({
   professionalAchievement: Yup.number()
@@ -15,13 +12,16 @@ const validationSchema = Yup.object().shape({
   feedback: Yup.string().required('Campos obrigatórios')
 });
 
-export function ProfessionalAchievement({ nextStep }: ProfessionalAchievementProps) {
+export function ProfessionalAchievement() {
   const [activeSubmit, setActiveSubmit] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
   const [feedback, setFeedback] = useState('');
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isButtonClicked, setIsButtonClicked] = useState(false);
 
+  const { nextStep, prevStep } = useSteps();
+
+  //refatorar a validação para seguir o mesmo padrão dos outros componentes
   function handleOptionSelect(index: number) {
     setSelected(index);
     setErrors({});
@@ -57,10 +57,7 @@ export function ProfessionalAchievement({ nextStep }: ProfessionalAchievementPro
         setErrors(validationErrors);
       });
   }
-
-  //feature/survey-screens
   
-
   function saveToBackend(value: number, feedback: string) {
     console.log('Valor a ser salvo:', value);
     console.log('Feedback a ser salvo:', feedback);
@@ -273,6 +270,7 @@ export function ProfessionalAchievement({ nextStep }: ProfessionalAchievementPro
       <nav className="mt-[4rem] flex gap-[4.1rem] justify-center">
         <Button
           className="w-[10.7rem] text-[1.4rem] leading-[1.82rem] tracking-[0.091rem] font-semibold normal-case"
+          onClick={prevStep}
         >
           Voltar
         </Button>

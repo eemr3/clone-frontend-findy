@@ -1,71 +1,67 @@
-import React, { useState } from "react";
-import { Heading } from "../../../components/Heading";
+import { useState, useEffect } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { SelectDBv2 } from "../../../components/forms/SelectDBv2";
 import { Button } from "../../../components/Button";
-import * as Yup from "yup";
+import * as yup from "yup";
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useSteps } from "../../../components/ProgressBar/context/useSteps";
+import { useSurveyContext } from "../context/SurveyContext";
+import { SurveyProfissionalArea } from "../../../types/SurveyProfissionalArea";
+import { ProfissionalAreaList } from "../../../utils/ProfissionalAreaList";
+import { SurveyNav } from "./SurveyNav";
 
-interface ProfissionalAreaProps {
-  nextStep: () => void;
-}
+const schema = yup.object().shape({
+  situation: yup.string().required("*Campo obrigatório"),
+  area: yup.string().required("*Campo obrigatório"),
+  transition: yup.string().required("*Campo obrigatório"),
+}).required();
 
-interface Errors {
-  [key: string]: string | undefined;
-}
+export function ProfissionalArea() {
+  const { surveyProfissionalArea, setSurveyProfissionalArea } = useSurveyContext();
+  const { nextStep, prevStep } = useSteps();
 
-export function ProfissionalArea({ nextStep }: ProfissionalAreaProps) {
-  const [situation, setSituation] = useState("");
-  const [area, setArea] = useState("");
-  const [transition, setTransition] = useState("");
-  const [errors, setErrors] = useState<Errors>({});
+ // feature/survey-screens
 
-  const schema = Yup.object().shape({
-    situation: Yup.string().required("*Campo obrigatório"),
-    area: Yup.string().required("*Campo obrigatório"),
-    transition: Yup.string().required("*Campo obrigatório"),
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setFocus,
+    formState: { errors, isSubmitting },
+  } = useForm<SurveyProfissionalArea>({
+    resolver: yupResolver(schema),
+    shouldFocusError: true,
+    mode: 'onBlur',
+    defaultValues: {
+      situation: surveyProfissionalArea ? surveyProfissionalArea.situation : '',
+      area: surveyProfissionalArea ? surveyProfissionalArea.area : '',
+      transition: surveyProfissionalArea ? surveyProfissionalArea.transition : '',
+    },
   });
+  
+  const handleUpdateSurvey: SubmitHandler<SurveyProfissionalArea> = async (values, event) => {
+    event?.preventDefault();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    // Simulando a espera da API
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
-    try {
-      await schema.validate({ situation, area, transition }, { abortEarly: false });
-      nextStep();
-    } catch (err) {
-      const validationErrors: Errors = {};
+    setSurveyProfissionalArea(values);
 
-      if (err instanceof Yup.ValidationError) {
-        err.inner.forEach((validationError) => {
-          if (validationError.path) {
-            validationErrors[validationError.path] = validationError.message;
-          }
-        });
-      }
-
-      setErrors(validationErrors);
-    }
+    nextStep();
   };
 
-  const handleChange = (name: string, value: string) => {
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: undefined,
-    }));
+  useEffect(() => {
+    setFocus("situation");
+  }, []);
 
-    if (name === "situation") {
-      setSituation(value);
-    } else if (name === "area") {
-      setArea(value);
-    } else if (name === "transition") {
-      setTransition(value);
-    }
-  };
-
-  const getErrorClassName = (name: string) => {
-    return errors[name] ? "border border-red" : "";
-  };
+  console.log("surveyProfissionalArea", surveyProfissionalArea)
 
   return (
-    <form className="mx-auto mt-[2rem] flex flex-col items-center h-screen w-[66rem]" noValidate onSubmit={handleSubmit}>
+    <form
+      className="mx-auto mt-[2rem] flex flex-col items-center h-screen w-[66rem]" 
+      noValidate 
+      onSubmit={handleSubmit(handleUpdateSurvey)}
+    >
       <h1 className="text-[2.4rem] text-grey-#4 mt-[3.343rem]">Área Profissional</h1>
       <fieldset className="w-full flex flex-col gap-[2rem] mt-4 py-16 pl-[7.7rem] pr-[7.8rem] rounded-[2.233rem] bg-white">
         <SelectDBv2
@@ -78,37 +74,17 @@ export function ProfissionalArea({ nextStep }: ProfissionalAreaProps) {
           label="Qual sua situação profissão atual?*"
           requiredField
           placeholder="Selecione uma opção"
-          error={errors.situation}
-          onFocus={() => setErrors((prevErrors) => ({ ...prevErrors, situation: undefined }))}
-          onChange={(e) => handleChange("situation", e.target.value)}
-          errorClassName={getErrorClassName("situation")}
+          error={errors.situation?.message}
+          {...register('situation')}
         />
 
         <SelectDBv2
-          options={[
-            "Desenvolvimento Frontend",
-            "Desenvolvimento Backend",
-            "Desenvolvimento Fullstack",
-            "Engenharia de Software",
-            "DevOps",
-            "Segurança da Informação",
-            "Data Science",
-            "Engenharia de Dados",
-            "Análise de Dados",
-            "UX/UI Design",
-            "Quality Assurance",
-            "Product Management",
-            "Agile",
-            "Business Inteligence",
-            "Outros",
-          ]}
+          options={ProfissionalAreaList}
           label="Qual é sua área de atuação atual ou mais recente?*"
           requiredField
           placeholder="Selecione uma opção"
-          error={errors.area}
-          onFocus={() => setErrors((prevErrors) => ({ ...prevErrors, area: undefined }))}
-          onChange={(e) => handleChange("area", e.target.value)}
-          errorClassName={getErrorClassName("area")}
+          error={errors.area?.message}
+          {...register('area')}
         />
 
         <SelectDBv2
@@ -121,27 +97,15 @@ export function ProfissionalArea({ nextStep }: ProfissionalAreaProps) {
           label="Qual é o seu objetivo principal?*"
           requiredField
           placeholder="Selecione uma opção"
-          error={errors.transition}
-          onFocus={() => setErrors((prevErrors) => ({ ...prevErrors, transition: undefined }))}
-          onChange={(e) => handleChange("transition", e.target.value)}
-          errorClassName={getErrorClassName("transition")}
+          error={errors.transition?.message}
+          {...register('transition')}
         />
       </fieldset>
 
-      <nav className="mt-[4rem] flex gap-[4.1rem] justify-center">
-        <Button className="w-[10.7rem] text-[1.4rem] leading-[1.82rem] tracking-[0.091rem] font-semibold normal-case">
-          Voltar
-        </Button>
-
-        <Button
-          type="submit"
-          className="w-[10.7rem] text-[1.4rem] leading-[1.82rem] tracking-[0.091rem] font-semibold normal-case"
-          fill
-          onClick={nextStep}
-        >
-          Continuar
-        </Button>
-      </nav>
+      <SurveyNav
+        isSubmitting={isSubmitting}
+        prevStep={prevStep} 
+      />
     </form>
   );
 }
