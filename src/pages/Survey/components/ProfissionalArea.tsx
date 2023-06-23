@@ -20,7 +20,7 @@ export function ProfissionalArea() {
   const { surveyProfissionalArea, setSurveyProfissionalArea } = useSurveyContext();
   const { nextStep, prevStep } = useSteps();
 
- // feature/survey-screens
+  // feature/survey-screens
 
   const {
     register,
@@ -38,7 +38,7 @@ export function ProfissionalArea() {
       transition: surveyProfissionalArea ? surveyProfissionalArea.transition : '',
     },
   });
-  
+
   const handleUpdateSurvey: SubmitHandler<SurveyProfissionalArea> = async (values, event) => {
     event?.preventDefault();
 
@@ -58,8 +58,8 @@ export function ProfissionalArea() {
 
   return (
     <form
-      className="mx-auto mt-[2rem] flex flex-col items-center h-screen w-[66rem]" 
-      noValidate 
+      className="mx-auto mt-[2rem] flex flex-col items-center mb-[7.692rem] w-[66rem]"
+      noValidate
       onSubmit={handleSubmit(handleUpdateSurvey)}
     >
       <h1 className="text-[2.4rem] text-grey-#4 mt-[3.343rem]">Área Profissional</h1>
@@ -71,7 +71,7 @@ export function ProfissionalArea() {
             "Estudante ou estagiário na área de tecnologia",
             "Desempregado buscando oportunidades na área de tecnologia",
           ]}
-          label="Qual sua situação profissão atual?*"
+          label="Qual sua situação profissão atual?"
           requiredField
           placeholder="Selecione uma opção"
           error={errors.situation?.message}
@@ -80,7 +80,7 @@ export function ProfissionalArea() {
 
         <SelectDBv2
           options={ProfissionalAreaList}
-          label="Qual é sua área de atuação atual ou mais recente?*"
+          label="Qual é sua área de atuação atual ou mais recente?"
           requiredField
           placeholder="Selecione uma opção"
           error={errors.area?.message}
@@ -94,7 +94,7 @@ export function ProfissionalArea() {
             "Consolidar os conhecimentos dentro da minha área",
             "Ajudar outras pessoas a aprimorar seus conhecimentos",
           ]}
-          label="Qual é o seu objetivo principal?*"
+          label="Qual é o seu objetivo principal?"
           requiredField
           placeholder="Selecione uma opção"
           error={errors.transition?.message}
@@ -104,7 +104,7 @@ export function ProfissionalArea() {
 
       <SurveyNav
         isSubmitting={isSubmitting}
-        prevStep={prevStep} 
+        prevStep={prevStep}
       />
     </form>
   );

@@ -50,10 +50,15 @@ export const AppRouter = () => {
 
   const Private = ({ children }: RouteElementProps) => {
     const token = getToken();
+    const { pathname } = useLocation();
 
     if (!token || !isAuthenticated || isTokenExpired()) {
       return <Navigate to="/login" />;
     }
+
+    //Preenchimento do Survey Obrigatório
+    if (pathname !== "/survey" && "!candidateUser.complete_survey" == "!candidateUser.complete_survey")
+      return <Navigate to="/survey" />;
 
     if (loading) {
       return <div>Carregando...</div>;
@@ -70,6 +75,16 @@ export const AppRouter = () => {
 
     return children;
   };
+
+  const CanAccessSurvey = ({ children }: RouteElementProps) => {
+    if (!candidateUser) return <Navigate to="/login" />;
+
+    if (1 != 1 /* candidateUser.complete_survey */)
+      return <Navigate to="/dashboard" />;
+
+    return children;
+  };
+
 
   useEffect(() => {
     async function getUserToken() {
@@ -132,7 +147,14 @@ export const AppRouter = () => {
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/forgot_password" element={<ForgotPassword />} />
           <Route path="/password_recovery" element={<PasswordRecovery />} />
-          <Route path="/survey" element={<Survey />} />
+          <Route path="/survey" element={
+            <Private>
+              <CanAccessSurvey>
+                <Survey />
+              </CanAccessSurvey>
+            </Private>
+
+          } />
 
           <Route path="/confirmation-account" element={<ConfimationAccount />} />
           <Route
