@@ -26,7 +26,7 @@ export function SurveyProvider({ children }: SurveyProviderProps) {
     if (storagedSurveyPersonalData)
       return JSON.parse(storagedSurveyPersonalData);
 
-    return {} as SurveyPersonalData
+    return /* {} as SurveyPersonalData */
   });
 
   const [surveyMarketData, setSurveyMarketData] = useState<SurveyMarketData>({} as SurveyMarketData);

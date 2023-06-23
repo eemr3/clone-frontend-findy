@@ -23,11 +23,10 @@ import { ConfimationAccount } from '../pages/ConfirmationAccount';
 import { DashboardPage } from '../pages/Dashboard';
 
 export const AppRouter = () => {
-  const [candidateUser, setCandidateUser] = useState<CandidateUser>({} as CandidateUser);
+  const [candidateUser, setCandidateUser] = useState<CandidateUser>(/* {} as CandidateUser */);
   const [isLoading, setIsLoading] = useState(true);
   const {
     isAuthenticated,
-    loading,
     getToken,
     isTokenExpired,
     hasToken,
@@ -49,6 +48,7 @@ export const AppRouter = () => {
   }
 
   const Private = ({ children }: RouteElementProps) => {
+
     const token = getToken();
     const { pathname } = useLocation();
 
@@ -57,12 +57,8 @@ export const AppRouter = () => {
     }
 
     //Preenchimento do Survey Obrigatório
-    if (pathname !== "/survey" && "!candidateUser.complete_survey" == "!candidateUser.complete_survey")
+    if (pathname !== "/survey" && candidateUser && !candidateUser.completeSurvey)
       return <Navigate to="/survey" />;
-
-    if (loading) {
-      return <div>Carregando...</div>;
-    }
 
     return children;
   };
@@ -79,7 +75,7 @@ export const AppRouter = () => {
   const CanAccessSurvey = ({ children }: RouteElementProps) => {
     if (!candidateUser) return <Navigate to="/login" />;
 
-    if (1 != 1 /* candidateUser.complete_survey */)
+    if (candidateUser.completeSurvey)
       return <Navigate to="/dashboard" />;
 
     return children;
@@ -91,23 +87,31 @@ export const AppRouter = () => {
       const token = getToken();
 
       if (!token || !isAuthenticated) {
+        if (!token)
+          setIsLoading(false);
+
         return;
       }
 
       try {
         const { sub } = jwt_decode<Token>(token);
 
-        await getCandidateUser(String(sub)).then((response) => {
-          setCandidateUser(response.data);
-        });
+        await getCandidateUser(String(sub))
+          .then((response) => {
+            setCandidateUser(response.data);
+          })
+          .then(() => setIsLoading(false));
+
       } catch (error) {
         toast.error(getErrorMessage(error));
+        setIsLoading(false);
       }
     }
 
     getUserToken();
-    setIsLoading(false);
-  }, []);
+
+  }, [isAuthenticated]);
+
 
   return (
     <>
