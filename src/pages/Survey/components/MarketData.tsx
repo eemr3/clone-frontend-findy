@@ -88,7 +88,8 @@ export function MarketData() {
 
       <SurveyNav
         isSubmitting={isSubmitting}
-        prevStep={prevStep} 
+        prevStep={prevStep}
+        submitLabel="Continuar"
       />
     </form>
   );

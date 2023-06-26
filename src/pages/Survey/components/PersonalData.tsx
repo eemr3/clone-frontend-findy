@@ -19,6 +19,7 @@ import { getCandidateUser } from '../../../services/api';
 
 import { calculateYears } from "../../../utils/DateUtil";
 import { formatDateISO } from "../../../utils/FormatUtil";
+import { SurveyNav } from './SurveyNav';
 
 const schema = yup
   .object()
@@ -167,24 +168,10 @@ export function PersonalData() {
         </Text>
       </fieldset>
 
-      <nav className="mt-[4rem] flex gap-[4.1rem] justify-center">
-        <Button
-          className="w-[10.7rem] text-[1.4rem] leading-[1.82rem] tracking-[0.091rem] font-semibold normal-case"
-          disabled
-        >
-          Voltar
-        </Button>
-
-        <Button
-          type="submit"
-          className="w-[10.7rem] text-[1.4rem] leading-[1.82rem] tracking-[0.091rem] font-semibold normal-case"
-          fill
-          disabled={isSubmitting}
-        >
-          Continuar
-        </Button>
-      </nav>
-
+      <SurveyNav
+        isSubmitting={isSubmitting}
+        submitLabel="Continuar" 
+      />
     </form>
 
   );

@@ -132,7 +132,14 @@ export const AppRouter = () => {
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/forgot_password" element={<ForgotPassword />} />
           <Route path="/password_recovery" element={<PasswordRecovery />} />
-          <Route path="/survey" element={<Survey />} />
+          <Route path="/survey" element={
+            /* <Private>
+              <CanAccessSurvey> */
+                <Survey />
+              /* </CanAccessSurvey>
+            </Private>
+ */
+          } />
 
           <Route path="/confirmation-account" element={<ConfimationAccount />} />
           <Route
