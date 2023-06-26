@@ -34,9 +34,15 @@ export function Heading({ children, type, className, ...rest }: HeadingProps) {
       type: "xs",
       style: "text-[3.6rem] leading-[4.219rem] font-normal",
     },
+  
     {
       type: "xxs",
       style: "text-[2.4rem] leading-[3.12rem] font-medium",
+    },
+
+    {
+      type: "xl",
+      style: "text-[1.6rem] leading-[2.08rem] font-medium",
     },
   ];
 
