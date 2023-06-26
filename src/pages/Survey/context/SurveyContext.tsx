@@ -2,7 +2,6 @@ import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useStat
 import { Survey } from "../../../types/Survey";
 import { SurveyMarketData } from "../../../types/SurveyMarketData";
 import { SurveyProfissionalArea } from "../../../types/SurveyProfissionalArea";
-import { SurveyProfissionalArea } from "../../../types/SurveyProfissionalArea";
 import { SurveyIdentflyngNeeds } from "../../../types/SurveyIdentflyngNeeds";
 
 type SurveyProviderProps = {

@@ -40,6 +40,14 @@ export function AddSurvey() {
         <ProfessionalAchievement />
       }
 
+      {activeStep == 4 &&
+        <ProfessionalAchievement />
+      }
+
+      {activeStep == 5 &&
+        <ProfessionalAchievement />
+      }
+
       <Text
         type="sm"
         className="text-white mx-auto mt-auto mb-[1.7rem]"
