@@ -3,7 +3,7 @@ import { TypeStyle } from "../types/TypeStyle";
 
 interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
   children: ReactNode;
-  type: "lg" | "lg-leading58" | "md" | "sm" | "xs" | "xxs";
+  type: "lg" | "lg-leading58" | "md" | "sm" | "xs" | "xxs" | "xl";
 }
 
 export function Heading({ children, type, className, ...rest }: HeadingProps) {

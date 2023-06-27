@@ -15,6 +15,10 @@ type SurveyContextProps = {
   setSurveyMarketData: Dispatch<SetStateAction<SurveyMarketData>>;
   surveyProfissionalArea: SurveyProfissionalArea;
   setSurveyProfissionalArea: Dispatch<SetStateAction<SurveyProfissionalArea>>;
+  surveyProfissionalArea: SurveyProfissionalArea;
+  setSurveyProfissionalArea: Dispatch<SetStateAction<SurveyProfissionalArea>>;
+  surveyIdentflyingNeeds: SurveyIdentflyngNeeds;
+  setSurveyIdentflyingNeeds: Dispatch<SurveyIdentflyngNeeds>;
   //initializeSurvey: () => void;
 }
 
@@ -26,7 +30,7 @@ export function SurveyProvider({ children }: SurveyProviderProps) {
   const [surveyProfissionalArea, setSurveyProfissionalArea] = useState<SurveyProfissionalArea>({} as SurveyProfissionalArea);
   const [surveyIdentflyingNeeds, setSurveyIdentflyingNeeds] = useState<SurveyIdentflyngNeeds>({} as SurveyIdentflyngNeeds);
 
-  function updatedSurveyPersonalData(data: SurveyPersonalData) {
+ /*  function updatedSurveyPersonalData(data: SurveyPersonalData) {
     setSurveyPersonalData(data);
     localStorage.setItem('@Findy:surveyPersonalData', JSON.stringify(data));
   }
@@ -35,7 +39,7 @@ export function SurveyProvider({ children }: SurveyProviderProps) {
     setSurveyPersonalData(data);
     localStorage.setItem('@Findy:surveyPersonalData', JSON.stringify(data));
   }
-
+ */
   return (
     <SurveyContext.Provider
       value={{
@@ -44,7 +48,9 @@ export function SurveyProvider({ children }: SurveyProviderProps) {
         surveyMarketData,
         setSurveyMarketData,
         surveyProfissionalArea,
-        setSurveyProfissionalArea
+        setSurveyProfissionalArea,
+        surveyIdentflyingNeeds,
+        setSurveyIdentflyingNeeds
       }}
     >
       {children}

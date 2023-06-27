@@ -138,7 +138,7 @@ export const AppRouter = () => {
                 <Survey />
               /* </CanAccessSurvey>
             </Private>
- */
+            */
           } />
 
           <Route path="/confirmation-account" element={<ConfimationAccount />} />
