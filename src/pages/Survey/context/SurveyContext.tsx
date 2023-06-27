@@ -15,8 +15,6 @@ type SurveyContextProps = {
   setSurveyMarketData: Dispatch<SetStateAction<SurveyMarketData>>;
   surveyProfissionalArea: SurveyProfissionalArea;
   setSurveyProfissionalArea: Dispatch<SetStateAction<SurveyProfissionalArea>>;
-  surveyProfissionalArea: SurveyProfissionalArea;
-  setSurveyProfissionalArea: Dispatch<SetStateAction<SurveyProfissionalArea>>;
   surveyIdentflyingNeeds: SurveyIdentflyngNeeds;
   setSurveyIdentflyingNeeds: Dispatch<SurveyIdentflyngNeeds>;
   //initializeSurvey: () => void;
