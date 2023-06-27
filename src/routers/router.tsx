@@ -152,12 +152,12 @@ export const AppRouter = () => {
           <Route path="/forgot_password" element={<ForgotPassword />} />
           <Route path="/password_recovery" element={<PasswordRecovery />} />
           <Route path="/survey" element={
-            <Private>
-              <CanAccessSurvey>
+            /* <Private>
+              <CanAccessSurvey> */
                 <Survey />
-              </CanAccessSurvey>
+              /* </CanAccessSurvey>
             </Private>
-
+            */
           } />
 
           <Route path="/confirmation-account" element={<ConfimationAccount />} />

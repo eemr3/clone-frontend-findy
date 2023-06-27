@@ -2,6 +2,7 @@ import { Dispatch, ReactNode, SetStateAction, createContext, useContext, useStat
 import { SurveyPersonalData } from "../../../types/SurveyPersonalData";
 import { SurveyMarketData } from "../../../types/SurveyMarketData";
 import { SurveyProfissionalArea } from "../../../types/SurveyProfissionalArea";
+import { SurveyIdentflyngNeeds } from "../../../types/SurveyIdentflyngNeeds";
 
 type SurveyProviderProps = {
   children: ReactNode;
@@ -14,7 +15,10 @@ type SurveyContextProps = {
   setSurveyMarketData: Dispatch<SetStateAction<SurveyMarketData>>;
   surveyProfissionalArea: SurveyProfissionalArea;
   setSurveyProfissionalArea: Dispatch<SetStateAction<SurveyProfissionalArea>>;
-  updatedSurveyPersonalData: (data: SurveyPersonalData) => void;
+  surveyIdentflyingNeeds: SurveyIdentflyngNeeds;
+  setSurveyIdentflyingNeeds: Dispatch<SurveyIdentflyngNeeds>;
+  //initializeSurvey: () => void;
+  //updatedSurveyPersonalData: (data: SurveyPersonalData) => void;
 }
 
 export const SurveyContext = createContext({} as SurveyContextProps);
@@ -31,12 +35,18 @@ export function SurveyProvider({ children }: SurveyProviderProps) {
 
   const [surveyMarketData, setSurveyMarketData] = useState<SurveyMarketData>({} as SurveyMarketData);
   const [surveyProfissionalArea, setSurveyProfissionalArea] = useState<SurveyProfissionalArea>({} as SurveyProfissionalArea);
+  const [surveyIdentflyingNeeds, setSurveyIdentflyingNeeds] = useState<SurveyIdentflyngNeeds>({} as SurveyIdentflyngNeeds);
+
+   function updatedSurveyPersonalData(data: SurveyPersonalData) {
+    setSurveyPersonalData(data);
+    localStorage.setItem('@Findy:surveyPersonalData', JSON.stringify(data));
+  }
 
   function updatedSurveyPersonalData(data: SurveyPersonalData) {
     setSurveyPersonalData(data);
     localStorage.setItem('@Findy:surveyPersonalData', JSON.stringify(data));
   }
-
+ 
   return (
     <SurveyContext.Provider
       value={{
@@ -46,6 +56,8 @@ export function SurveyProvider({ children }: SurveyProviderProps) {
         setSurveyMarketData,
         surveyProfissionalArea,
         setSurveyProfissionalArea,
+        surveyIdentflyingNeeds,
+        setSurveyIdentflyingNeeds,
         updatedSurveyPersonalData
       }}
     >
