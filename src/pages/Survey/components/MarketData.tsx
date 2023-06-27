@@ -38,7 +38,7 @@ export function MarketData() {
       findySource: surveyMarketData ? surveyMarketData.findySource : '',
     },
   });
-  
+
   const handleUpdateSurvey: SubmitHandler<SurveyMarketData> = async (values, event) => {
     event?.preventDefault();
 
@@ -58,9 +58,9 @@ export function MarketData() {
   console.log("surveyMarketData ", surveyMarketData)
 
   return (
-    <form 
-      className="mx-auto mt-[2rem] w-[66rem] mb-[7.692rem]" 
-      noValidate 
+    <form
+      className="mx-auto mt-[2rem] w-[66rem] mb-[7.692rem]"
+      noValidate
       onSubmit={handleSubmit(handleUpdateSurvey)}>
       <Heading type="xxs" className="text-center text-grey-#4 mb-[1rem]">
         Como ficou sabendo da Findy?*
@@ -71,7 +71,7 @@ export function MarketData() {
       >
         <SelectDBv2
           options={SocialMediaList}
-          label="Como ficou sabendo da Findy?*"
+          label="Como ficou sabendo da Findy?"
           requiredField
           placeholder="Selecione uma opção"
           error={errors.findySource?.message}

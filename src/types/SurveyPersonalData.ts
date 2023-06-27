@@ -1,5 +1,5 @@
 
-export type Survey = {
+export type SurveyPersonalData = {
   id?: number;
   name: string;
   genre: string;

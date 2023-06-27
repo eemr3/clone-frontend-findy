@@ -14,7 +14,7 @@ export function Loading({ type = "spinner" }: LoadingProps) {
       const newDots = dots.length == 3 ? "" : dots.padEnd(dots.length + 1, ".");
       setDots(newDots);
 
-    }, 700);
+    }, 350 /* 700 */);
   }, [dots]);
 
   return (

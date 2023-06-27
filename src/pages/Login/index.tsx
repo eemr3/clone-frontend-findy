@@ -13,6 +13,7 @@ import { confirmationAccount, loginUser } from '../../services/api';
 import { RegisterContext } from '../../context/newRegister';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
+import { getErrorMessage } from '../../utils/ErrorMessageUtil';
 
 interface FormValues {
   email: string;
@@ -73,14 +74,14 @@ export function Login() {
 
   const onSubmit = async (data: any) => {
     if (data != null) {
-      const result = await loginUser(data.email, data.password);
 
-      //toast.success(getErrorMessage(result));
+      const result = await loginUser(data.email, data.password);
 
       if (result?.status === 200) {
         signIn(result);
         setTimeout(() => {
-          navigate('/dashboard');
+          navigate('/survey');
+          /* navigate('/dashboard'); */
         }, 2000);
       }
 
@@ -136,14 +137,14 @@ export function Login() {
               {showPassword ? (
                 <img
                   src={IconLockClose}
-                  alt="Icone de olho"
+                  alt="Ícone de olho"
                   className="absolute z-20 mr-2 w-10 cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 />
               ) : (
                 <img
                   src={IconLockOpen}
-                  alt="Icone de olho"
+                  alt="Ícone de olho"
                   className="absolute z-20 mr-2 w-10 cursor-pointer"
                   onClick={() => setShowPassword(!showPassword)}
                 />
