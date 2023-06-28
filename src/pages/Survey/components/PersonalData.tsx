@@ -6,7 +6,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { SurveyPersonalData } from '../../../types/SurveyPersonalData';
 import { CandidateUser } from '../../../types/CandidateUser';
 
-import { Button } from "../../../components/Button";
 import { Heading } from "../../../components/Heading";
 import { Text } from "../../../components/Text";
 import { InputDBv2 } from "../../../components/forms/InputDBv2";
@@ -73,9 +72,6 @@ export function PersonalData() {
     //setSurveyPersonalData(values);
 
     updatedSurveyPersonalData(values);
-
-    console.log("Survey[Form]: ", values);
-    console.log("Survey[Context]: ", surveyPersonalData);
 
     nextStep();
   };

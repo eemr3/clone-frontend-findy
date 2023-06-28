@@ -20,11 +20,9 @@ const schema = yup
   .required();
 
 export function ProfissionalArea() {
-  const { surveyProfissionalArea, setSurveyProfissionalArea } =
+  const { surveyProfissionalArea, setSurveyProfissionalArea, updatedProfissionalAreaData } =
     useSurveyContext();
   const { nextStep, prevStep } = useSteps();
-
-  // feature/survey-screens
 
   const {
     register,
@@ -51,7 +49,8 @@ export function ProfissionalArea() {
     // Simulando a espera da API
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    setSurveyProfissionalArea(values);
+    // setSurveyProfissionalArea(values);
+    updatedProfissionalAreaData(values)
 
     nextStep();
   };
