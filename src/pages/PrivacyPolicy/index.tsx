@@ -1,3 +1,4 @@
+import { Copyright } from "@phosphor-icons/react";
 import { Header } from "../../components/Header";
 import { HeaderProfile } from "../../components/HeaderProfile";
 import { Heading } from "../../components/Heading";
@@ -13,7 +14,7 @@ export function PrivacyPolicy(){
             Políticas de Privacidade
           </h1>
 
-        <div className="bg-white text-black max-w-[800px] w-[100%] mx-auto p-[5rem] rounded-[15px] flex flex-col place-content-center mt-5 mb-[20px]">
+        <div className="bg-white  text-black max-w-[800px] w-[100%] mx-auto p-[5rem] rounded-[15px] flex flex-col place-content-center mt-5 mb-[3rem]">
 
           <h1 className="text-[25px] font-bold  pb-[1.6rem]">
             Política de Privacidade da Plataforma Findy
@@ -59,6 +60,11 @@ export function PrivacyPolicy(){
           <h2>Contato</h2>
           <p>Se você tiver alguma dúvida sobre esta Política de Privacidade ou quiser exercer seus direitos relacionados às suas informações pessoais, entre em contato conosco através do nosso suporte.</p>
         </div>
+
+        <div className="flex gap-[0.2rem] pb-[1rem] text-white items-center justify-center white">
+          <Copyright size={15} />Todos direitos reservados a Findy.
+        </div>
+  
       </div>   
     </ div>
   )
