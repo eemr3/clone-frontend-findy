@@ -21,6 +21,7 @@ import { Survey } from "../pages/Survey/index";
 
 import { ConfimationAccount } from '../pages/ConfirmationAccount';
 import { DashboardPage } from '../pages/Dashboard';
+import { PrivacyPolicy } from '../pages/PrivacyPolicy';
 
 export const AppRouter = () => {
   const [candidateUser, setCandidateUser] = useState<CandidateUser>(/* {} as CandidateUser */);
@@ -138,6 +139,7 @@ export const AppRouter = () => {
               </Private>
             }
           />
+         
           <Route
             path="/project_registered"
             element={
@@ -146,7 +148,7 @@ export const AppRouter = () => {
               </Private>
             }
           />
-
+          <Route path="/privacy-policy" element={ <PrivacyPolicy />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/forgot_password" element={<ForgotPassword />} />
