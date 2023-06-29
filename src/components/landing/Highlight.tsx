@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 
 export default function Highlight() {
   return (
-    <section className="mx-auto mb-[70px] mt-[70px] flex w-full flex-col py-8">
+    <section className="mx-auto mb-[70px] mt-[70px] flex w-full flex-col bg-blue-dark py-8">
       <div className="flex max-w-[1356px] justify-between 2xl:mx-[40px]">
         <div className="flex h-[542px] flex-col justify-between">
           <div className="h-[240px] w-[660px] text-[48px] font-bold leading-[52.8px] text-white">
@@ -13,10 +13,10 @@ export default function Highlight() {
             a maneira mais fácil de descobrir e aprimorar seu desenvolvimento
             profissional.
           </div>
-          <div>
+          <div className="ml-[100px] mt-[140px]">
             <Link
               to="/cadastro"
-              className="tex-[14px] rounded-[5px] bg-green-medium px-52 py-8 font-semibold uppercase text-white"
+              className="rounded-[31px] bg-green-medium px-52 py-8 text-[14px] font-semibold uppercase text-white"
             >
               Cadastre-se
             </Link>

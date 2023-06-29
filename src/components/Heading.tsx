@@ -1,13 +1,9 @@
 import { HTMLAttributes, ReactNode } from "react";
-
-type TypeStyle = {
-  type: string;
-  style: string;
-};
+import { TypeStyle } from "../types/TypeStyle";
 
 interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
   children: ReactNode;
-  type: "lg" | "lg-leading58" | "md" | "sm" | "xs";
+  type: "lg" | "lg-leading58" | "md" | "sm" | "xs" | "xxs" | "xl";
 }
 
 export function Heading({ children, type, className, ...rest }: HeadingProps) {
@@ -37,6 +33,16 @@ export function Heading({ children, type, className, ...rest }: HeadingProps) {
     {
       type: "xs",
       style: "text-[3.6rem] leading-[4.219rem] font-normal",
+    },
+  
+    {
+      type: "xxs",
+      style: "text-[2.4rem] leading-[3.12rem] font-medium",
+    },
+
+    {
+      type: "xl",
+      style: "text-[1.6rem] leading-[2.08rem] font-medium",
     },
   ];
 

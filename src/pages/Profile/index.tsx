@@ -26,6 +26,7 @@ import { TelephoneIcon } from '../../components/icons/TelephoneIcon';
 import { getCandidateUser, getPositions, updateProfile } from '../../services/api';
 import { getErrorMessage } from '../../utils/ErrorMessageUtil';
 import { AuthContext } from '../../context/auth';
+import { NavBar } from '../../components/menu/NavBar';
 
 type ProfileFormValues = CandidateProfile & {
   name: string;
@@ -121,7 +122,6 @@ export function Profile() {
       if (response?.status === 201) {
         navigate('/project');
       }
-
     } catch (error) {
       toast.error(getErrorMessage(error));
     }
@@ -164,8 +164,8 @@ export function Profile() {
     const newOthersArray = !others.trim().length
       ? []
       : others
-        .split(',')
-        .map((item) => item.trim().charAt(0).toUpperCase() + item.trim().slice(1));
+          .split(',')
+          .map((item) => item.trim().charAt(0).toUpperCase() + item.trim().slice(1));
     setValue('others', newOthersArray);
 
     trigger('others');
@@ -173,7 +173,7 @@ export function Profile() {
 
   return (
     <div className="w-max-[144rem] flex flex-col bg-blue-dark">
-      <Header showJustify={false} />
+      <NavBar home={false} />
 
       <article className="ml-[15.9rem] mt-[6.414rem] text-grey-#5 lg:ml-[4rem] mbl:ml-[2rem]">
         <Heading type="lg-leading58" className="mbl:text-[4rem]">
@@ -201,8 +201,9 @@ export function Profile() {
               readOnly
               placeholder="Nome"
               fieldSetClassName={'even:ml-auto'}
-              fieldSetBG={`${candidateUser?.name != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
-                }`}
+              fieldSetBG={`${
+                candidateUser?.name != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
+              }`}
               error={errors.name?.message}
               {...register('name')}
             />
@@ -243,8 +244,9 @@ export function Profile() {
               fieldSetClassName={'even:ml-auto'}
               error={errors.email?.message}
               {...register('email')}
-              fieldSetBG={`${candidateUser?.email != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
-                }`}
+              fieldSetBG={`${
+                candidateUser?.email != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
+              }`}
             />
 
             <InputDB
@@ -295,7 +297,7 @@ export function Profile() {
                   },
                 })}
 
-              /* onChange={(event) => {
+                /* onChange={(event) => {
               setDisableOtherDescription(!event.currentTarget.checked);
               if (!event.currentTarget.checked &&
                 getValues().others.length > 0)

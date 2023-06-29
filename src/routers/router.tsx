@@ -1,30 +1,33 @@
-import { useContext, useEffect, useState } from 'react';
-import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
-import { toast } from 'react-toastify';
+import { useContext, useEffect, useState } from "react";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import jwt_decode from "jwt-decode";
+import { toast } from "react-toastify";
 
-import { CandidateUser } from '../types/CandidateUser';
+import { CandidateUser } from "../types/CandidateUser";
 
-import { Loading } from '../components/Loading';
-import { Cadastro } from '../pages/Cadastro';
-import { Home } from '../pages/Home/mvp-1/index';
-import { Login } from '../pages/Login';
-import { Profile } from '../pages/Profile';
-import { Project } from '../pages/Project/index';
-import { ProjectRegistred } from '../pages/ProjectsRegistered';
-import { AuthContext, Token } from '../context/auth';
-import { getCandidateUser } from '../services/api';
-import { getErrorMessage } from '../utils/ErrorMessageUtil';
-import { ForgotPassword } from '../pages/ForgotPassword';
-import { PasswordRecovery } from '../pages/PasswordRecovery';
+import { Loading } from "../components/Loading";
+import { Cadastro } from "../pages/Cadastro";
+import { Home } from "../pages/Home/mvp-1/index";
+import { Login } from "../pages/Login";
+import { Profile } from "../pages/Profile";
+import { Project } from "../pages/Project/index";
+import { ProjectRegistred } from "../pages/ProjectsRegistered";
+import { AuthContext, Token } from "../context/auth";
+import { getCandidateUser } from "../services/api";
+import { getErrorMessage } from "../utils/ErrorMessageUtil";
+import { ForgotPassword } from "../pages/ForgotPassword";
+import { PasswordRecovery } from "../pages/PasswordRecovery";
+import { Survey } from "../pages/Survey/index";
+
+import { ConfimationAccount } from '../pages/ConfirmationAccount';
+import { DashboardPage } from '../pages/Dashboard';
 import { PrivacyPolicy } from '../pages/PrivacyPolicy';
 
 export const AppRouter = () => {
-  const [candidateUser, setCandidateUser] = useState<CandidateUser>({} as CandidateUser);
+  const [candidateUser, setCandidateUser] = useState<CandidateUser>(/* {} as CandidateUser */);
   const [isLoading, setIsLoading] = useState(true);
   const {
     isAuthenticated,
-    loading,
     getToken,
     isTokenExpired,
     hasToken,
@@ -46,15 +49,17 @@ export const AppRouter = () => {
   }
 
   const Private = ({ children }: RouteElementProps) => {
+
     const token = getToken();
+    const { pathname } = useLocation();
 
     if (!token || !isAuthenticated || isTokenExpired()) {
       return <Navigate to="/login" />;
     }
 
-    if (loading) {
-      return <div>Carregando...</div>;
-    }
+    //Preenchimento do Survey Obrigatório
+    if (pathname !== "/survey" && candidateUser && !candidateUser.completeSurvey)
+      return <Navigate to="/survey" />;
 
     return children;
   };
@@ -68,28 +73,46 @@ export const AppRouter = () => {
     return children;
   };
 
+  const CanAccessSurvey = ({ children }: RouteElementProps) => {
+    if (!candidateUser) return <Navigate to="/login" />;
+
+    if (candidateUser.completeSurvey)
+      return <Navigate to="/dashboard" />;
+
+    return children;
+  };
+
+
   useEffect(() => {
     async function getUserToken() {
       const token = getToken();
 
       if (!token || !isAuthenticated) {
+        if (!token)
+          setIsLoading(false);
+
         return;
       }
 
       try {
         const { sub } = jwt_decode<Token>(token);
 
-        await getCandidateUser(String(sub)).then((response) => {
-          setCandidateUser(response.data);
-        });
+        await getCandidateUser(String(sub))
+          .then((response) => {
+            setCandidateUser(response.data);
+          })
+          .then(() => setIsLoading(false));
+
       } catch (error) {
         toast.error(getErrorMessage(error));
+        setIsLoading(false);
       }
     }
 
     getUserToken();
-    setIsLoading(false);
-  }, []);
+
+  }, [isAuthenticated]);
+
 
   return (
     <>
@@ -130,6 +153,24 @@ export const AppRouter = () => {
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/forgot_password" element={<ForgotPassword />} />
           <Route path="/password_recovery" element={<PasswordRecovery />} />
+          <Route path="/survey" element={
+            /* <Private>
+              <CanAccessSurvey> */
+                <Survey />
+              /* </CanAccessSurvey>
+            </Private>
+            */
+          } />
+
+          <Route path="/confirmation-account" element={<ConfimationAccount />} />
+          <Route
+            path="/dashboard"
+            element={
+              <Private>
+                <DashboardPage />
+              </Private>
+            }
+          />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       )}

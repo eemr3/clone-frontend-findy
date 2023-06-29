@@ -8,6 +8,7 @@ import { Tag } from '../../components/Tag';
 import { Text } from '../../components/Text';
 import { getLanguagesById, getProjects } from '../../services/api';
 import { AuthContext } from '../../context/auth';
+import { NavBar } from '../../components/menu/NavBar';
 
 interface Projects {
   id: number;
@@ -87,7 +88,7 @@ export function ProjectRegistred() {
 
   return (
     <section className="w-max-[144rem] flex  flex-col  bg-blue-dark">
-      <Header showJustify={false} />
+      <NavBar home={false} />
 
       <article className="flex min-h-[max-context] flex-col items-center justify-center bg-blue-dark pl-[15.9rem] pt-[6.414rem] text-grey-#5 lg:px-[3rem] mbl:justify-center mbl:pb-[5rem]">
         <Heading

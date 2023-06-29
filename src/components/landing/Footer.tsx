@@ -1,16 +1,26 @@
+import {
+  FacebookLogo,
+  InstagramLogo,
+  LinkedinLogo,
+  WhatsappLogo,
+} from '@phosphor-icons/react';
 import React from 'react';
 
 export function FooterLand() {
   return (
-    <footer className="mt-[20px] flex w-full items-center bg-blue-dark py-14 text-[14px] text-white">
+    <footer className="mt-[20px] flex w-full items-center bg-blue-dark py-24 text-[14px] text-white">
       <div className="mx-auto flex w-[1359px] items-center justify-around">
         <div className="flex flex-col gap-4">
           <h4>Siga-nos</h4>
           <div className="flex gap-4">
-            <div className="h-[50px] w-[50px] bg-grey-#2"></div>
-            <div className="h-[50px] w-[50px] bg-grey-#2"></div>
-            <div className="h-[50px] w-[50px] bg-grey-#2"></div>
-            <div className="h-[50px] w-[50px] bg-grey-#2"></div>
+            <LinkedinLogo size={50} />
+            <InstagramLogo size={50} />
+            <FacebookLogo size={50} />
+            <WhatsappLogo size={50} />
+            {/* <div className="h-[50px] w-[50px] bg-grey-#2"></div> */}
+            {/* <div className="h-[50px] w-[50px] bg-grey-#2"></div> */}
+            {/* <div className="h-[50px] w-[50px] bg-grey-#2"></div> */}
+            {/* <div className="h-[50px] w-[50px] bg-grey-#2"></div> */}
           </div>
         </div>
         <div className="flex flex-col gap-4">
