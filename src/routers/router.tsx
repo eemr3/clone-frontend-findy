@@ -125,7 +125,7 @@ export const AppRouter = () => {
               </Private>
             }
           />
-          <Route path="/privacy_policy" element={ <PrivacyPolicy />} />
+          <Route path="/privacy-policy" element={ <PrivacyPolicy />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/forgot_password" element={<ForgotPassword />} />
