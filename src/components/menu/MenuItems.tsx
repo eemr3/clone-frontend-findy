@@ -6,6 +6,7 @@ import { Button } from '../Button';
 
 interface MenuItemsProps {
   home: boolean;
+  urlPage?: string;
 }
 
 export default function MenuItems(props: MenuItemsProps) {
@@ -23,7 +24,7 @@ export default function MenuItems(props: MenuItemsProps) {
       ) : props.home ? (
         <HomeMeuItems />
       ) : (
-        <Button url="/">Voltar</Button>
+        <Button url={`${props.urlPage}`}>Voltar</Button>
       )}
     </div>
   );

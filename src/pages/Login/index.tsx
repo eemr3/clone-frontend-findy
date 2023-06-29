@@ -74,7 +74,6 @@ export function Login() {
 
   const onSubmit = async (data: any) => {
     if (data != null) {
-
       const result = await loginUser(data.email, data.password);
 
       if (result?.status === 200) {
@@ -96,13 +95,13 @@ export function Login() {
   return (
     <div
       className="w-max-[1483px] flex h-[100%] flex-col 
-    overflow-x-hidden bg-blue-dark opacity-90 mbl:flex-col"
+    overflow-x-hidden bg-blue-dark mbl:flex-col"
     >
-      <NavBar home={false} />
+      <NavBar home={false} url="/" />
 
       <div
         className="my-auto flex flex-col items-center  justify-center 
-      md:px-[2rem] xl:w-[100%] xl:justify-center mbl:w-[100%]"
+        md:px-[2rem] xl:w-[100%] xl:justify-center mbl:w-[100%]"
       >
         <h1 className="mb-[1.1rem] text-[2.4rem] text-grey-#4">Acesse a sua Conta</h1>
         <div className="flex w-[100%] max-w-[63.5rem] flex-col items-center rounded-[2.6rem] bg-[#FFFFFF] pb-[4rem] shadow-shadow-#2-card">
