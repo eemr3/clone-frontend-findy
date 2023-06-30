@@ -125,7 +125,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
           type={type == "date" ? "text" : type}
           maxLength={mask && getMaxLength(mask)}
           placeholder={placeholder}
-          className={`w-full border-none text-[1.4rem] font-medium leading-[1.82rem] bg-grey-#4 text-green-medium outline-none placeholder:text-grey-#2 disabled:bg-grey-#3  ${className} ${fieldSetBG} ${wantInputWidthFull ? "w-[96%]" : ""}`}
+          className={`w-full border-none text-[1.4rem] font-medium leading-[1.82rem] bg-grey-#4 text-green-medium outline-none placeholder:text-grey-#2 read-only:text-grey-#2 disabled:bg-grey-#3  ${className} ${fieldSetBG} ${wantInputWidthFull ? "w-[96%]" : ""}`}
           onKeyUp={mask && handleKeyUp}
           onChange={(event) => {
             handleOnChange(event);

@@ -10,15 +10,14 @@ type SurveyProviderProps = {
 
 type SurveyContextProps = {
   surveyPersonalData: SurveyPersonalData;
-  setSurveyPersonalData: Dispatch<SetStateAction<SurveyPersonalData>>;
   surveyMarketData: SurveyMarketData;
   setSurveyMarketData: Dispatch<SetStateAction<SurveyMarketData>>;
   surveyProfissionalArea: SurveyProfissionalArea;
   setSurveyProfissionalArea: Dispatch<SetStateAction<SurveyProfissionalArea>>;
   surveyIdentflyingNeeds: SurveyIdentflyngNeeds;
   setSurveyIdentflyingNeeds: Dispatch<SurveyIdentflyngNeeds>;
+  updatedSurveyPersonalData: (data: SurveyPersonalData) => void;
   //initializeSurvey: () => void;
-  //updatedSurveyPersonalData: (data: SurveyPersonalData) => void;
 }
 
 export const SurveyContext = createContext({} as SurveyContextProps);
@@ -30,28 +29,22 @@ export function SurveyProvider({ children }: SurveyProviderProps) {
     if (storagedSurveyPersonalData)
       return JSON.parse(storagedSurveyPersonalData);
 
-    return /* {} as SurveyPersonalData */
+    return
   });
 
   const [surveyMarketData, setSurveyMarketData] = useState<SurveyMarketData>({} as SurveyMarketData);
   const [surveyProfissionalArea, setSurveyProfissionalArea] = useState<SurveyProfissionalArea>({} as SurveyProfissionalArea);
   const [surveyIdentflyingNeeds, setSurveyIdentflyingNeeds] = useState<SurveyIdentflyngNeeds>({} as SurveyIdentflyngNeeds);
 
-   function updatedSurveyPersonalData(data: SurveyPersonalData) {
-    setSurveyPersonalData(data);
-    localStorage.setItem('@Findy:surveyPersonalData', JSON.stringify(data));
-  }
-
   function updatedSurveyPersonalData(data: SurveyPersonalData) {
     setSurveyPersonalData(data);
     localStorage.setItem('@Findy:surveyPersonalData', JSON.stringify(data));
   }
- 
+
   return (
     <SurveyContext.Provider
       value={{
         surveyPersonalData,
-        setSurveyPersonalData,
         surveyMarketData,
         setSurveyMarketData,
         surveyProfissionalArea,

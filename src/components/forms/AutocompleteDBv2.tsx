@@ -6,21 +6,17 @@ import {
   useImperativeHandle,
   useRef,
   useState,
-  useEffect,
-  ChangeEvent,
-  FocusEvent
+  useEffect
 } from "react";
 import { SVGIcon } from "../../types/SVGIcon";
 import { Text } from "../Text";
-import { SelectArrowUpIcon } from "../icons/SelectArrowUpIcon";
-import { SelectArrowDownIcon } from "../icons/SelectArrowDownIcon";
 
 export type ValueLabel = {
   value: string;
   label: string;
 };
 
-interface InputDBv2Props
+interface AutocompleteDBv2Props
   extends DetailedHTMLProps<
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
@@ -38,7 +34,7 @@ interface InputDBv2Props
   wantInputWidthFull?: boolean;
 }
 
-const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
+const InputBase: ForwardRefRenderFunction<HTMLInputElement, AutocompleteDBv2Props> = (
   {
     options,
     name = "",
@@ -53,7 +49,6 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
     wantInputWidthFull = false,
     className = "",
     onChange,
-    onBlur,
     ...rest
   },
   ref
@@ -61,40 +56,29 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
   const [openList, setOpenList] = useState(false);
   const listRef = useRef<HTMLUListElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const inputLabelRef = useRef<HTMLInputElement>(null);
   useImperativeHandle<HTMLInputElement | null, HTMLInputElement | null>(
     ref,
     () => inputRef.current
   );
 
-  function updateInputLabelValue() {
-    if (inputRef.current && inputLabelRef.current && inputRef.current?.value !== "") {
-
-      const labelFounded = options.map((option: ValueLabel | string) => {
-        if (typeof option !== "string") {
-          return option
-        }
-      }).filter(option => option?.value == inputRef.current?.value)[0]?.label as string
-
-      inputLabelRef.current.value = typeof options[0] === "string" ?
-        inputRef.current.value : labelFounded;
-    }
-  }
-
   useEffect(() => {
     document.addEventListener("mousedown", closeOpenList);
+  }, []);
 
-    updateInputLabelValue();
+  useEffect(() => {
+    if (!!options.length != openList) {
+      toggleList();
+    }
 
-  }, [])
+  }, [options]);
 
   const closeOpenList = (e: any) => {
-    if (!listRef.current || !inputLabelRef.current)
+    if (!listRef.current || !inputRef.current)
       return
 
     if (!listRef.current.contains(e.target) &&
-      !inputLabelRef.current.contains(e.target) &&
-      !inputLabelRef.current.parentElement?.contains(e.target)
+      !inputRef.current.contains(e.target) &&
+      !inputRef.current.parentElement?.contains(e.target)
     ) {
       setOpenList(false);
     }
@@ -105,17 +89,9 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
   }
 
   function setInputValue(newValue: string | ValueLabel) {
-    if (inputRef.current?.value != undefined &&
-      inputLabelRef.current?.value != undefined) {
 
+    if (inputRef.current?.value != undefined) {
       inputRef.current.value = (typeof newValue == 'string') ? newValue : newValue.value;
-      inputLabelRef.current.value = (typeof newValue == 'string') ? newValue : newValue.label;
-
-      onChange &&
-        onChange(
-          {
-            target: inputRef.current,
-          } as ChangeEvent<HTMLInputElement>);
 
       setOpenList(false);
     }
@@ -140,7 +116,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
 
       <div
         className={`flex h-[3.6rem] w-[50.5rem] py-[0.8rem] px-[1.6rem] border-grey-#2 ${openList ? "rounded-t-[0.8rem] border-x border-t bg-green-light" : "rounded-[0.8rem] border bg-grey-#4"}  ${fieldSetBG} ${wantInputWidthFull ? "w-full" : ""}`}
-        onClick={() => toggleList()}
+        onClick={() => options.length && toggleList()}
       >
         {icon && (
           <div
@@ -152,23 +128,14 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
         )}
 
         <input
-          ref={inputLabelRef}
-          type={type}
-          placeholder={placeholder}
-          readOnly
-          className={`w-full border-none text-[1.4rem] font-medium leading-[1.82rem] outline-none disabled:bg-grey-#3 ${openList ? "bg-green-light text-blue-dark-#1 placeholder:text-blue-dark-#1" : "bg-grey-#4 text-green-medium placeholder:text-grey-#2"}  ${className} ${fieldSetBG} ${wantInputWidthFull ? "w-[96%]" : ""}`}
-          {...rest}
-        />
-
-        <input
           name={name}
           ref={inputRef}
-          className="w-0 opacity-0"
+          type={type}
+          placeholder={placeholder}
+          className={`w-full border-none text-[1.4rem] font-medium leading-[1.82rem] outline-none disabled:bg-grey-#3 ${openList ? "bg-green-light text-blue-dark-#1 placeholder:text-blue-dark-#1" : "bg-grey-#4 text-green-medium placeholder:text-grey-#2"}  ${className} ${fieldSetBG} ${wantInputWidthFull ? "w-[96%]" : ""}`}
           onChange={onChange}
-          onBlur={onBlur}
+          {...rest}
         />
-
-        {openList ? <SelectArrowDownIcon /> : <SelectArrowUpIcon />}
 
       </div>
 
@@ -184,7 +151,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
               .map((newOption: string | ValueLabel, index: number) => {
                 return typeof newOption === "string" ? (
                   <li
-                    data-selected={newOption == inputLabelRef.current?.value}
+                    data-selected={newOption == inputRef.current?.value}
                     className={`py-[0.85rem] px-4 data-[selected=true]:bg-green-medium data-[selected=true]:text-green-light hover:data-[selected=true]:bg-green-light hover:data-[selected]:text-green-medium  hover:bg-green-light hover:text-green-medium hover:border-l-green-dark hover:border-l-[0.3rem]`}
                     key={`${name}${newOption ? newOption : Date.now() + index
                       }`}
@@ -195,9 +162,8 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
                   </li>
                 ) : (
                   <li
-                    data-selected={newOption.label == inputLabelRef.current?.value}
+                    data-selected={newOption.label == inputRef.current?.value}
                     className={`py-[0.85rem] px-4 data-[selected=true]:bg-green-medium data-[selected=true]:text-green-light hover:data-[selected=true]:bg-green-light hover:data-[selected]:text-green-medium  hover:bg-green-light hover:text-green-medium hover:border-l-green-dark hover:border-l-[0.3rem]`}
-
                     key={`${name}${newOption.value ? newOption.value : Date.now() + index
                       }`}
                     value={newOption.value}
@@ -223,4 +189,4 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
   );
 };
 
-export const SelectDBv2 = forwardRef(InputBase);
+export const AutocompleteDBv2 = forwardRef(InputBase);
