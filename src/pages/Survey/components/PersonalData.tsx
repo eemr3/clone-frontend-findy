@@ -3,7 +3,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
-import { Survey } from '../../../types/Survey';
+import { SurveyPersonalData } from '../../../types/SurveyPersonalData';
 import { CandidateUser } from '../../../types/CandidateUser';
 
 import { Button } from "../../../components/Button";
@@ -19,6 +19,7 @@ import { getCandidateUser } from '../../../services/api';
 
 import { calculateYears } from "../../../utils/DateUtil";
 import { formatDateISO } from "../../../utils/FormatUtil";
+import { SurveyNav } from './SurveyNav';
 
 const schema = yup
   .object()
@@ -38,7 +39,7 @@ const schema = yup
 
 
 export function PersonalData() {
-  const { survey, setSurvey } = useSurveyContext();
+  const { surveyPersonalData, setSurveyPersonalData, updatedSurveyPersonalData } = useSurveyContext();
   const { nextStep } = useSteps();
   const [candidateUser, setCandidateUser] = useState<CandidateUser>({} as CandidateUser);
   const [isLoadingInitial, setIsLoadingInitial] = useState(true);
@@ -50,29 +51,31 @@ export function PersonalData() {
     setValue,
     setFocus,
     formState: { errors, isSubmitting },
-  } = useForm<Survey>({
+  } = useForm<SurveyPersonalData>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
     mode: 'onBlur',
     defaultValues: {
-      name: survey ? survey.name : '',
-      genre: survey ? survey.genre : '',
-      birth: survey ? survey.birth : undefined,
-      residencePlace: survey ? survey.residencePlace : '',
+      name: surveyPersonalData ? surveyPersonalData.name : '',
+      genre: surveyPersonalData ? surveyPersonalData.genre : '',
+      birth: surveyPersonalData ? surveyPersonalData.birth : undefined,
+      residencePlace: surveyPersonalData ? surveyPersonalData.residencePlace : '',
     },
   });
 
 
-  const handleUpdateSurvey: SubmitHandler<Survey> = async (values, event) => {
+  const handleUpdateSurvey: SubmitHandler<SurveyPersonalData> = async (values, event) => {
     event?.preventDefault();
 
     // Simulando a espera da API
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    setSurvey(values);
+    //setSurveyPersonalData(values);
+
+    updatedSurveyPersonalData(values);
 
     console.log("Survey[Form]: ", values);
-    console.log("Survey[Context]: ", survey);
+    console.log("Survey[Context]: ", surveyPersonalData);
 
     nextStep();
   };
@@ -167,24 +170,10 @@ export function PersonalData() {
         </Text>
       </fieldset>
 
-      <nav className="mt-[4rem] flex gap-[4.1rem] justify-center">
-        <Button
-          className="w-[10.7rem] text-[1.4rem] leading-[1.82rem] tracking-[0.091rem] font-semibold normal-case"
-          disabled
-        >
-          Voltar
-        </Button>
-
-        <Button
-          type="submit"
-          className="w-[10.7rem] text-[1.4rem] leading-[1.82rem] tracking-[0.091rem] font-semibold normal-case"
-          fill
-          disabled={isSubmitting}
-        >
-          Continuar
-        </Button>
-      </nav>
-
+      <SurveyNav
+        isSubmitting={isSubmitting}
+        submitLabel="Continuar" 
+      />
     </form>
 
   );

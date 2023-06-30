@@ -90,8 +90,8 @@ export function Cadastro() {
   };
 
   return (
-    <div className="w-max-[1483px] flex h-[100%] flex-col overflow-x-hidden bg-blue-dark opacity-90">
-      <NavBar home={false} />
+    <div className="w-max-[1483px] flex h-[100%] flex-col overflow-x-hidden bg-blue-dark">
+      <NavBar home={false} url="/" />
       <div className="my-auto flex flex-col items-center justify-center pt-[4.14rem] md:px-[2rem] xl:w-[100%] xl:justify-center mbl:px-[1.5rem]">
         <h1 className="mb-[1.1rem] text-[2.4rem] text-grey-#4">Crie uma Conta</h1>
         <form
@@ -339,7 +339,7 @@ export function Cadastro() {
                     Termos de Uso
                   </Link>{' '}
                   da plataforma e com as{' '}
-                  <Link to="#" className="mdl:text-[1rem] text-[#01A195]">
+                  <Link to="/privacy-policy" className="mdl:text-[1rem] text-[#01A195]">
                     Políticas de Privacidade.
                   </Link>{' '}
                 </p>

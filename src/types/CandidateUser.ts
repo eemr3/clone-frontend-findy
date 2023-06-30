@@ -8,6 +8,7 @@ export type CandidateUser = Omit<CandidateUserRegister, "password" | "confirmPas
   providerId: string;
   createdAt: string;
   updatedAt: string;
+  completeSurvey: boolean;
   profile?: CandidateProfile;
 }
 

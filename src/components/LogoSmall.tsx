@@ -1,11 +1,17 @@
 import { SVGAttributes } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 interface LogoSmallProps
   extends Partial<
     Omit<SVGAttributes<SVGSVGElement>, "width" | "height" | "fill" | "viewBox">
   > { }
 
-export function LogoSmall({ ...rest }: LogoSmallProps) {
+export function LogoSmall({ onClick, className, ...rest }: LogoSmallProps) {
+
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const isNotHome = pathname != '/';
+
   return (
 
     <svg
@@ -14,6 +20,14 @@ export function LogoSmall({ ...rest }: LogoSmallProps) {
       height="37"
       fill="none"
       viewBox="0 0 126 37"
+      className={`${isNotHome ? "hover:cursor-pointer" : ""} ${className}`}
+      onClick={(event) => {
+        isNotHome &&
+          navigate('/');
+
+        onClick &&
+          onClick(event)
+      }}
       {...rest}
     >
       <path

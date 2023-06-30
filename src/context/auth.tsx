@@ -17,7 +17,7 @@ export interface Token {
 }
 
 interface AuthContextData {
-  user: User;
+  user: User | undefined;
   isAuthenticated: boolean;
   loading: boolean;
   getToken: () => string;
@@ -37,13 +37,17 @@ export const AuthContext = createContext<AuthContextData>(
 );
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<User>({} as User);
-  const isAuthenticated = JSON.stringify(user) !== "{}"
+  const [user, setUser] = useState<User>( /* {} as User */);
+  const isAuthenticated = !!user; /* JSON.stringify(user) !== "{}" */;
   const [tokenExpiration, setTokenExpiration] = useState(0);
   const [loading, setLoading] = useState(true);
 
   function handleSetUser(token: string) {
     const { email, exp } = jwt_decode<Token>(token);
+
+    if (!email)
+      setLoading(false);
+
     setUser({ email });
     setTokenExpiration(exp * 1000);
   }
@@ -60,8 +64,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
 
     configureToken();
-    setLoading(false);
+    //setLoading(false);
   }, []);
+
+  useEffect(() => {
+    if (JSON.stringify(user) !== "{}") {
+      setLoading(false)
+    }
+  }, [user]);
 
   const getToken = () => {
     const { 'findy.token': token } = parseCookies();
@@ -110,7 +120,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const signOut = () => {
     destroyCookie(undefined, "findy.token");
     api.defaults.headers.Authorization = null;
-    setUser({} as User);
+    setUser(undefined /* {} as User */);
   };
 
   const setLoggedUser = (user: User) => {

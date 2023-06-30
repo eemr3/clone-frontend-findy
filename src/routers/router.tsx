@@ -21,14 +21,17 @@ import { Survey } from "../pages/Survey/index";
 
 import { ConfimationAccount } from '../pages/ConfirmationAccount';
 import { DashboardPage } from '../pages/Dashboard';
+<<<<<<< HEAD
 import { GeneralTerms } from "../pages/GeneralTerms/index";
+=======
+import { PrivacyPolicy } from '../pages/PrivacyPolicy';
+>>>>>>> 676e739524daddbed6f5222baca7d584a30d5e01
 
 export const AppRouter = () => {
-  const [candidateUser, setCandidateUser] = useState<CandidateUser>({} as CandidateUser);
+  const [candidateUser, setCandidateUser] = useState<CandidateUser>(/* {} as CandidateUser */);
   const [isLoading, setIsLoading] = useState(true);
   const {
     isAuthenticated,
-    loading,
     getToken,
     isTokenExpired,
     hasToken,
@@ -50,15 +53,17 @@ export const AppRouter = () => {
   }
 
   const Private = ({ children }: RouteElementProps) => {
+
     const token = getToken();
+    const { pathname } = useLocation();
 
     if (!token || !isAuthenticated || isTokenExpired()) {
       return <Navigate to="/login" />;
     }
 
-    if (loading) {
-      return <div>Carregando...</div>;
-    }
+    //Preenchimento do Survey Obrigatório
+    if (pathname !== "/survey" && candidateUser && !candidateUser.completeSurvey)
+      return <Navigate to="/survey" />;
 
     return children;
   };
@@ -72,28 +77,46 @@ export const AppRouter = () => {
     return children;
   };
 
+  const CanAccessSurvey = ({ children }: RouteElementProps) => {
+    if (!candidateUser) return <Navigate to="/login" />;
+
+    if (candidateUser.completeSurvey)
+      return <Navigate to="/dashboard" />;
+
+    return children;
+  };
+
+
   useEffect(() => {
     async function getUserToken() {
       const token = getToken();
 
       if (!token || !isAuthenticated) {
+        if (!token)
+          setIsLoading(false);
+
         return;
       }
 
       try {
         const { sub } = jwt_decode<Token>(token);
 
-        await getCandidateUser(String(sub)).then((response) => {
-          setCandidateUser(response.data);
-        });
+        await getCandidateUser(String(sub))
+          .then((response) => {
+            setCandidateUser(response.data);
+          })
+          .then(() => setIsLoading(false));
+
       } catch (error) {
         toast.error(getErrorMessage(error));
+        setIsLoading(false);
       }
     }
 
     getUserToken();
-    setIsLoading(false);
-  }, []);
+
+  }, [isAuthenticated]);
+
 
   return (
     <>
@@ -120,6 +143,7 @@ export const AppRouter = () => {
               </Private>
             }
           />
+         
           <Route
             path="/project_registered"
             element={
@@ -128,13 +152,24 @@ export const AppRouter = () => {
               </Private>
             }
           />
-
+          <Route path="/privacy-policy" element={ <PrivacyPolicy />} />
           <Route path="/login" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/forgot_password" element={<ForgotPassword />} />
           <Route path="/password_recovery" element={<PasswordRecovery />} />
+<<<<<<< HEAD
           <Route path="/survey" element={<Survey />} />
           <Route path="/general-terms" element={<GeneralTerms />} />
+=======
+          <Route path="/survey" element={
+            /* <Private>
+              <CanAccessSurvey> */
+                <Survey />
+              /* </CanAccessSurvey>
+            </Private>
+            */
+          } />
+>>>>>>> 676e739524daddbed6f5222baca7d584a30d5e01
 
           <Route path="/confirmation-account" element={<ConfimationAccount />} />
           <Route
