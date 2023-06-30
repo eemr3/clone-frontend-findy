@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { ChangeEvent, ChangeEventHandler, useContext, useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -19,6 +19,8 @@ import { getCandidateUser } from '../../../services/api';
 
 import { calculateYears } from "../../../utils/DateUtil";
 import { formatDateISO } from "../../../utils/FormatUtil";
+import { getCities } from '../../../services/apiGeoNames';
+import { AutocompleteDBv2 } from '../../../components/forms/AutocompleteDBv2';
 
 const schema = yup
   .object()
@@ -43,6 +45,8 @@ export function PersonalData() {
   const [candidateUser, setCandidateUser] = useState<CandidateUser>({} as CandidateUser);
   const [isLoadingInitial, setIsLoadingInitial] = useState(true);
   const { getToken } = useContext(AuthContext);
+  const [citiesSuggestions, setCitiesSuggestions] = useState<string[]>([]);
+  const [citiesList, setCitiesList] = useState<string[]>([]);
 
   const {
     register,
@@ -61,6 +65,30 @@ export function PersonalData() {
       residencePlace: surveyPersonalData ? surveyPersonalData.residencePlace : '',
     },
   });
+
+  function handleCitiesSuggestions(event: ChangeEvent<HTMLInputElement>) {
+    const cityName = event.target.value;
+
+    if (cityName.length > 4 && citiesList.length > 5 &&
+      citiesList[0].startsWith(cityName.substring(0, 2))) {
+      setCitiesSuggestions(citiesList.filter(city => city.startsWith(cityName)));
+      return
+    }
+
+    if (cityName.length >= 3) {
+      getCities(cityName.split(' - ')[0])
+        .then(response => {
+          if (event.target.value == cityName) {
+            setCitiesList(response.map(city => `${city.cityName} - ${city.regionName} - ${city.countryCode}`))
+            setCitiesSuggestions(response.map(city => `${city.cityName} - ${city.regionName} - ${city.countryCode}`))
+          }
+        });
+    } else {
+      citiesSuggestions.length &&
+        setCitiesSuggestions([]);
+    }
+
+  }
 
 
   const handleUpdateSurvey: SubmitHandler<SurveyPersonalData> = async (values, event) => {
@@ -153,12 +181,17 @@ export function PersonalData() {
           {...register('birth')}
         />
 
-        <InputDBv2
+        <AutocompleteDBv2
+          options={citiesSuggestions}
           label="Local de residência"
           requiredField
           placeholder="Digite seu local de residência"
           error={errors.residencePlace?.message}
-          {...register('residencePlace')}
+          {...register('residencePlace', {
+            onChange(event) {
+              handleCitiesSuggestions(event);
+            },
+          })}
         />
 
         <Text
