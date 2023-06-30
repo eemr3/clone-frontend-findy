@@ -79,8 +79,8 @@ export function PersonalData() {
       getCities(cityName.split(' - ')[0])
         .then(response => {
           if (event.target.value == cityName) {
-            setCitiesList(response.map(city => `${city.cityName} - ${city.regionName} - ${city.countryCode}`))
-            setCitiesSuggestions(response.map(city => `${city.cityName} - ${city.regionName} - ${city.countryCode}`))
+            setCitiesList(response.map(city => `${city.cityName} - ${city.regionName} - ${city.countryName}`))
+            setCitiesSuggestions(response.map(city => `${city.cityName} - ${city.regionName} - ${city.countryName}`))
           }
         });
     } else {

@@ -38,7 +38,7 @@ export async function getCities(city: string) {
       const cityName = newCity.placeName;
 
       return {
-        countryCode: getCountryNames(newCity.countryCode),
+        countryName: getCountryNames(newCity.countryCode),
         regionName: newCity.adminName1,
         cityName
       }
