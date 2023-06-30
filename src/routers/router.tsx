@@ -21,6 +21,7 @@ import { Survey } from "../pages/Survey/index";
 
 import { ConfimationAccount } from '../pages/ConfirmationAccount';
 import { DashboardPage } from '../pages/Dashboard';
+import { GeneralTerms } from "../pages/GeneralTerms/index";
 
 export const AppRouter = () => {
   const [candidateUser, setCandidateUser] = useState<CandidateUser>({} as CandidateUser);
@@ -133,6 +134,7 @@ export const AppRouter = () => {
           <Route path="/forgot_password" element={<ForgotPassword />} />
           <Route path="/password_recovery" element={<PasswordRecovery />} />
           <Route path="/survey" element={<Survey />} />
+          <Route path="/general-terms" element={<GeneralTerms />} />
 
           <Route path="/confirmation-account" element={<ConfimationAccount />} />
           <Route
