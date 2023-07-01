@@ -1,28 +1,36 @@
+
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
+import jwt_decode from 'jwt-decode';
+
 import { ChangeEvent, ChangeEventHandler, useContext, useEffect, useState } from 'react';
+
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 
 import { SurveyPersonalData } from '../../../types/SurveyPersonalData';
-import { CandidateUser } from '../../../types/CandidateUser';
 
 import { Heading } from "../../../components/Heading";
 import { Text } from "../../../components/Text";
 import { InputDBv2 } from "../../../components/forms/InputDBv2";
 import { SelectDBv2 } from '../../../components/forms/SelectDBv2';
+import { AutocompleteDBv2 } from '../../../components/forms/AutocompleteDBv2';
 import { useSteps } from '../../../components/ProgressBar/context/useSteps';
+import { SurveyNav } from './SurveyNav';
 
 import { useSurveyContext } from '../context/SurveyContext';
 import { AuthContext, Token } from '../../../context/auth';
-import { getCandidateUser } from '../../../services/api';
+import { getCities } from '../../../services/apiGeoNames';
 
 import { calculateYears } from "../../../utils/DateUtil";
 import { formatDateISO } from "../../../utils/FormatUtil";
+
 
 import { getCities } from '../../../services/apiGeoNames';
 import { AutocompleteDBv2 } from '../../../components/forms/AutocompleteDBv2';
 
 import { SurveyNav } from './SurveyNav';
+
 
 
 const schema = yup
@@ -43,10 +51,8 @@ const schema = yup
 
 
 export function PersonalData() {
-  const { surveyPersonalData, setSurveyPersonalData, updatedSurveyPersonalData } = useSurveyContext();
+  const { surveyPersonalData, updatedSurveyPersonalData } = useSurveyContext();
   const { nextStep } = useSteps();
-  const [candidateUser, setCandidateUser] = useState<CandidateUser>({} as CandidateUser);
-  const [isLoadingInitial, setIsLoadingInitial] = useState(true);
   const { getToken } = useContext(AuthContext);
   const [citiesSuggestions, setCitiesSuggestions] = useState<string[]>([]);
   const [citiesList, setCitiesList] = useState<string[]>([]);
@@ -72,7 +78,9 @@ export function PersonalData() {
   function handleCitiesSuggestions(event: ChangeEvent<HTMLInputElement>) {
     const cityName = event.target.value;
 
+
     if (cityName.length > 4 && citiesList.length > 5 &&
+
       citiesList[0].startsWith(cityName.substring(0, 2))) {
       setCitiesSuggestions(citiesList.filter(city => city.startsWith(cityName)));
       return
@@ -100,8 +108,6 @@ export function PersonalData() {
     // Simulando a espera da API
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    //setSurveyPersonalData(values);
-
     updatedSurveyPersonalData(values);
 
     nextStep();
@@ -110,35 +116,14 @@ export function PersonalData() {
 
   useEffect(() => {
 
-    /* async function getUserToken() {
+    if (!surveyPersonalData) {
       const token = getToken();
-
-      if (!token) {
-        return;
-      }
-
-      try {
-        const { sub } = jwt_decode<Token>(token);
-
-        await getCandidateUser(String(sub)).then((response) => {
-          setCandidateUser(response.data);
-        });
-      } catch (error) {
-        toast.error(getErrorMessage(error));
-      }
+      const { name } = jwt_decode<Token>(token);
+      setValue('name', name);
     }
-    getUserToken(); */
 
     setFocus("name");
-    setIsLoadingInitial(false);
   }, []);
-
-  useEffect(() => {
-    if (!Object.keys(candidateUser).length) return;
-
-    setValue('name', candidateUser?.name);
-
-  }, [candidateUser]);
 
 
   return (
@@ -155,6 +140,7 @@ export function PersonalData() {
 
         <InputDBv2
           label="Nome completo"
+          readOnly
           requiredField
           placeholder="Digite seu nome"
           maxLength={70}
@@ -204,7 +190,7 @@ export function PersonalData() {
 
       <SurveyNav
         isSubmitting={isSubmitting}
-        submitLabel="Continuar" 
+        submitLabel="Continuar"
       />
     </form>
 
