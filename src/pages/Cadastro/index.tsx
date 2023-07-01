@@ -335,7 +335,7 @@ export function Cadastro() {
               <div className="flex flex-col">
                 <p className="text-[1.7rem] text-grey-#1 mbl:text-[1.3rem]">
                   Eu concordo com os{' '}
-                  <Link to="#" className="mdl:text-[2rem] text-[#01A195]">
+                  <Link to="/general-terms" className="mdl:text-[2rem] text-[#01A195]">
                     Termos de Uso
                   </Link>{' '}
                   da plataforma e com as{' '}

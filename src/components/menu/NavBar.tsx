@@ -12,7 +12,10 @@ interface NavBarProps {
 export function NavBar(props: NavBarProps) {
   return (
     <nav>
-      <div className="mx-auto flex max-w-[135.6rem] justify-between py-8 2xl:ml-[39.07px] 2xl:mr-[121.07px]">
+      <div
+        className="mx-auto flex max-w-[135.6rem] justify-between py-8 2xl:ml-[39.07px] 
+      2xl:mr-[121.07px]"
+      >
         <div>
           <LogoSmall />
         </div>
