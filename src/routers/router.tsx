@@ -21,7 +21,11 @@ import { Survey } from "../pages/Survey/index";
 
 import { ConfimationAccount } from '../pages/ConfirmationAccount';
 import { DashboardPage } from '../pages/Dashboard';
+<<<<<<< HEAD
+import { GeneralTerms } from "../pages/GeneralTerms/index";
+=======
 import { PrivacyPolicy } from '../pages/PrivacyPolicy';
+>>>>>>> 676e739524daddbed6f5222baca7d584a30d5e01
 
 export const AppRouter = () => {
   const [candidateUser, setCandidateUser] = useState<CandidateUser>(/* {} as CandidateUser */);
@@ -153,6 +157,10 @@ export const AppRouter = () => {
           <Route path="/cadastro" element={<Cadastro />} />
           <Route path="/forgot_password" element={<ForgotPassword />} />
           <Route path="/password_recovery" element={<PasswordRecovery />} />
+<<<<<<< HEAD
+          <Route path="/survey" element={<Survey />} />
+          <Route path="/general-terms" element={<GeneralTerms />} />
+=======
           <Route path="/survey" element={
             /* <Private>
               <CanAccessSurvey> */
@@ -161,6 +169,7 @@ export const AppRouter = () => {
             </Private>
             */
           } />
+>>>>>>> 676e739524daddbed6f5222baca7d584a30d5e01
 
           <Route path="/confirmation-account" element={<ConfimationAccount />} />
           <Route
