@@ -1,5 +1,9 @@
+
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
+
+import { ChangeEvent, ChangeEventHandler, useContext, useEffect, useState } from 'react';
+
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,6 +24,14 @@ import { getCities } from '../../../services/apiGeoNames';
 
 import { calculateYears } from "../../../utils/DateUtil";
 import { formatDateISO } from "../../../utils/FormatUtil";
+
+
+import { getCities } from '../../../services/apiGeoNames';
+import { AutocompleteDBv2 } from '../../../components/forms/AutocompleteDBv2';
+
+import { SurveyNav } from './SurveyNav';
+
+
 
 const schema = yup
   .object()
@@ -66,7 +78,9 @@ export function PersonalData() {
   function handleCitiesSuggestions(event: ChangeEvent<HTMLInputElement>) {
     const cityName = event.target.value;
 
-    if (cityName.length > 5 && citiesList.length > 5 &&
+
+    if (cityName.length > 4 && citiesList.length > 5 &&
+
       citiesList[0].startsWith(cityName.substring(0, 2))) {
       setCitiesSuggestions(citiesList.filter(city => city.startsWith(cityName)));
       return
@@ -95,9 +109,6 @@ export function PersonalData() {
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     updatedSurveyPersonalData(values);
-
-    console.log("Survey[Form]: ", values);
-    console.log("Survey[Context]: ", surveyPersonalData);
 
     nextStep();
   };
