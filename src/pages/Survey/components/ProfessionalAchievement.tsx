@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as Yup from 'yup';
 import { Button } from '../../../components/Button';
 import { useSteps } from '../../../components/ProgressBar/context/useSteps';
@@ -39,7 +39,7 @@ export function ProfessionalAchievement() {
     if (selected === null || !feedback) {
       return;
     }
-
+    
     nextStep()
 
     validationSchema
@@ -59,9 +59,26 @@ export function ProfessionalAchievement() {
   }
 
   function saveToBackend(value: number, feedback: string) {
-    console.log('Valor a ser salvo:', value);
-    console.log('Feedback a ser salvo:', feedback);
+
+    const storageProfessionalAchievement = {
+      value: value,
+      feedback: feedback
+    };
+
+    const convertedToString = JSON.stringify(storageProfessionalAchievement)
+    localStorage.setItem('@Findy:surveyProfessionalAchievement', JSON.stringify(storageProfessionalAchievement)); 
+
   }
+
+  useEffect(() => {
+    const dataInStorage = localStorage.getItem('@Findy:surveyProfessionalAchievement');
+    
+    if (dataInStorage) {
+      const { value, feedback } = JSON.parse(dataInStorage);
+      setSelected(value);
+      setFeedback(feedback);
+    }
+  }, []);
 
   return (
     <form className="mx-auto mt-[2rem] flex flex-col items-center mb-[7.692rem] w-[66rem]" noValidate>

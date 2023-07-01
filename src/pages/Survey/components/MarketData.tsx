@@ -21,7 +21,7 @@ const validationSchema = yup.object().shape({
 }).required();
 
 export function MarketData() {
-  const { surveyMarketData, setSurveyMarketData } = useSurveyContext();
+  const { surveyMarketData, setSurveyMarketData, updatedSurveyMarketData } = useSurveyContext();
   const { nextStep, prevStep } = useSteps();
 
   const {
@@ -45,8 +45,10 @@ export function MarketData() {
     // Simulando a espera da API
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    setSurveyMarketData(values);
+    //setSurveyMarketData(values);
 
+    updatedSurveyMarketData(values)
+    
     nextStep();
   };
 

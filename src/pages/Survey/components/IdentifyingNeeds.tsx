@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Heading } from "../../../components/Heading";
 import { useSteps } from "../../../components/ProgressBar/context/useSteps";
-import { useSurveyContext } from "../context/SurveyContext";
 import { SurveyIdentflyngNeeds } from "../../../types/SurveyIdentflyngNeeds";
 import { SurveyNav } from "./SurveyNav";
 
@@ -27,7 +26,43 @@ const schema = yup.object().shape({
 export function IdentifyingNeeds() {
   const [activeSubmit, setActiveSubmit] = useState(false)
 
-  const { surveyIdentflyingNeeds, setSurveyIdentflyingNeeds } = useSurveyContext();
+  const [requiredFieldCheck, setRequiredFieldCheck] = useState(false);
+  const [requiredFieldCheck2, setRequiredFieldCheck2] = useState(false);
+  const [requiredFieldCheck3, setRequiredFieldCheck3] = useState(false);
+  const [requiredFieldCheck4, setRequiredFieldCheck4] = useState(false);
+  const [requiredFieldCheck5, setRequiredFieldCheck5] = useState(false);
+  const [requiredFieldCheck6, setRequiredFieldCheck6] = useState(false);
+  const [requiredFieldCheck7, setRequiredFieldCheck7] = useState(false);
+
+  const [requiredField2Check, setRequiredField2Check] = useState(false);
+  const [requiredField2Check2, setRequiredField2Check2] = useState(false);
+  const [requiredField2Check3, setRequiredField2Check3] = useState(false);
+  const [requiredField2Check4, setRequiredField2Check4] = useState(false);
+  const [requiredField2Check5, setRequiredField2Check5] = useState(false);
+  const [requiredField2Check6, setRequiredField2Check6] = useState(false);
+  const [requiredField2Check7, setRequiredField2Check7] = useState(false);
+
+  const requiredFieldCheckGroup = {
+    requiredFieldCheck,
+    requiredFieldCheck2, 
+    requiredFieldCheck3, 
+    requiredFieldCheck4, 
+    requiredFieldCheck5, 
+    requiredFieldCheck6,
+    requiredFieldCheck7,
+  };
+
+  const requiredFiel2dCheckGroup = {
+    requiredField2Check,
+    requiredField2Check2, 
+    requiredField2Check3, 
+    requiredField2Check4, 
+    requiredField2Check5, 
+    requiredField2Check6, 
+    requiredField2Check7,
+  };
+
+
   const { nextStep, prevStep } = useSteps();
   
   const navigate = useNavigate()
@@ -42,25 +77,49 @@ export function IdentifyingNeeds() {
   } = useForm<SurveyIdentflyngNeeds>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
-    defaultValues: {
-      required_field: surveyIdentflyingNeeds ? surveyIdentflyingNeeds.required_field : false,
-      required_field2: surveyIdentflyingNeeds ? surveyIdentflyingNeeds.required_field2 : false,
-    },
   });
 
   const handleUpdateSurvey: SubmitHandler<SurveyIdentflyngNeeds> = async (values, event) => {
     event?.preventDefault();
-
+  
     setActiveSubmit(true);
 
-    navigate('/dashboard');
+    localStorage.setItem('@Findy:surveyIdentflyngNeeds', JSON.stringify(requiredFieldCheckGroup));
+    localStorage.setItem('@Findy:surveyIdentflyngNeeds2', JSON.stringify(requiredFiel2dCheckGroup));
 
+    navigate('/dashboard');
+  
     // Simulando a espera da API
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     nextStep();
   };
 
+  useEffect(() => {
+    const storedRequiredFieldCheckGroup = JSON.parse(localStorage.getItem('@Findy:surveyIdentflyngNeeds') ?? 'null');
+    const storedRequiredField2CheckGroup = JSON.parse(localStorage.getItem('@Findy:surveyIdentflyngNeeds2') ?? 'null');
+  
+    if (storedRequiredFieldCheckGroup) {
+      setRequiredFieldCheck(storedRequiredFieldCheckGroup.requiredFieldCheck);
+      setRequiredFieldCheck2(storedRequiredFieldCheckGroup.requiredFieldCheck2);
+      setRequiredFieldCheck3(storedRequiredFieldCheckGroup.requiredFieldCheck3);
+      setRequiredFieldCheck4(storedRequiredFieldCheckGroup.requiredFieldCheck4);
+      setRequiredFieldCheck5(storedRequiredFieldCheckGroup.requiredFieldCheck5);
+      setRequiredFieldCheck6(storedRequiredFieldCheckGroup.requiredFieldCheck6);
+      setRequiredFieldCheck7(storedRequiredFieldCheckGroup.requiredFieldCheck7);
+    }
+  
+    if (storedRequiredField2CheckGroup) {
+      setRequiredField2Check(storedRequiredField2CheckGroup.requiredField2Check);
+      setRequiredField2Check2(storedRequiredField2CheckGroup.requiredField2Check2);
+      setRequiredField2Check3(storedRequiredField2CheckGroup.requiredField2Check3);
+      setRequiredField2Check4(storedRequiredField2CheckGroup.requiredField2Check4);
+      setRequiredField2Check5(storedRequiredField2CheckGroup.requiredField2Check5);
+      setRequiredField2Check6(storedRequiredField2CheckGroup.requiredField2Check6);
+      setRequiredField2Check7(storedRequiredField2CheckGroup.requiredField2Check7);
+    }
+  }, []);
+  
   return (
     <form
       className="mx-auto mt-[2rem] w-[66rem] mb-[7.692rem]"
@@ -105,8 +164,10 @@ export function IdentifyingNeeds() {
                 <input
                   className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                   type="checkbox"
+                  checked={requiredFieldCheck}
                   {...register('required_field')}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setRequiredFieldCheck(e.target.checked)
                     clearErrors('required_field');
                   }}
                 />
@@ -125,8 +186,10 @@ export function IdentifyingNeeds() {
                 <input
                   className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                   type="checkbox"
+                  checked={requiredFieldCheck2}
                   {...register('required_field')}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setRequiredFieldCheck2(e.target.checked)
                     clearErrors('required_field');
                   }}
                 />
@@ -145,8 +208,10 @@ export function IdentifyingNeeds() {
                 <input
                   className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                   type="checkbox"
+                  checked={requiredFieldCheck3}
                   {...register('required_field')}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setRequiredFieldCheck3(e.target.checked)
                     clearErrors('required_field');
                   }}
                 />
@@ -165,8 +230,10 @@ export function IdentifyingNeeds() {
                 <input
                   className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                   type="checkbox"
+                  checked={requiredFieldCheck4}
                   {...register('required_field')}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setRequiredFieldCheck4(e.target.checked)
                     clearErrors('required_field');
                   }}
                 />
@@ -185,8 +252,10 @@ export function IdentifyingNeeds() {
                 <input
                   className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                   type="checkbox"
+                  checked={requiredFieldCheck5}
                   {...register('required_field')}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setRequiredFieldCheck5(e.target.checked)
                     clearErrors('required_field');
                   }}
                 />
@@ -205,8 +274,10 @@ export function IdentifyingNeeds() {
                 <input
                   className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                   type="checkbox"
+                  checked={requiredFieldCheck6}
                   {...register('required_field')}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setRequiredFieldCheck6(e.target.checked)
                     clearErrors('required_field');
                   }}
                 />
@@ -225,8 +296,10 @@ export function IdentifyingNeeds() {
                 <input
                   className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                   type="checkbox"
+                  checked={requiredFieldCheck7}
                   {...register('required_field')}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setRequiredFieldCheck7(e.target.checked)
                     clearErrors('required_field');
                   }}
                 />
@@ -265,8 +338,10 @@ export function IdentifyingNeeds() {
                 <input
                   className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                   type="checkbox"
+                  checked={requiredField2Check}
                   {...register('required_field2')}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setRequiredField2Check(e.target.checked)
                     clearErrors('required_field2');
                   }}
                 />
@@ -285,8 +360,10 @@ export function IdentifyingNeeds() {
                 <input
                   className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                   type="checkbox"
+                  checked={requiredField2Check2}
                   {...register('required_field2')}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setRequiredField2Check2(e.target.checked)
                     clearErrors('required_field2');
                   }}
                 />
@@ -305,8 +382,10 @@ export function IdentifyingNeeds() {
                 <input
                   className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                   type="checkbox"
+                  checked={requiredField2Check3}
                   {...register('required_field2')}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setRequiredField2Check3(e.target.checked)
                     clearErrors('required_field2');
                   }}
                 />
@@ -325,8 +404,10 @@ export function IdentifyingNeeds() {
                 <input
                   className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                   type="checkbox"
+                  checked={requiredField2Check4}
                   {...register('required_field2')}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setRequiredField2Check4(e.target.checked)
                     clearErrors('required_field2');
                   }}
                 />
@@ -345,8 +426,10 @@ export function IdentifyingNeeds() {
                 <input
                   className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                   type="checkbox"
+                  checked={requiredField2Check5}
                   {...register('required_field2')}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setRequiredField2Check5(e.target.checked)
                     clearErrors('required_field2');
                   }}
                 />
@@ -365,8 +448,10 @@ export function IdentifyingNeeds() {
                 <input
                   className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                   type="checkbox"
+                  checked={requiredField2Check6}
                   {...register('required_field2')}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setRequiredField2Check6(e.target.checked)
                     clearErrors('required_field2');
                   }}
                 />
@@ -385,8 +470,10 @@ export function IdentifyingNeeds() {
                 <input
                   className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                   type="checkbox"
+                  checked={requiredField2Check7}
                   {...register('required_field2')}
-                  onChange={() => {
+                  onChange={(e) => {
+                    setRequiredField2Check7(e.target.checked)
                     clearErrors('required_field2');
                   }}
                 />
