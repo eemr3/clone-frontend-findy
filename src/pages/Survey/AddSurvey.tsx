@@ -8,7 +8,7 @@ import { MarketData } from './components/MarketData';
 import { PersonalData } from './components/PersonalData';
 import { ProfissionalArea } from './components/ProfissionalArea';
 import { ProfessionalAchievement } from './components/ProfessionalAchievement';
-
+import { IdentifyingNeeds } from './components/IdentifyingNeeds';
 
 export function AddSurvey() {
   const { activeStep, setInitialStep } = useSteps();
@@ -38,6 +38,10 @@ export function AddSurvey() {
 
       {activeStep == 3 &&
         <ProfessionalAchievement />
+      }
+
+      {activeStep == 4 &&
+        <IdentifyingNeeds />
       }
 
       <Text

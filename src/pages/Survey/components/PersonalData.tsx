@@ -6,7 +6,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { SurveyPersonalData } from '../../../types/SurveyPersonalData';
 import { CandidateUser } from '../../../types/CandidateUser';
 
-import { Button } from "../../../components/Button";
 import { Heading } from "../../../components/Heading";
 import { Text } from "../../../components/Text";
 import { InputDBv2 } from "../../../components/forms/InputDBv2";
@@ -19,8 +18,12 @@ import { getCandidateUser } from '../../../services/api';
 
 import { calculateYears } from "../../../utils/DateUtil";
 import { formatDateISO } from "../../../utils/FormatUtil";
+
 import { getCities } from '../../../services/apiGeoNames';
 import { AutocompleteDBv2 } from '../../../components/forms/AutocompleteDBv2';
+
+import { SurveyNav } from './SurveyNav';
+
 
 const schema = yup
   .object()
@@ -100,9 +103,6 @@ export function PersonalData() {
     //setSurveyPersonalData(values);
 
     updatedSurveyPersonalData(values);
-
-    console.log("Survey[Form]: ", values);
-    console.log("Survey[Context]: ", surveyPersonalData);
 
     nextStep();
   };
@@ -202,24 +202,10 @@ export function PersonalData() {
         </Text>
       </fieldset>
 
-      <nav className="mt-[4rem] flex gap-[4.1rem] justify-center">
-        <Button
-          className="w-[10.7rem] text-[1.4rem] leading-[1.82rem] tracking-[0.091rem] font-semibold normal-case"
-          disabled
-        >
-          Voltar
-        </Button>
-
-        <Button
-          type="submit"
-          className="w-[10.7rem] text-[1.4rem] leading-[1.82rem] tracking-[0.091rem] font-semibold normal-case"
-          fill
-          disabled={isSubmitting}
-        >
-          Continuar
-        </Button>
-      </nav>
-
+      <SurveyNav
+        isSubmitting={isSubmitting}
+        submitLabel="Continuar" 
+      />
     </form>
 
   );
