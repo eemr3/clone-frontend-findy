@@ -1,23 +1,23 @@
+import jwt_decode from 'jwt-decode';
 import { useContext, useEffect, useState } from 'react';
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
 import { toast } from 'react-toastify';
 
 import { CandidateUser } from '../types/CandidateUser';
 
 import { Loading } from '../components/Loading';
+import { AuthContext, Token } from '../context/auth';
 import { Cadastro } from '../pages/Cadastro';
+import { ForgotPassword } from '../pages/ForgotPassword';
 import { Home } from '../pages/Home/mvp-1/index';
 import { Login } from '../pages/Login';
+import { PasswordRecovery } from '../pages/PasswordRecovery';
 import { Profile } from '../pages/Profile';
 import { Project } from '../pages/Project/index';
 import { ProjectRegistred } from '../pages/ProjectsRegistered';
-import { AuthContext, Token } from '../context/auth';
+import { Survey } from '../pages/Survey/index';
 import { getCandidateUser } from '../services/api';
 import { getErrorMessage } from '../utils/ErrorMessageUtil';
-import { ForgotPassword } from '../pages/ForgotPassword';
-import { PasswordRecovery } from '../pages/PasswordRecovery';
-import { Survey } from '../pages/Survey/index';
 
 import { ConfimationAccount } from '../pages/ConfirmationAccount';
 import { DashboardPage } from '../pages/Dashboard';
@@ -34,6 +34,7 @@ export const AppRouter = () => {
     isTokenExpired,
     hasToken,
     signOutIfTokenIsExpiredOrNotExist,
+    finishiedSurvey,
   } = useContext(AuthContext);
 
   const location = useLocation();
@@ -77,7 +78,8 @@ export const AppRouter = () => {
   const CanAccessSurvey = ({ children }: RouteElementProps) => {
     if (!candidateUser) return <Navigate to="/login" />;
 
-    if (candidateUser.completeSurvey) return <Navigate to="/dashboard" />;
+    if (candidateUser.completeSurvey || finishiedSurvey)
+      return <Navigate to="/dashboard" />;
 
     return children;
   };
@@ -107,7 +109,7 @@ export const AppRouter = () => {
     }
 
     getUserToken();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, getToken]);
 
   return (
     <>
@@ -152,12 +154,11 @@ export const AppRouter = () => {
           <Route
             path="/survey"
             element={
-              /* <Private>
-              <CanAccessSurvey> */
-              <Survey />
-              /* </CanAccessSurvey>
-            </Private>
-            */
+              <Private>
+                <CanAccessSurvey>
+                  <Survey />
+                </CanAccessSurvey>
+              </Private>
             }
           />
           <Route path="/confirmation-account" element={<ConfimationAccount />} />

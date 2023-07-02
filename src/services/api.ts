@@ -159,4 +159,86 @@ export const confirmationAccount = async (
   }
 };
 
+type dataRequest = {
+  birth: Date;
+  genre: string;
+  name: string;
+  residencePlace: string;
+};
+
+export const createSurveyDetails = async (data: dataRequest) => {
+  try {
+    const response = await api.post('/api/candidate-users-details', {
+      gender: data.genre,
+      birthDate: data.birth,
+      residencePlace: data.residencePlace,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createSurveyMarketInformation = async (data: any) => {
+  try {
+    const response = await api.post('/api/survey-market-information', {
+      metFindy: data.findySource,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createProfessionalSituation = async (data: any) => {
+  try {
+    const response = await api.post('/api/survey-professional-situation', {
+      situation: data.area,
+      ocupationArea: data.situation,
+      objectives: data.transition,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createFeelings = async (data: any) => {
+  try {
+    const response = await api.post('/api/survey-feelings', {
+      professionalAchievement: data.value,
+      motivation: data.feedback,
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const createNeeds = async (data: any) => {
+  try {
+    const response = await api.post('/api/survey-needs', data);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const compliteSurvey = async (id: number, data: any) => {
+  try {
+    const response = await api.patch(`/api/candidate-users/${id}`, data);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const resumeSurveyByUserId = async (id: number) => {
+  try {
+    const response = await api.get(`/api/candidate-users/${id}/survey`);
+    return response;
+  } catch (error) {
+    console.log(error);
+  }
+};
 export default api;

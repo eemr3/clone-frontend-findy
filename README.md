@@ -67,13 +67,13 @@ $ npm  run dev
          >
        </td>
        <td align="center">
-         <a href="https://github.com/estercarvalhocv"
+         <a href="https://github.com/nicholaslima"
            ><img
              style="border-radius: 50%"
-             src="https://avatars.githubusercontent.com/u/94876224?v=4"
+             src="https://avatars.githubusercontent.com/u/25212253?v=4"
              width="100px;"
-             alt="Avatar Ester Borges de Carvalho"
-           /><br /><sub><b>Ester Borges de Carvalho</b></sub></a
+             alt="Avatar Nicholas Lima"
+           /><br /><sub><b>Nicholas Lima</b></sub></a
          >
        </td>
      </tr>
