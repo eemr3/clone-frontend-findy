@@ -1,10 +1,9 @@
-import { LoginUser } from "./LoginUser"
+import { LoginUser } from './LoginUser';
 
-export type CandidateUserRegister = LoginUser & {
+export interface CandidateUserRegister extends LoginUser {
   name: string;
-  confirmPassword: string;
-  accept_terms: boolean;
-  recoverToken: string;
-  id: string;
+  confirmPassword: string | undefined;
+  accept_terms: true | undefined;
+  recoverToken?: string;
+  id?: string;
 }
-

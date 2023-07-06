@@ -45,7 +45,7 @@ export function IdentifyingNeeds() {
 
     clearErrors,
     formState: { errors, isSubmitting },
-  } = useForm<SurveyIdentflyngNeeds>({
+  } = useForm<any>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
     mode: 'onBlur',
@@ -55,10 +55,7 @@ export function IdentifyingNeeds() {
     },
   });
 
-  const handleUpdateSurvey: SubmitHandler<SurveyIdentflyngNeeds> = async (
-    values,
-    event,
-  ) => {
+  const handleUpdateSurvey: SubmitHandler<any> = async (values, event) => {
     event?.preventDefault();
 
     setActiveSubmit(true);

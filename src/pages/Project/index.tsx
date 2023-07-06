@@ -80,7 +80,6 @@ export function Project() {
     getValues,
     formState: { errors },
   } = useForm<FormValues>({
-    resolver: yupResolver(schema),
     shouldFocusError: true,
     defaultValues: {
       responsible: candidateUser ? candidateUser.name : '',
@@ -104,7 +103,7 @@ export function Project() {
       if (result?.status === 201) {
         navigate('/project_registered');
       }
-    } catch (error) { }
+    } catch (error) {}
 
     setActiveSubmit(false);
   };
@@ -318,8 +317,9 @@ export function Project() {
               fieldSetClassName={'even:ml-auto  even:lg:ml-[0]'}
               {...register('contactResponsible')}
               error={errors ? errors.contactResponsible?.message : ''}
-              fieldSetBG={`${candidateUser?.email != undefined ? 'bg-[#d3d3d3!important]' : ''
-                }`}
+              fieldSetBG={`${
+                candidateUser?.email != undefined ? 'bg-[#d3d3d3!important]' : ''
+              }`}
             />
             <InputDB
               icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
@@ -328,10 +328,11 @@ export function Project() {
               fieldSetClassName={'even:ml-auto  even:lg:ml-[0]'}
               {...register('urlLinkediResponsible')}
               error={errors ? errors.urlLinkediResponsible?.message : ''}
-              fieldSetBG={`${candidateUser?.profile?.urlLinkedin != undefined
-                ? 'bg-[#d3d3d3!important]'
-                : ''
-                }`}
+              fieldSetBG={`${
+                candidateUser?.profile?.urlLinkedin != undefined
+                  ? 'bg-[#d3d3d3!important]'
+                  : ''
+              }`}
             />
             <InputDB
               icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
