@@ -14,6 +14,8 @@ import { RegisterContext } from '../../context/newRegister';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import { getErrorMessage } from '../../utils/ErrorMessageUtil';
+import { Button } from '../../components/Button';
+import { Spinner } from '../../components/Spinner';
 
 interface FormValues {
   email: string;
@@ -36,6 +38,7 @@ export function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [authError, setAuthError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { signIn } = useContext(AuthContext);
   const { isRegistered, setIsRegistered } = useContext(RegisterContext);
   const navigate = useNavigate();
@@ -73,6 +76,7 @@ export function Login() {
   });
 
   const onSubmit = async (data: any) => {
+    setIsLoading(true);
     if (data != null) {
       const result = await loginUser(data.email, data.password);
 
@@ -90,6 +94,7 @@ export function Login() {
     }
 
     setIsSuccess(true);
+    setIsLoading(false);
   };
 
   return (
@@ -177,12 +182,25 @@ export function Login() {
               </Link>
             }
           </div>
-          <button
-            className="mt-[3.4rem] h-[5.5rem] w-[65%] rounded-[3.2rem] bg-green-medium duration-500 hover:bg-green-dark mbl:mt-[4.5rem]  mbl:h-[4rem] mbl:max-w-[100%]"
+
+          <Button
+            fill
+            disabled={isLoading}
+            className="mt-[3.4rem] h-[5.5rem] !w-[65%] rounded-[3.2rem] duration-500 mbl:mt-[4.5rem] mbl:h-[4rem] mbl:max-w-[100%] normal-case text-[2.4rem] text-[#FFFFFF] mbl:text-[2.2rem]"
             onClick={handleSubmit(onSubmit)}
           >
-            <p className="text-[2.4rem] text-[#FFFFFF] mbl:text-[2.2rem] ">Logar</p>
-          </button>
+            {!isLoading ?
+              "Logar" :
+              <div
+                className="flex items-center justify-center"
+              >
+                <Spinner size="sm" />
+                Carregando...
+              </div>
+            }
+
+          </Button>
+
           <p className="mb-[2.4rem] mt-[3.4rem] flex flex-col items-center text-[2.4rem] leading-[2rem] text-grey-#1  mbl:mt-[4.4rem] mbl:text-[1.4rem]">
             Você é novo na Findy?{' '}
             <Link to="/cadastro" className="text-[2rem] text-green-medium underline">
