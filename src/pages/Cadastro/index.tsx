@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SubmitHandler, set, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
 
 import IconLockOpen from '../../assets/view_fill.svg';
@@ -14,8 +14,9 @@ import { CandidateUserRegister } from '../../types/CandidateUserRegister';
 import { getErrorMessage } from '../../utils/ErrorMessageUtil';
 
 import c from '../../assets/c.svg';
-import { NavBar } from '../../components/menu/NavBar';
 import { RegisterContext } from '../../context/newRegister';
+import { Menu } from '../../components/menu';
+import { LogoSmall } from '../../components/LogoSmall';
 
 const schema = yup
   .object()
@@ -91,7 +92,12 @@ export function Cadastro() {
 
   return (
     <div className="w-max-[1483px] flex h-[100%] flex-col overflow-x-hidden bg-blue-dark">
-      <NavBar home={false} url="/" />
+      <Menu.Root>
+        <LogoSmall />
+        <Menu.MenuItems className="justify-end">
+          <Menu.Action url="/" text="Voltar" />
+        </Menu.MenuItems>
+      </Menu.Root>
       <div className="my-auto flex flex-col items-center justify-center pt-[4.14rem] md:px-[2rem] xl:w-[100%] xl:justify-center mbl:px-[1.5rem]">
         <h1 className="mb-[1.1rem] text-[2.4rem] text-grey-#4">Crie uma Conta</h1>
         <form
