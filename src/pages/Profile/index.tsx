@@ -89,7 +89,6 @@ export function Profile() {
     trigger,
     formState: { errors }, // Adicione essa propriedade na desestruturação
   } = useForm<ProfileFormValues>({
-    resolver: yupResolver(schema),
     shouldFocusError: true,
     mode: 'onBlur',
     defaultValues: {

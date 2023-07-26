@@ -27,7 +27,8 @@ const schema = yup.object().shape({
     ),
   confirmPassword: yup
     .string()
-    .oneOf([undefined, yup.ref('password')], 'As senhas precisam ser iguais'),
+    .oneOf([yup.ref('password')], 'As senhas precisam ser iguais')
+    .required(),
 });
 
 export function PasswordRecovery() {
@@ -45,7 +46,7 @@ export function PasswordRecovery() {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<CandidateUserRegister>({
+  } = useForm<FormValue>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
   });

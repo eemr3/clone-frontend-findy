@@ -7,8 +7,7 @@ import {
   useRef,
   useState,
   useEffect,
-  ChangeEvent,
-  FocusEvent
+  ChangeEvent
 } from "react";
 import { SVGIcon } from "../../types/SVGIcon";
 import { Text } from "../Text";

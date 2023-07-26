@@ -19,6 +19,7 @@ import {
   createSurveyMarketInformation,
 } from '../../../services/api';
 import { findyHelp, principalDifficulties } from '../data/data';
+import { SurveyPersonalData } from '../../../types/SurveyPersonalData';
 
 const schema = yup.object().shape({
   required_field: yup.array().min(1).of(yup.string().required()),
@@ -45,7 +46,7 @@ export function IdentifyingNeeds() {
 
     clearErrors,
     formState: { errors, isSubmitting },
-  } = useForm<SurveyIdentflyngNeeds>({
+  } = useForm<any>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
     mode: 'onBlur',
@@ -55,10 +56,7 @@ export function IdentifyingNeeds() {
     },
   });
 
-  const handleUpdateSurvey: SubmitHandler<SurveyIdentflyngNeeds> = async (
-    values,
-    event,
-  ) => {
+  const handleUpdateSurvey: SubmitHandler<any> = async (values, event) => {
     event?.preventDefault();
 
     setActiveSubmit(true);
@@ -75,7 +73,15 @@ export function IdentifyingNeeds() {
       ? JSON.parse(localStorage.getItem('@Findy:surveyProfessionalAchievement') as string)
       : null;
 
-    const response = await createSurveyDetails(personalData);
+    const newPersonalData: SurveyPersonalData = {
+      ...personalData,
+      residencePlace: personalData.residencePlace.split(" - ")[0],
+      state: personalData.residencePlace.split(" - ")[1],
+      country: personalData.residencePlace.split(" - ")[2],
+    }
+
+
+    const response = await createSurveyDetails(newPersonalData);
     const response2 = await createSurveyMarketInformation(marketData);
     const response3 = await createProfessionalSituation(professionalData);
     const response4 = await createFeelings(professionalAchie);
@@ -92,6 +98,8 @@ export function IdentifyingNeeds() {
     setFinishiedSurvey(true);
     navigate('/dashboard');
     localStorage.clear();
+
+
 
     // // Simulando a espera da API
     // await new Promise((resolve) => setTimeout(resolve, 1000));

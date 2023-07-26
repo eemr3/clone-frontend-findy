@@ -1,9 +1,7 @@
-import jwt_decode from 'jwt-decode';
-
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
-
-import { yupResolver } from '@hookform/resolvers/yup';
+import jwt_decode from 'jwt-decode';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
 import { SurveyPersonalData } from '../../../types/SurveyPersonalData';
@@ -42,7 +40,12 @@ const schema = yup
       .required('Data de Nascimento obrigatório')
       .typeError('Data de Nascimento obrigatório')
       .max(calculateYears(new Date(), -16), 'Idade mínima permitida é de 16 anos'),
-    residencePlace: yup.string().required('Local de residência obrigatório'),
+    residencePlace: yup.string().required('Nome da cidade obrigatória')
+      .test('Local de residência', 'Selecione sua cidade na lista', (value) => {
+        const fieldsData = value?.split(" - ");
+        return fieldsData.length === 3 && !fieldsData.filter(field => field.trim() === "").length;
+      }
+      ),
   })
   .required();
 
@@ -57,6 +60,7 @@ export function PersonalData() {
     register,
     handleSubmit,
     setValue,
+    getValues,
     setFocus,
     formState: { errors, isSubmitting },
   } = useForm<SurveyPersonalData>({
@@ -179,12 +183,12 @@ export function PersonalData() {
 
         <Text
           type="sm"
-          className={`font-normal text-black opacity-80 ${
-            errors.residencePlace?.message ? 'mt-[-2.5rem]' : 'mt-[-3.6rem]'
-          } `}
+          className={`font-normal text-black opacity-80 ${errors.residencePlace?.message ? 'mt-[-2.5rem]' : 'mt-[-3.6rem]'
+            } `}
         >
           *Campos obrigatórios
         </Text>
+
       </fieldset>
 
       <SurveyNav isSubmitting={isSubmitting} submitLabel="Continuar" />
