@@ -82,10 +82,11 @@ export function Login() {
 
       if (result?.status === 200) {
         signIn(result);
-        setTimeout(() => {
-          navigate('/survey');
-          /* navigate('/dashboard'); */
-        }, 2000);
+        setIsLoading(false);
+        navigate('/survey');
+        // setTimeout(() => {
+        //   /* navigate('/dashboard'); */
+        // }, 2000);
       }
 
       if (result?.status === 401) {
@@ -94,7 +95,6 @@ export function Login() {
     }
 
     setIsSuccess(true);
-    setIsLoading(false);
   };
 
   return (
@@ -186,19 +186,17 @@ export function Login() {
           <Button
             fill
             disabled={isLoading}
-            className="mt-[3.4rem] h-[5.5rem] !w-[65%] rounded-[3.2rem] duration-500 mbl:mt-[4.5rem] mbl:h-[4rem] mbl:max-w-[100%] normal-case text-[2.4rem] text-[#FFFFFF] mbl:text-[2.2rem]"
+            className="mt-[3.4rem] h-[5.5rem] !w-[65%] rounded-[3.2rem] text-[2.4rem] normal-case text-[#FFFFFF] duration-500 mbl:mt-[4.5rem] mbl:h-[4rem] mbl:max-w-[100%] mbl:text-[2.2rem]"
             onClick={handleSubmit(onSubmit)}
           >
-            {!isLoading ?
-              "Logar" :
-              <div
-                className="flex items-center justify-center"
-              >
+            {!isLoading ? (
+              'Logar'
+            ) : (
+              <div className="flex items-center justify-center">
                 <Spinner size="sm" />
                 Carregando...
               </div>
-            }
-
+            )}
           </Button>
 
           <p className="mb-[2.4rem] mt-[3.4rem] flex flex-col items-center text-[2.4rem] leading-[2rem] text-grey-#1  mbl:mt-[4.4rem] mbl:text-[1.4rem]">
