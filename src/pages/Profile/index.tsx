@@ -1,19 +1,18 @@
+import jwt_decode from 'jwt-decode';
 import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import jwt_decode from 'jwt-decode';
 
+import { yupResolver } from '@hookform/resolvers/yup';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 
 import { CandidateProfile } from '../../types/CandidateProfile';
 import { Role } from '../../types/Role';
 
-import { Header } from '../../components/Header';
+import { Button } from '../../components/Button';
 import { Heading } from '../../components/Heading';
 import { Text } from '../../components/Text';
-import { Button } from '../../components/Button';
 import { Checkbox } from '../../components/forms/Checkbox';
 import { InputDB } from '../../components/forms/InputDB';
 import { TextErrorMessage } from '../../components/forms/TextErrorMessage';
@@ -23,10 +22,9 @@ import { PencilIcon } from '../../components/icons/PencilIcon';
 import { SocialMediaIcon } from '../../components/icons/SocialMediaIcon';
 import { TelephoneIcon } from '../../components/icons/TelephoneIcon';
 
+import { AuthContext } from '../../context/auth';
 import { getCandidateUser, getPositions, updateProfile } from '../../services/api';
 import { getErrorMessage } from '../../utils/ErrorMessageUtil';
-import { AuthContext } from '../../context/auth';
-import { NavBar } from '../../components/menu/NavBar';
 
 type ProfileFormValues = CandidateProfile & {
   name: string;
@@ -173,8 +171,6 @@ export function Profile() {
 
   return (
     <div className="w-max-[144rem] flex flex-col bg-blue-dark">
-      <NavBar home={false} />
-
       <article className="ml-[15.9rem] mt-[6.414rem] text-grey-#5 lg:ml-[4rem] mbl:ml-[2rem]">
         <Heading type="lg-leading58" className="mbl:text-[4rem]">
           Seu perfil

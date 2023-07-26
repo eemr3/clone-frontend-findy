@@ -7,13 +7,15 @@ import c from '../../assets/c.svg';
 
 import IconLockOpen from '../../assets/view_fill.svg';
 import IconLockClose from '../../assets/view_hide_fill.svg';
-import { NavBar } from '../../components/menu/NavBar';
+
 import { AuthContext } from '../../context/auth';
 import { confirmationAccount, loginUser } from '../../services/api';
 import { RegisterContext } from '../../context/newRegister';
 import { toast } from 'react-toastify';
 import { AxiosError } from 'axios';
 import { getErrorMessage } from '../../utils/ErrorMessageUtil';
+import { Menu } from '../../components/menu';
+import { LogoSmall } from '../../components/LogoSmall';
 
 interface FormValues {
   email: string;
@@ -97,8 +99,12 @@ export function Login() {
       className="w-max-[1483px] flex h-[100%] flex-col 
     overflow-x-hidden bg-blue-dark mbl:flex-col"
     >
-      <NavBar home={false} url="/" />
-
+      <Menu.Root>
+        <LogoSmall />
+        <Menu.MenuItems className="justify-end">
+          <Menu.Action url="/" text="Voltar" />
+        </Menu.MenuItems>
+      </Menu.Root>
       <div
         className="my-auto flex flex-col items-center  justify-center 
         md:px-[2rem] xl:w-[100%] xl:justify-center mbl:w-[100%]"

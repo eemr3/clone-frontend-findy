@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import IconLock from '../../components/icons/IconConfirm';
 import { resetPassword } from '../../services/api';
 import { CandidateUserRegister } from '../../types/CandidateUserRegister';
-import { NavBar } from '../../components/menu/NavBar';
 
 interface FormValue {
   password: string;
@@ -81,8 +80,6 @@ export function PasswordRecovery() {
       className="w-max-[1483px] flex h-[100%] flex-col 
     overflow-x-hidden bg-[#252C43] opacity-90 mbl:flex-col"
     >
-      <NavBar home={false} />
-
       <div className="my-auto flex flex-col items-center justify-center pt-[4.14rem] md:px-[2rem] xl:w-[100%] xl:justify-center mbl:px-[1.5rem] ">
         <h1 className="mb-[1.1rem] text-[2.4rem] text-grey-#4">Criar nova senha</h1>
         {passwordSuccessResetModal === false ? (
