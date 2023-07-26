@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useContext, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { set, useForm } from 'react-hook-form';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import * as yup from 'yup';
 import c from '../../assets/c.svg';
@@ -84,10 +84,11 @@ export function Login() {
 
       if (result?.status === 200) {
         signIn(result);
-        setTimeout(() => {
-          navigate('/survey');
-          /* navigate('/dashboard'); */
-        }, 2000);
+        setIsLoading(false);
+        navigate('/survey');
+        // setTimeout(() => {
+        //   /* navigate('/dashboard'); */
+        // }, 2000);
       }
 
       if (result?.status === 401) {
@@ -96,7 +97,6 @@ export function Login() {
     }
 
     setIsSuccess(true);
-    setIsLoading(false);
   };
 
   return (
