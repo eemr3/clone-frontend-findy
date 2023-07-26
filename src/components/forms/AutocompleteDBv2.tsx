@@ -6,7 +6,8 @@ import {
   useImperativeHandle,
   useRef,
   useState,
-  useEffect
+  useEffect,
+  ChangeEvent
 } from "react";
 import { SVGIcon } from "../../types/SVGIcon";
 import { Text } from "../Text";
@@ -66,7 +67,9 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, AutocompleteDBv2Prop
   }, []);
 
   useEffect(() => {
-    if (!!options.length != openList) {
+
+    if ((!!options.length != openList) &&
+      (options[0] !== inputRef.current?.value)) {
       toggleList();
     }
 
@@ -92,6 +95,11 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, AutocompleteDBv2Prop
 
     if (inputRef.current?.value != undefined) {
       inputRef.current.value = (typeof newValue == 'string') ? newValue : newValue.value;
+
+      onChange &&
+        onChange({
+          target: inputRef.current,
+        } as ChangeEvent<HTMLInputElement>);
 
       setOpenList(false);
     }

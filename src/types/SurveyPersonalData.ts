@@ -5,4 +5,6 @@ export type SurveyPersonalData = {
   genre: string;
   birth: Date;
   residencePlace: string;
+  state: string;
+  country: string;
 }
