@@ -164,6 +164,8 @@ type dataRequest = {
   genre: string;
   name: string;
   residencePlace: string;
+  state: string;
+  country: string;
 };
 
 export const createSurveyDetails = async (data: dataRequest) => {
@@ -172,6 +174,8 @@ export const createSurveyDetails = async (data: dataRequest) => {
       gender: data.genre,
       birthDate: data.birth,
       residencePlace: data.residencePlace,
+      state: data.state,
+      country: data.country,
     });
     return response;
   } catch (error) {

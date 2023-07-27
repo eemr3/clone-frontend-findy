@@ -75,11 +75,11 @@ export function IdentifyingNeeds() {
 
     const newPersonalData: SurveyPersonalData = {
       ...personalData,
-      residencePlace: personalData.residencePlace.split(" - ")[0],
-      state: personalData.residencePlace.split(" - ")[1],
-      country: personalData.residencePlace.split(" - ")[2],
-    }
-
+      residencePlace: personalData.residencePlace.split(' - ')[0],
+      state: personalData.residencePlace.split(' - ')[1],
+      country: personalData.residencePlace.split(' - ')[2],
+    };
+    console.log(newPersonalData);
 
     const response = await createSurveyDetails(newPersonalData);
     const response2 = await createSurveyMarketInformation(marketData);
@@ -98,8 +98,6 @@ export function IdentifyingNeeds() {
     setFinishiedSurvey(true);
     navigate('/dashboard');
     localStorage.clear();
-
-
 
     // // Simulando a espera da API
     // await new Promise((resolve) => setTimeout(resolve, 1000));
