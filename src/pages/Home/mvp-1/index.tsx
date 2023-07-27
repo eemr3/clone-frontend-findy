@@ -8,7 +8,9 @@ import { getCandidateUser } from '../../../services/api';
 
 import { Landing } from '../../../components/landing';
 import { FooterLand } from '../../../components/landing/Footer';
-import { NavBar } from '../../../components/menu/NavBar';
+
+import { Menu } from '../../../components/menu';
+import { LogoSmall } from '../../../components/LogoSmall';
 
 // import mulherPagePrincipal from '../../../assets/mulher-page-principal.svg';
 // import mulherPagePrincipal3 from '../../../assets/mulher-page-principal3.svg';
@@ -69,7 +71,13 @@ export function Home() {
 
   return (
     <main className="flex w-full flex-col bg-blue-dark ">
-      <NavBar home={true} />
+      <Menu.Root>
+        <LogoSmall />
+        <Menu.MenuItems className="justify-between">
+          <Menu.Items />
+          <Menu.Action url="/cadastro" text="Cadastro" />
+        </Menu.MenuItems>
+      </Menu.Root>
       <Landing />
       <FooterLand />
     </main>

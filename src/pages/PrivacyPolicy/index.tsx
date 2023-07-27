@@ -1,12 +1,17 @@
 import { Copyright } from '@phosphor-icons/react';
-import { NavBar } from '../../components/menu/NavBar';
+import { Menu } from '../../components/menu';
+import { LogoSmall } from '../../components/LogoSmall';
 
 export function PrivacyPolicy() {
   return (
     <div className="h-auto max-w-[100%] bg-blue-dark">
+      <Menu.Root>
+        <LogoSmall />
+        <Menu.MenuItems className="justify-end">
+          <Menu.Action url="/cadastro" text="Voltar" />
+        </Menu.MenuItems>
+      </Menu.Root>
       <div className="mx-auto w-[100%] max-w-[1180px]">
-        <NavBar home={false} url="/cadastro" />
-
         <h1 className="mb-[1.8rem] text-center text-[20px] font-semibold text-white">
           Políticas de Privacidade
         </h1>

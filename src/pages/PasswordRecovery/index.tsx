@@ -1,14 +1,12 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import mulherPagePrincipal from '../../assets/mulher-page-principal2.svg';
-import { Header } from '../../components/Header';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import IconLock from '../../components/icons/IconConfirm';
 import { resetPassword } from '../../services/api';
-import { CandidateUserRegister } from '../../types/CandidateUserRegister';
-import { NavBar } from '../../components/menu/NavBar';
+import { Menu } from '../../components/menu';
+import { LogoSmall } from '../../components/LogoSmall';
 
 interface FormValue {
   password: string;
@@ -80,10 +78,14 @@ export function PasswordRecovery() {
   return (
     <div
       className="w-max-[1483px] flex h-[100%] flex-col 
-    overflow-x-hidden bg-[#252C43] opacity-90 mbl:flex-col"
+    overflow-x-hidden bg-[#252C43] mbl:flex-col"
     >
-      <NavBar home={false} />
-
+      <Menu.Root>
+        <LogoSmall />
+        <Menu.MenuItems className="justify-end">
+          <Menu.Action text="Voltar" url="/" />
+        </Menu.MenuItems>
+      </Menu.Root>
       <div className="my-auto flex flex-col items-center justify-center pt-[4.14rem] md:px-[2rem] xl:w-[100%] xl:justify-center mbl:px-[1.5rem] ">
         <h1 className="mb-[1.1rem] text-[2.4rem] text-grey-#4">Criar nova senha</h1>
         {passwordSuccessResetModal === false ? (

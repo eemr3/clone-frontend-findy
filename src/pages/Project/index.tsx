@@ -91,7 +91,6 @@ export function Project() {
   const handleUpdateProject: SubmitHandler<FormValues> = async (values, event) => {
     event?.preventDefault();
     setActiveSubmit(true);
-    console.log(values);
 
     try {
       const { ...newValues } = values;
@@ -109,7 +108,6 @@ export function Project() {
   };
   const [selectedLanguageIds, setSelectedLanguageIds] = useState<any>([]);
   const [selectedLanguageNames, setSelectedLanguageNames] = useState<string[]>([]);
-  console.log(selectedLanguageIds);
 
   const handleLanguageChange = (event: any) => {
     const selectedId = event.target.value;

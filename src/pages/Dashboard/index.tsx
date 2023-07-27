@@ -1,11 +1,13 @@
-import { useContext, useEffect, useState } from 'react';
 import jwtDecode from 'jwt-decode';
-import { NavBar } from '../../components/menu/NavBar';
-import { resumeSurveyByUserId } from '../../services/api';
+import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/auth';
+import { resumeSurveyByUserId } from '../../services/api';
+import { Menu } from '../../components/menu';
+import { LogoSmall } from '../../components/LogoSmall';
+import { Button } from '../../components/Button';
 
 export function DashboardPage() {
-  const { getToken } = useContext(AuthContext);
+  const { getToken, signOut } = useContext(AuthContext);
   const [dataSurvey, setDataSurvey] = useState<any[]>([]);
 
   useEffect(() => {
@@ -19,7 +21,12 @@ export function DashboardPage() {
 
   return (
     <div className="w-max-[1483px] flex h-[100%] flex-col overflow-x-hidden bg-blue-dark opacity-90">
-      <NavBar home={false} />
+      <Menu.Root>
+        <LogoSmall />
+        <Menu.MenuItems className="justify-end">
+          <Button onClick={signOut}>Sair</Button>
+        </Menu.MenuItems>
+      </Menu.Root>
       <h1 className="m-auto text-center text-3xl text-white">Dashboard</h1>
       <code className="m-auto text-[16px] text-white">
         <pre>{JSON.stringify(dataSurvey, null, 2)}</pre>

@@ -2,7 +2,6 @@ import jwt_decode from 'jwt-decode';
 import { useContext, useState } from 'react';
 import { Heading } from '../../../components/Heading';
 import { useSteps } from '../../../components/ProgressBar/context/useSteps';
-import { SurveyIdentflyngNeeds } from '../../../types/SurveyIdentflyngNeeds';
 import { SurveyNav } from './SurveyNav';
 
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -18,8 +17,8 @@ import {
   createSurveyDetails,
   createSurveyMarketInformation,
 } from '../../../services/api';
-import { findyHelp, principalDifficulties } from '../data/data';
 import { SurveyPersonalData } from '../../../types/SurveyPersonalData';
+import { findyHelp, principalDifficulties } from '../data/data';
 
 const schema = yup.object().shape({
   required_field: yup.array().min(1).of(yup.string().required()),
@@ -79,7 +78,6 @@ export function IdentifyingNeeds() {
       state: personalData.residencePlace.split(' - ')[1],
       country: personalData.residencePlace.split(' - ')[2],
     };
-    console.log(newPersonalData);
 
     const response = await createSurveyDetails(newPersonalData);
     const response2 = await createSurveyMarketInformation(marketData);
