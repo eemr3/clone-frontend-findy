@@ -1,27 +1,31 @@
-import { useEffect, useState } from "react";
-import { Heading } from "../../../components/Heading";
-import { SelectDBv2 } from "../../../components/forms/SelectDBv2";
-import { Button } from "../../../components/Button";
-import * as yup from "yup";
-import { Text } from "../../../components/Text";
-import { useSteps } from "../../../components/ProgressBar/context/useSteps";
-import { SurveyMarketData } from "../../../types/SurveyMarketData";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useSurveyContext } from "../context/SurveyContext";
-import { SocialMediaList } from "../../../utils/SocialMediaList";
-import { SurveyNav } from "./SurveyNav";
+import { useEffect, useState } from 'react';
+import { Heading } from '../../../components/Heading';
+import { SelectDBv2 } from '../../../components/forms/SelectDBv2';
+import { Button } from '../../../components/Button';
+import * as yup from 'yup';
+import { Text } from '../../../components/Text';
+import { useSteps } from '../../../components/ProgressBar/context/useSteps';
+import { SurveyMarketData } from '../../../types/SurveyMarketData';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useSurveyContext } from '../context/SurveyContext';
+import { SocialMediaList } from '../../../utils/SocialMediaList';
+import { SurveyNav } from './SurveyNav';
 
 interface Errors {
   findySource?: string;
 }
 
-const validationSchema = yup.object().shape({
-  findySource: yup.string().required("Informação onde conheceu a Findy obrigatória."),
-}).required();
+const validationSchema = yup
+  .object()
+  .shape({
+    findySource: yup.string().required('Informação onde conheceu a Findy obrigatória.'),
+  })
+  .required();
 
 export function MarketData() {
-  const { surveyMarketData, setSurveyMarketData, updatedSurveyMarketData } = useSurveyContext();
+  const { surveyMarketData, setSurveyMarketData, updatedSurveyMarketData } =
+    useSurveyContext();
   const { nextStep, prevStep } = useSteps();
 
   const {
@@ -43,33 +47,31 @@ export function MarketData() {
     event?.preventDefault();
 
     // Simulando a espera da API
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     //setSurveyMarketData(values);
 
-    updatedSurveyMarketData(values)
-    
+    updatedSurveyMarketData(values);
+
     nextStep();
   };
 
-
   useEffect(() => {
-    setFocus("findySource");
-  }, [])
-
-  console.log("surveyMarketData ", surveyMarketData)
+    setFocus('findySource');
+  }, []);
 
   return (
     <form
-      className="mx-auto mt-[2rem] w-[66rem] mb-[7.692rem]"
+      className="mx-auto mb-[7.692rem] mt-[2rem] w-[66rem]"
       noValidate
-      onSubmit={handleSubmit(handleUpdateSurvey)}>
-      <Heading type="xxs" className="text-center text-grey-#4 mb-[1rem]">
+      onSubmit={handleSubmit(handleUpdateSurvey)}
+    >
+      <Heading type="xxs" className="mb-[1rem] text-center text-grey-#4">
         Como ficou sabendo da Findy?*
       </Heading>
 
       <fieldset
-        className={`w-full flex flex-col py-16 pl-[7.7rem] pr-[7.8rem] rounded-[2.233rem] bg-white`}
+        className={`flex w-full flex-col rounded-[2.233rem] bg-white py-16 pl-[7.7rem] pr-[7.8rem]`}
       >
         <SelectDBv2
           options={SocialMediaList}
@@ -77,12 +79,14 @@ export function MarketData() {
           requiredField
           placeholder="Selecione uma opção"
           error={errors.findySource?.message}
-          {...register("findySource")}
+          {...register('findySource')}
         />
 
         <Text
           type="sm"
-          className={`text-black opacity-80 font-normal ${errors.findySource?.message ? "" : "mt-[-1.1rem]"} `}
+          className={`font-normal text-black opacity-80 ${
+            errors.findySource?.message ? '' : 'mt-[-1.1rem]'
+          } `}
         >
           *Campos obrigatórios
         </Text>
