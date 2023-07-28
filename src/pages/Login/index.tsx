@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useContext, useEffect, useState } from 'react';
-import { set, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import * as yup from 'yup';
 import c from '../../assets/c.svg';
@@ -80,19 +80,23 @@ export function Login() {
   const onSubmit = async (data: any) => {
     setIsLoading(true);
     if (data != null) {
-      const result = await loginUser(data.email, data.password);
+      try {
+        const result = await loginUser(data.email, data.password);
 
-      if (result?.status === 200) {
-        signIn(result);
-        setIsLoading(false);
-        navigate('/survey');
-        // setTimeout(() => {
-        //   /* navigate('/dashboard'); */
-        // }, 2000);
-      }
+        if (result?.status === 200) {
+          signIn(result);
+          setTimeout(() => {
+            navigate('/dashboard');
+            setIsLoading(false);
+            // navigate('/survey');
+          }, 2000);
+        }
 
-      if (result?.status === 401) {
-        setAuthError('E-mail e/ou senha inválidos');
+        if (result?.status === 401) {
+          setAuthError('E-mail e/ou senha inválidos');
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
 
@@ -192,7 +196,9 @@ export function Login() {
           <Button
             fill
             disabled={isLoading}
-            className="mt-[3.4rem] h-[5.5rem] !w-[65%] rounded-[3.2rem] text-[2.4rem] normal-case text-[#FFFFFF] duration-500 mbl:mt-[4.5rem] mbl:h-[4rem] mbl:max-w-[100%] mbl:text-[2.2rem]"
+            className="mt-[3.4rem] h-[5.5rem] !w-[65%] rounded-[3.2rem]
+             text-[2.4rem] normal-case text-[#FFFFFF] duration-500 
+             disabled:bg-grey-#2 mbl:mt-[4.5rem] mbl:h-[4rem] mbl:max-w-[100%] mbl:text-[2.2rem]"
             onClick={handleSubmit(onSubmit)}
           >
             {!isLoading ? (

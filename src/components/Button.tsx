@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode } from "react";
+import { ButtonHTMLAttributes, ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -13,20 +13,22 @@ export function Button({
   fill = false,
   disabled = false,
   url = undefined,
-  className = "text-[1.4rem] leading-[1.162rem] tracking-[0.091rem] font-bold",
+  className = 'text-[1.4rem] leading-[1.162rem] tracking-[0.091rem] font-bold',
   type = 'button',
   onClick,
   ...rest
 }: ButtonProps) {
   const buttonStyle = fill
-    ? `${disabled
-      ? "bg-grey-#4 text-grey-#2"
-      : "shadow-shadow-button bg-green-medium text-grey-#5 hover:bg-green-dark"
-    }`
-    : `border-[1px] ${disabled
-      ? "text-grey-#2 border-grey-#2"
-      : "shadow-shadow-button text-green-medium border-green-medium hover:text-green-dark hover:border-green-dark"
-    }`;
+    ? `${
+        disabled
+          ? 'bg-grey-#4 text-white'
+          : 'shadow-shadow-button bg-green-medium text-grey-#5 hover:bg-green-dark'
+      }`
+    : `border-[1px] ${
+        disabled
+          ? 'text-grey-#2 border-grey-#2'
+          : 'shadow-shadow-button text-green-medium border-green-medium hover:text-green-dark hover:border-green-dark'
+      }`;
 
   /* const navigate = useNavigate(); */
 
@@ -34,17 +36,18 @@ export function Button({
 
   return (
     <button
-      className={`h-[3.341rem] w-fit rounded-[2.324rem] px-[1.743rem] uppercase disabled:cursor-not-allowed ${className} ${buttonStyle}`}
+      className={`h-[3.341rem] w-fit rounded-[2.324rem] px-[1.743rem] 
+      uppercase disabled:cursor-not-allowed ${className} ${buttonStyle}`}
       disabled={disabled}
       onClick={(event) => {
         /* url &&
           navigate(url); */
 
-        if (typeof url === "string") {
+        if (typeof url === 'string') {
           navigate(url);
-        } else if (typeof url === "function") {
+        } else if (typeof url === 'function') {
           const urlResult = url.call(null);
-          if (typeof urlResult === "string") {
+          if (typeof urlResult === 'string') {
             navigate(urlResult);
           }
         }

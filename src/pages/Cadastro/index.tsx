@@ -17,6 +17,8 @@ import c from '../../assets/c.svg';
 import { RegisterContext } from '../../context/newRegister';
 import { Menu } from '../../components/menu';
 import { LogoSmall } from '../../components/LogoSmall';
+import { Loading } from '../../components/Loading';
+import { Spinner } from '../../components/Spinner';
 
 const schema = yup
   .object()
@@ -45,6 +47,7 @@ const schema = yup
 
 export function Cadastro() {
   const { setIsRegistered } = useContext(RegisterContext);
+  const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [confirmShowPassword, setConfirmShowPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -74,7 +77,7 @@ export function Cadastro() {
   ) => {
     setActiveSubmit(true);
     event?.preventDefault();
-
+    setIsLoading(true);
     if (data == null && !isChecked) return null;
 
     try {
@@ -88,6 +91,7 @@ export function Cadastro() {
 
     setIsSuccess(true);
     setActiveSubmit(false);
+    setIsLoading(false);
   };
 
   return (
@@ -359,10 +363,20 @@ export function Cadastro() {
           </div>
           <button
             type="submit"
-            className="mdl:mt-[3rem] mt-[3.95rem] h-[6rem] w-[60%] rounded-[3.2rem] bg-[#01A195] text-[2.4rem] text-[#FFFFFF] duration-700 hover:bg-green-dark mbl:h-[4rem]"
-            disabled={activeSubmit}
+            className="mdl:mt-[3rem] mt-[3.95rem] h-[6rem] w-[60%] 
+              rounded-[3.2rem] bg-[#01A195] text-center text-[2.4rem] text-[#FFFFFF]
+               duration-700 hover:bg-green-dark disabled:cursor-not-allowed 
+               disabled:bg-grey-#2 mbl:h-[4rem]"
+            disabled={isLoading}
           >
-            Criar conta
+            {isLoading ? (
+              <div className="flex items-center justify-center">
+                <Spinner size="sm" />
+                Carregando...
+              </div>
+            ) : (
+              'Criar conta'
+            )}
           </button>
           <p className="mdl:mb-[3rem] mb-[6rem] mt-[2.4rem] flex flex-col items-center text-[2.4rem] text-grey-#1 mbl:text-[2rem]">
             Já possui uma conta?{' '}
