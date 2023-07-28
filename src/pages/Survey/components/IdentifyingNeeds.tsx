@@ -78,39 +78,28 @@ export function IdentifyingNeeds() {
       state: personalData.residencePlace.split(' - ')[1],
       country: personalData.residencePlace.split(' - ')[2],
     };
+    try {
+      const response = await createSurveyDetails(newPersonalData);
+      const response2 = await createSurveyMarketInformation(marketData);
+      const response3 = await createProfessionalSituation(professionalData);
+      const response4 = await createFeelings(professionalAchie);
+      const response5 = await createNeeds({
+        principalDifficulties: values.principalDifficulties,
+        findyHelp: values.findyHelp,
+      });
+      const { sub } = jwt_decode<any>(getToken());
 
-    const response = await createSurveyDetails(newPersonalData);
-    const response2 = await createSurveyMarketInformation(marketData);
-    const response3 = await createProfessionalSituation(professionalData);
-    const response4 = await createFeelings(professionalAchie);
-    const response5 = await createNeeds({
-      principalDifficulties: values.principalDifficulties,
-      findyHelp: values.findyHelp,
-    });
-    const { sub } = jwt_decode<any>(getToken());
+      await compliteSurvey(+sub, {
+        completeSurvey: true,
+      });
 
-    await compliteSurvey(+sub, {
-      completeSurvey: true,
-    });
-
-    setFinishiedSurvey(true);
-    navigate('/dashboard');
-    localStorage.clear();
-
-    // // Simulando a espera da API
-    // await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // nextStep();
+      setFinishiedSurvey(true);
+      navigate('/dashboard');
+      localStorage.clear();
+    } catch (error) {
+      console.log(error);
+    }
   };
-
-  // useEffect(() => {
-  //   const storedRequiredFieldCheckGroup = JSON.parse(
-  //     localStorage.getItem('@Findy:surveyIdentflyngNeeds') ?? 'null',
-  //   );
-  //   const storedRequiredField2CheckGroup = JSON.parse(
-  //     localStorage.getItem('@Findy:surveyIdentflyngNeeds2') ?? 'null',
-  //   );
-  // }, []);
 
   return (
     <form
@@ -157,6 +146,7 @@ export function IdentifyingNeeds() {
                   }
                 >
                   <input
+                    id={'dificult' + index}
                     className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                     type="checkbox"
                     value={item}
@@ -167,7 +157,11 @@ export function IdentifyingNeeds() {
                     }}
                   />
                 </div>
-                <label id={item} className="text-[1.6rem] font-medium text-[#000]">
+                <label
+                  htmlFor={'dificult' + index}
+                  id={item}
+                  className="text-[1.6rem] font-medium text-[#000]"
+                >
                   {item}
                 </label>
               </li>
@@ -207,6 +201,7 @@ export function IdentifyingNeeds() {
                   <input
                     className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                     type="checkbox"
+                    id={item}
                     value={item}
                     {...register('findyHelp')}
                     onChange={(e) => {
@@ -215,7 +210,7 @@ export function IdentifyingNeeds() {
                     }}
                   />
                 </div>
-                <label id={item} className="text-[1.6rem] font-medium text-[#000]">
+                <label htmlFor={item} className="text-[1.6rem] font-medium text-[#000]">
                   {item}
                 </label>
               </li>
