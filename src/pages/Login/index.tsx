@@ -94,6 +94,7 @@ export function Login() {
 
         if (result?.status === 401) {
           setAuthError('E-mail e/ou senha inválidos');
+          setIsLoading(false);
         }
       } catch (error) {
         console.log(error);
