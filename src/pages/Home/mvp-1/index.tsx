@@ -12,6 +12,13 @@ import { FooterLand } from '../../../components/landing/Footer';
 import { Menu } from '../../../components/menu';
 import { LogoSmall } from '../../../components/LogoSmall';
 
+import { InputDB } from '../../../components/forms/InputDB';
+import { PencilIcon } from '../../../components/icons/PencilIcon';
+import { InputDBv2 } from '../../../components/forms/InputDBv2';
+import { Input } from '../../../components/forms/Input';
+import { InputRefact } from '../../../components/forms/InputRefact';
+import { ProjectTest } from '../../Project/ProjectTest';
+
 // import mulherPagePrincipal from '../../../assets/mulher-page-principal.svg';
 // import mulherPagePrincipal3 from '../../../assets/mulher-page-principal3.svg';
 
@@ -70,6 +77,52 @@ export function Home() {
   };
 
   return (
+    <>
+    <InputDB
+    icon={<PencilIcon className={'mbl:max-w-[2rem]'} />}
+    label="Nome completo"
+    placeholder="Nome"
+    fieldSetClassName={'even:ml-auto'}
+    fieldSetBG={`${
+      candidateUser?.name != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
+    }`}
+    error={'erros'}
+  />
+  <InputRefact  
+    icon={<PencilIcon className={'mbl:max-w-[2rem]'} />}
+    label="Nome completo"
+    placeholder="Nome"
+   // fieldSetClassName={'even:ml-auto'}
+    fieldSetBG={`${
+      candidateUser?.name != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
+    }`}
+    error={'erros'}
+  />
+<InputDB
+    icon={<PencilIcon className={'mbl:max-w-[2rem]'} />}
+    label="Nome completo"
+
+    placeholder="Nome"
+    fieldSetClassName={'even:ml-auto'}
+    fieldSetBG={`${
+      candidateUser?.name != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
+    }`}
+    error={'erros'}
+  />
+
+
+<Input  placeholder='teste' />
+
+  <InputDBv2
+  label="Nome completo"
+  requiredField
+  placeholder="Digite seu nome"
+  maxLength={70}
+  error='err'
+/>
+<ProjectTest></ProjectTest>
+</>
+    /*
     <main className="flex w-full flex-col bg-blue-dark ">
       <Menu.Root>
         <LogoSmall />
@@ -80,6 +133,6 @@ export function Home() {
       </Menu.Root>
       <Landing />
       <FooterLand />
-    </main>
+    </main> */
   );
 }
