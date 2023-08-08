@@ -184,7 +184,7 @@ export function ProjectTest() {
               {...register('name')}
               label="Nome do Projeto"
               placeholder="Nome"
-          //  fieldSetClassName={'even:ml-auto'}
+              isWrittenWithData={candidateUser?.name}
               error={errors ? errors.name?.message : ''}
             />
 
@@ -193,7 +193,7 @@ export function ProjectTest() {
               label="Link para seleção da equipe"
               {...register('urlTeamSelection')}
               placeholder="Link"
-            // fieldSetClassName={'ml-auto'}
+              isWrittenWithData={candidateUser?.name}
               error={errors ? errors.urlTeamSelection?.message : ''}
             />
           </div>
@@ -236,6 +236,7 @@ export function ProjectTest() {
               label="Data do inicio do projeto"
               placeholder="Data"
               value={dataAtual}
+              isWrittenWithData={candidateUser?.name}
               disabled
             />
           </div>
@@ -304,7 +305,7 @@ export function ProjectTest() {
               placeholder="Nome"
               error={errors ? errors.responsible?.message : ''}
               {...register('responsible')}
-              fieldSetBG={`${candidateUser?.name ? 'bg-[#d3d3d3!important]' : ''}`}
+              isWrittenWithData={candidateUser?.name}
             />
 
             <InputDBRefact
@@ -313,9 +314,7 @@ export function ProjectTest() {
               placeholder="Contato"
               {...register('contactResponsible')}
               error={errors ? errors.contactResponsible?.message : ''}
-              fieldSetBG={`${
-                candidateUser?.email != undefined ? 'bg-[#d3d3d3!important]' : ''
-              }`}
+              isWrittenWithData={candidateUser?.name}
             />
             <InputDBRefact
               icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
@@ -323,11 +322,7 @@ export function ProjectTest() {
               placeholder="LinkedIn"
               {...register('urlLinkediResponsible')}
               error={errors ? errors.urlLinkediResponsible?.message : ''}
-              fieldSetBG={`${
-                candidateUser?.profile?.urlLinkedin != undefined
-                  ? 'bg-[#d3d3d3!important]'
-                  : ''
-              }`}
+              isWrittenWithData={candidateUser?.name}
             />
             <InputDBRefact
               icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
@@ -335,6 +330,7 @@ export function ProjectTest() {
               placeholder="LinkedIn"
               {...register('contactLeaders')}
               error={errors ? errors.urlLinkediResponsible?.message : ''}
+              isWrittenWithData={candidateUser?.name}
             />
           </div>
 

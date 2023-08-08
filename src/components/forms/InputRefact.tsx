@@ -25,7 +25,7 @@ interface InputDBProps
   mask?: "PHONE"; /* "CEP" | "PHONE" | "PHONE_DDI" | "CPF_CNPJ" | "CPF" | "CNPJ" | "CURRENCY"; */
   icon?: SVGIcon;
   error?: string;
-  fieldSetBG?: string;
+  isWrittenWithData?: boolean;
   wantInputWidthFull?: boolean;
 }
 
@@ -36,10 +36,9 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
     placeholder,
     mask,
     icon = undefined,
+    isWrittenWithData = false,
     type = "text",
     error = null,
-    fieldSetClassName = "",
-    fieldSetBG = "",
     wantInputWidthFull = false,
     className = "",
     onChange,
@@ -84,6 +83,8 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
     </div>
   )
 
+  const inputIsWrittenWithDataStyle = isWrittenWithData && 'bg-[#d3d3d3!important]' 
+
 
   const renderErrorIfExist = !!error && (
     <Text
@@ -99,13 +100,13 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
       className={`flex flex-col gap-[1.2rem] lg:ml-[0] sm:max-w-[100%]`}
       /* className={`flex w-fit flex-col gap-[1.2rem] lg:ml-[0] sm:max-w-[100%] mbl:max-w-[10rem]  ${fieldSetClassName}`} */
       onClick={() => {
-        if (inputRef.current) inputRef.current.focus();
+         inputRef.current?.focus();
       }}
     >
        { renderLabelIfExists }
 
       <div
-        className={`flex h-[6.631rem] w-[100%] rounded-[0.3rem]  border-[0.1rem] border-grey-#1 bg-white  sm:h-[5.6rem] sm:w-[32rem] sm:max-w-[100%] mbl:h-[4rem] mbl:max-h-[3rem] mbl:max-w-[80%] ${fieldSetBG} ${wantInputWidthFull ? "w-full" : ""
+        className={`flex h-[6.631rem] w-[100%] rounded-[0.3rem]  border-[0.1rem] border-grey-#1 bg-white  sm:h-[5.6rem] sm:w-[32rem] sm:max-w-[100%] mbl:h-[4rem] mbl:max-h-[3rem] mbl:max-w-[80%] ${inputIsWrittenWithDataStyle} ${wantInputWidthFull ? "w-full" : ""
           }`}
       >
         { renderIconIfExists }
@@ -116,7 +117,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
           type={type}
           maxLength={mask && getMaxLength(mask)}
           placeholder={placeholder}
-          className={`ml-[2rem] w-[32.2rem] border-none text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2 disabled:bg-white md:w-[80%] sm:w-[70%] mbl:max-w-[17rem] mbl:text-[1.2rem] ${className} ${fieldSetBG} ${wantInputWidthFull ? "w-[96%]" : ""
+          className={`ml-[2rem] w-[32.2rem] border-none text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2 disabled:bg-white md:w-[80%] sm:w-[70%] mbl:max-w-[17rem] mbl:text-[1.2rem] ${className} ${inputIsWrittenWithDataStyle} ${wantInputWidthFull ? "w-[96%]" : ""
          }`}
           onKeyUp={mask && handleKeyUp}
           onChange={(event) => {

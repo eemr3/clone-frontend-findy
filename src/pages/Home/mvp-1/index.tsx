@@ -102,9 +102,7 @@ export function Home() {
     icon={<PencilIcon className={'mbl:max-w-[2rem]'} />}
     label="Nome completo"
     placeholder="Nome"
-    fieldSetBG={`${
-      candidateUser?.name != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
-    }`}
+    isWrittenWithData={!!candidateUser?.name}
     error={'erros'}
   />
 <ProjectTest></ProjectTest>
