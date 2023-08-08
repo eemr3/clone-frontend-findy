@@ -2,11 +2,8 @@ import {
   ChangeEvent,
   DetailedHTMLProps,
   FormEvent,
-  ForwardRefRenderFunction,
   InputHTMLAttributes,
-  forwardRef,
   useCallback,
-  useImperativeHandle,
   useRef,
 } from "react";
 import { SVGIcon } from "../../types/SVGIcon";
@@ -18,47 +15,38 @@ interface InputDBProps
     InputHTMLAttributes<HTMLInputElement>,
     HTMLInputElement
   > {
-  name?: string;
+  name: string;
+  type: string;
   label?: string;
-  type?: string;
-  placeholder?: string;
-  mask?: "PHONE"; /* "CEP" | "PHONE" | "PHONE_DDI" | "CPF_CNPJ" | "CPF" | "CNPJ" | "CURRENCY"; */
+  maskType?: "PHONE"; 
   icon?: SVGIcon;
   error?: string;
-  isWrittenWithData?: boolean;
+  isWrittenWithDBData?: boolean;
 }
 
-const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
+export function InputDBRefact(
   {
-    name = "",
     label,
-    placeholder,
-    mask,
-    icon = undefined,
-    isWrittenWithData = false,
-    type = "text",
-    error = null,
-    className = "",
+    maskType,
+    name,
+    icon,
+    isWrittenWithDBData = false,
+    error,
     onChange,
     ...rest
-  },
-  ref
-) => {
+  }: InputDBProps
+) {
   const inputRef = useRef<HTMLInputElement>(null);
-  useImperativeHandle<HTMLInputElement | null, HTMLInputElement | null>(
-    ref,
-    () => inputRef.current
-  );
 
-  const handleKeyUp = useCallback((e: FormEvent<HTMLInputElement>) => {
-    if (mask === "PHONE") {
+  const handlePutMaskOnKeyUp = useCallback((e: FormEvent<HTMLInputElement>) => {
+    if (maskType === "PHONE") {
       e.currentTarget.maxLength = 15 //10
       e.currentTarget.value = maskPhone(e.currentTarget.value);
     }
-  }, [mask]);
+  }, [maskType]);
 
   async function handleOnChange(e: ChangeEvent<HTMLInputElement>) {
-    if (mask === "PHONE") {
+    if (maskType === "PHONE") {
       e.currentTarget.value = maskPhone(e.currentTarget.value);
     }
   }
@@ -72,7 +60,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
     </label>
   )
 
-  const renderIconIfExists =  icon && (
+  const renderIconIfExists = icon && (
     <div
       className="flex w-[5.3rem] items-center justify-center rounded-bl-[0.3rem] rounded-tl-[0.3rem] bg-blue-dark-#1
     mbl:max-w-[70%] "
@@ -81,8 +69,8 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
     </div>
   )
 
-  const inputIsWrittenWithDataStyle = isWrittenWithData && 'bg-[#d3d3d3!important]' 
-
+  const inputIsWrittenWithDataStyle = isWrittenWithDBData && 'bg-[#d3d3d3!important]' 
+  const maxLengthOfMask = maskType && getMaxLength(maskType)
 
   const renderErrorIfExist = !!error && (
     <Text
@@ -108,13 +96,10 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
         { renderIconIfExists }
 
         <input
-          name={name}
           ref={inputRef}
-          type={type}
-          maxLength={mask && getMaxLength(mask)}
-          placeholder={placeholder}
-          className={`ml-[2rem] w-[32.2rem] border-none text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2 disabled:bg-white md:w-[80%] sm:w-[70%] mbl:max-w-[17rem] mbl:text-[1.2rem] ${className} ${inputIsWrittenWithDataStyle}`}
-          onKeyUp={mask && handleKeyUp}
+          maxLength={maxLengthOfMask}
+          className={`ml-[2rem] w-[32.2rem] border-none text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2 disabled:bg-white md:w-[80%] sm:w-[70%] mbl:max-w-[17rem] mbl:text-[1.2rem] ${inputIsWrittenWithDataStyle}`}
+          onKeyUp={maskType && handlePutMaskOnKeyUp}
           onChange={(event) => {
             handleOnChange(event);
 
@@ -130,4 +115,4 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
   );
 };
 
-export const InputDBRefact = forwardRef(InputBase);
+

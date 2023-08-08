@@ -101,8 +101,12 @@ export function Home() {
 <InputDBRefact  
     icon={<PencilIcon className={'mbl:max-w-[2rem]'} />}
     label="Nome completo"
+    name="nameCandidate"
+    type='text'
+    maxLength={2}
+    maskType='PHONE'
     placeholder="Nome"
-    isWrittenWithData={!!candidateUser?.name}
+    isWrittenWithDBData={!!candidateUser?.name}
     error={'erros'}
   />
 <ProjectTest></ProjectTest>

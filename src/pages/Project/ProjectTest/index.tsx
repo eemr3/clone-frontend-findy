@@ -8,7 +8,6 @@ import { HeaderProfile } from '../../../components/HeaderProfile';
 import { Heading } from '../../../components/Heading';
 import { Text } from '../../../components/Text';
 import { Checkbox } from '../../../components/forms/Checkbox';
-import { InputDB } from '../../../components/forms/InputDB';
 import { SelectDB } from '../../../components/forms/SelectDB';
 import { TextErrorMessage } from '../../../components/forms/TextErrorMessage';
 import { CodeIcon } from '../../../components/icons/CodeIcon';
@@ -180,20 +179,22 @@ export function ProjectTest() {
         <div className="mx-auto mb-[16rem] mt-[7.4rem] w-[100%] max-w-[112.4rem]">
           <div className="grid grid-cols-2 gap-[17.1rem]  lg:flex justify-between lg:flex-col lg:items-start lg:justify-center lg:gap-y-[6.469rem] mbl:gap-y-[4rem]">
             <InputDBRefact
-              icon={<PencilIcon className={'mbl:max-w-[2rem] '} />}
+              icon={<PencilIcon  />}
               {...register('name')}
               label="Nome do Projeto"
               placeholder="Nome"
-              isWrittenWithData={candidateUser?.name}
+              type="text"
+              isWrittenWithDBData={candidateUser?.name}
               error={errors ? errors.name?.message : ''}
             />
 
             <InputDBRefact
-              icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
+              icon={<SocialMediaIcon />}
               label="Link para seleção da equipe"
               {...register('urlTeamSelection')}
               placeholder="Link"
-              isWrittenWithData={candidateUser?.name}
+              type="text"
+              isWrittenWithDBData={candidateUser?.name}
               error={errors ? errors.urlTeamSelection?.message : ''}
             />
           </div>
@@ -232,11 +233,13 @@ export function ProjectTest() {
             />
 
             <InputDBRefact
-              icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
+              icon={<SocialMediaIcon />}
               label="Data do inicio do projeto"
               placeholder="Data"
+              type="date"
+              name="data"
               value={dataAtual}
-              isWrittenWithData={candidateUser?.name}
+              isWrittenWithDBData={false}
               disabled
             />
           </div>
@@ -300,37 +303,41 @@ export function ProjectTest() {
 
           <div className="grid grid-cols-2 gap-[17.1rem] flex-col items-start justify-center gap-y-[6.469rem] lg:flex mbl:gap-y-[4rem]">
             <InputDBRefact
-              icon={<PencilIcon className={'mbl:max-w-[2rem] '} />}
+              icon={<PencilIcon />}
               label="Insira o nome da pessoa responsável pelo projeto"
               placeholder="Nome"
               error={errors ? errors.responsible?.message : ''}
               {...register('responsible')}
-              isWrittenWithData={candidateUser?.name}
+              isWrittenWithDBData={true}
+              type="text"
             />
 
             <InputDBRefact
-              icon={<SocialMediaIcon className={'mbl:max-w-[2rem]'} />}
+              icon={<SocialMediaIcon  />}
               label="Insira o contato da pessoa responsável"
               placeholder="Contato"
               {...register('contactResponsible')}
               error={errors ? errors.contactResponsible?.message : ''}
-              isWrittenWithData={candidateUser?.name}
+              isWrittenWithDBData={true}
+              type="text"
             />
             <InputDBRefact
-              icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
+              icon={<SocialMediaIcon  />}
               label="Linkedin do Responsável"
               placeholder="LinkedIn"
               {...register('urlLinkediResponsible')}
               error={errors ? errors.urlLinkediResponsible?.message : ''}
-              isWrittenWithData={candidateUser?.name}
+              isWrittenWithDBData={candidateUser?.name}
+              type="text"
             />
             <InputDBRefact
-              icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
+              icon={<SocialMediaIcon  />}
               label="Contato de outros responsaveis"
               placeholder="LinkedIn"
               {...register('contactLeaders')}
               error={errors ? errors.urlLinkediResponsible?.message : ''}
-              isWrittenWithData={candidateUser?.name}
+              isWrittenWithDBData={true}
+              type="text"
             />
           </div>
 
