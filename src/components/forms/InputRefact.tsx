@@ -26,7 +26,6 @@ interface InputDBProps
   icon?: SVGIcon;
   error?: string;
   isWrittenWithData?: boolean;
-  wantInputWidthFull?: boolean;
 }
 
 const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
@@ -39,7 +38,6 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
     isWrittenWithData = false,
     type = "text",
     error = null,
-    wantInputWidthFull = false,
     className = "",
     onChange,
     ...rest
@@ -98,7 +96,6 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
   return (
     <fieldset
       className={`flex flex-col gap-[1.2rem] lg:ml-[0] sm:max-w-[100%]`}
-      /* className={`flex w-fit flex-col gap-[1.2rem] lg:ml-[0] sm:max-w-[100%] mbl:max-w-[10rem]  ${fieldSetClassName}`} */
       onClick={() => {
          inputRef.current?.focus();
       }}
@@ -106,8 +103,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
        { renderLabelIfExists }
 
       <div
-        className={`flex h-[6.631rem] w-[100%] rounded-[0.3rem]  border-[0.1rem] border-grey-#1 bg-white  sm:h-[5.6rem] sm:w-[32rem] sm:max-w-[100%] mbl:h-[4rem] mbl:max-h-[3rem] mbl:max-w-[80%] ${inputIsWrittenWithDataStyle} ${wantInputWidthFull ? "w-full" : ""
-          }`}
+        className={`flex h-[6.631rem] w-[100%] rounded-[0.3rem]  border-[0.1rem] border-grey-#1 bg-white  sm:h-[5.6rem] sm:w-[32rem] sm:max-w-[100%] mbl:h-[4rem] mbl:max-h-[3rem] mbl:max-w-[80%] ${inputIsWrittenWithDataStyle} }`}
       >
         { renderIconIfExists }
 
@@ -117,8 +113,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBProps> = (
           type={type}
           maxLength={mask && getMaxLength(mask)}
           placeholder={placeholder}
-          className={`ml-[2rem] w-[32.2rem] border-none text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2 disabled:bg-white md:w-[80%] sm:w-[70%] mbl:max-w-[17rem] mbl:text-[1.2rem] ${className} ${inputIsWrittenWithDataStyle} ${wantInputWidthFull ? "w-[96%]" : ""
-         }`}
+          className={`ml-[2rem] w-[32.2rem] border-none text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2 disabled:bg-white md:w-[80%] sm:w-[70%] mbl:max-w-[17rem] mbl:text-[1.2rem] ${className} ${inputIsWrittenWithDataStyle}`}
           onKeyUp={mask && handleKeyUp}
           onChange={(event) => {
             handleOnChange(event);
