@@ -16,7 +16,7 @@ import { InputDB } from '../../../components/forms/InputDB';
 import { PencilIcon } from '../../../components/icons/PencilIcon';
 import { InputDBv2 } from '../../../components/forms/InputDBv2';
 import { Input } from '../../../components/forms/Input';
-import { InputRefact } from '../../../components/forms/InputRefact';
+import { InputDBRefact } from '../../../components/forms/InputRefact';
 import { ProjectTest } from '../../Project/ProjectTest';
 
 // import mulherPagePrincipal from '../../../assets/mulher-page-principal.svg';
@@ -78,48 +78,35 @@ export function Home() {
 
   return (
     <>
-    <InputDB
-    icon={<PencilIcon className={'mbl:max-w-[2rem]'} />}
-    label="Nome completo"
-    placeholder="Nome"
-    fieldSetClassName={'even:ml-auto'}
-    fieldSetBG={`${
-      candidateUser?.name != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
-    }`}
-    error={'erros'}
-  />
-  <InputRefact  
-    icon={<PencilIcon className={'mbl:max-w-[2rem]'} />}
-    label="Nome completo"
-    placeholder="Nome"
-   // fieldSetClassName={'even:ml-auto'}
-    fieldSetBG={`${
-      candidateUser?.name != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
-    }`}
-    error={'erros'}
-  />
 <InputDB
     icon={<PencilIcon className={'mbl:max-w-[2rem]'} />}
     label="Nome completo"
-
     placeholder="Nome"
     fieldSetClassName={'even:ml-auto'}
     fieldSetBG={`${
       candidateUser?.name != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
     }`}
     error={'erros'}
-  />
+    
+/>
 
-
-<Input  placeholder='teste' />
-
-  <InputDBv2
+<InputDBv2
   label="Nome completo"
   requiredField
   placeholder="Digite seu nome"
   maxLength={70}
   error='err'
 />
+
+<InputDBRefact  
+    icon={<PencilIcon className={'mbl:max-w-[2rem]'} />}
+    label="Nome completo"
+    placeholder="Nome"
+    fieldSetBG={`${
+      candidateUser?.name != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
+    }`}
+    error={'erros'}
+  />
 <ProjectTest></ProjectTest>
 </>
     /*

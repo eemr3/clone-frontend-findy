@@ -21,6 +21,7 @@ import {
   getPositions,
 } from '../../../services/api';
 import { AuthContext } from '../../../context/auth';
+import { InputDBRefact } from '../../../components/forms/InputRefact';
 interface FormValues {
   name: string;
   urlTeamSelection: string;
@@ -177,22 +178,22 @@ export function ProjectTest() {
 
       <section className="mt-[10.2rem] overflow-x-hidden bg-grey-#5 xl:px-[3rem] mbl:px-[1rem]">
         <div className="mx-auto mb-[16rem] mt-[7.4rem] w-[100%] max-w-[112.4rem]">
-          <div className="grid grid-cols-2 lg:flex lg:flex-col lg:items-start lg:justify-center lg:gap-y-[6.469rem] mbl:gap-y-[4rem]">
-            <InputDB
+          <div className="grid grid-cols-2 gap-[17.1rem]  lg:flex justify-between lg:flex-col lg:items-start lg:justify-center lg:gap-y-[6.469rem] mbl:gap-y-[4rem]">
+            <InputDBRefact
               icon={<PencilIcon className={'mbl:max-w-[2rem] '} />}
               {...register('name')}
               label="Nome do Projeto"
               placeholder="Nome"
-              fieldSetClassName={'even:ml-auto'}
+          //  fieldSetClassName={'even:ml-auto'}
               error={errors ? errors.name?.message : ''}
             />
 
-            <InputDB
+            <InputDBRefact
               icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
               label="Link para seleção da equipe"
               {...register('urlTeamSelection')}
               placeholder="Link"
-              fieldSetClassName={'ml-auto'}
+            // fieldSetClassName={'ml-auto'}
               error={errors ? errors.urlTeamSelection?.message : ''}
             />
           </div>
@@ -220,7 +221,7 @@ export function ProjectTest() {
               icon={<CodeIcon className={'mbl:max-w-[2rem] '} />}
               label="Selecione as linguagens de programação"
               placeholder="Selecione as linguagens"
-              fieldSetClassName={'even:ml-auto'}
+             // fieldSetClassName={'even:ml-auto'}
               options={languages.map((language: any) => ({
                 value: language?.id,
                 label: language?.title,
@@ -230,11 +231,10 @@ export function ProjectTest() {
               error={errors ? errors.language?.message : ''}
             />
 
-            <InputDB
+            <InputDBRefact
               icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
               label="Data do inicio do projeto"
               placeholder="Data"
-              fieldSetClassName={'even:ml-auto  even:lg:ml-[0]'}
               value={dataAtual}
               disabled
             />
@@ -297,33 +297,30 @@ export function ProjectTest() {
             </div>
           </fieldset>
 
-          <div className="grid grid-cols-2 flex-col items-start justify-center gap-y-[6.469rem] lg:flex mbl:gap-y-[4rem]">
-            <InputDB
+          <div className="grid grid-cols-2 gap-[17.1rem] flex-col items-start justify-center gap-y-[6.469rem] lg:flex mbl:gap-y-[4rem]">
+            <InputDBRefact
               icon={<PencilIcon className={'mbl:max-w-[2rem] '} />}
               label="Insira o nome da pessoa responsável pelo projeto"
               placeholder="Nome"
-              fieldSetClassName={'even:ml-auto  even:lg:ml-[0]'}
               error={errors ? errors.responsible?.message : ''}
               {...register('responsible')}
               fieldSetBG={`${candidateUser?.name ? 'bg-[#d3d3d3!important]' : ''}`}
             />
 
-            <InputDB
+            <InputDBRefact
               icon={<SocialMediaIcon className={'mbl:max-w-[2rem]'} />}
               label="Insira o contato da pessoa responsável"
               placeholder="Contato"
-              fieldSetClassName={'even:ml-auto  even:lg:ml-[0]'}
               {...register('contactResponsible')}
               error={errors ? errors.contactResponsible?.message : ''}
               fieldSetBG={`${
                 candidateUser?.email != undefined ? 'bg-[#d3d3d3!important]' : ''
               }`}
             />
-            <InputDB
+            <InputDBRefact
               icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
               label="Linkedin do Responsável"
               placeholder="LinkedIn"
-              fieldSetClassName={'even:ml-auto  even:lg:ml-[0]'}
               {...register('urlLinkediResponsible')}
               error={errors ? errors.urlLinkediResponsible?.message : ''}
               fieldSetBG={`${
@@ -332,11 +329,10 @@ export function ProjectTest() {
                   : ''
               }`}
             />
-            <InputDB
+            <InputDBRefact
               icon={<SocialMediaIcon className={'mbl:max-w-[2rem] '} />}
               label="Contato de outros responsaveis"
               placeholder="LinkedIn"
-              fieldSetClassName={'even:ml-auto  even:lg:ml-[0]'}
               {...register('contactLeaders')}
               error={errors ? errors.urlLinkediResponsible?.message : ''}
             />
