@@ -18,6 +18,8 @@ import { InputDBv2 } from '../../../components/forms/InputDBv2';
 import { Input } from '../../../components/forms/Input';
 import { InputDBRefact } from '../../../components/forms/InputRefact';
 import { ProjectTest } from '../../Project/ProjectTest';
+import { Profile } from '../../Profile';
+import { ProfileTest } from '../../Profile/ProfileTest';
 
 // import mulherPagePrincipal from '../../../assets/mulher-page-principal.svg';
 // import mulherPagePrincipal3 from '../../../assets/mulher-page-principal3.svg';
@@ -110,6 +112,7 @@ export function Home() {
     error={'erros'}
   />
 <ProjectTest></ProjectTest>
+<ProfileTest></ProfileTest>
 </>
     /*
     <main className="flex w-full flex-col bg-blue-dark ">

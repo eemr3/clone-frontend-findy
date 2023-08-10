@@ -177,7 +177,7 @@ export function ProjectTest() {
 
       <section className="mt-[10.2rem] overflow-x-hidden bg-grey-#5 xl:px-[3rem] mbl:px-[1rem]">
         <div className="mx-auto mb-[16rem] mt-[7.4rem] w-[100%] max-w-[112.4rem]">
-          <div className="grid grid-cols-2 gap-[17.1rem]  lg:flex justify-between lg:flex-col lg:items-start lg:justify-center lg:gap-y-[6.469rem] mbl:gap-y-[4rem]">
+          <div className="flex gap-x-[20rem]"/*lg:flex  lg:flex-col lg:items-start lg:justify-center lg:gap-y-[6.469rem] mbl:gap-y-[4rem]"*/>
             <InputDBRefact
               icon={<PencilIcon  />}
               {...register('name')}
@@ -185,7 +185,7 @@ export function ProjectTest() {
               placeholder="Nome"
               type="text"
               isWrittenWithDBData={candidateUser?.name}
-              error={errors ? errors.name?.message : ''}
+              error={"campo obrigatório"}
             />
 
             <InputDBRefact

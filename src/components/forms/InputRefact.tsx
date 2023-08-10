@@ -54,7 +54,7 @@ export function InputDBRefact(
   const renderLabelIfExists = !!label && (
     <label
       htmlFor={name}
-      className="text-[2.4rem] font-medium leading-[2.813rem] tracking-[-0.5%] text-grey-#1  mbl:text-[1.5rem] mbl:font-bold"
+      className='text-[2.4rem] font-medium text-grey-#1 leading-snug tracking-normal mbl:text-[1.5rem] sd:text-[1rem] md:text-[1.1rem] mbl:font-bold'
     >
       {label}
     </label>
@@ -62,8 +62,7 @@ export function InputDBRefact(
 
   const renderIconIfExists = icon && (
     <div
-      className="flex w-[5.3rem] items-center justify-center rounded-bl-[0.3rem] rounded-tl-[0.3rem] bg-blue-dark-#1
-    mbl:max-w-[70%] "
+      className='flex items-center justify-center bg-blue-dark-#1 px-5 rounded-l-[0.5rem]'
     >
       <>{icon}</>
     </div>
@@ -75,7 +74,7 @@ export function InputDBRefact(
   const renderErrorIfExist = !!error && (
     <Text
       type="md"
-      className="text-[1.8rem] font-bold leading-[1.924rem] text-red"
+      className='text-red text-[1.5rem] md:text-[1rem] font-medium leading-snug tracking-normal mbl:font-bold'
     >
       {`${error}`}
     </Text>
@@ -83,7 +82,7 @@ export function InputDBRefact(
 
   return (
     <fieldset
-      className={`flex flex-col gap-[1.2rem] lg:ml-[0] sm:max-w-[100%]`}
+      className={'flex flex-col gap-y-[1.2rem] md:gap-y-[0.5rem] sm:gap-y-[0.2rem] w-[100%]'}
       onClick={() => {
          inputRef.current?.focus();
       }}
@@ -91,14 +90,14 @@ export function InputDBRefact(
        { renderLabelIfExists }
 
       <div
-        className={`flex h-[6.631rem] w-[100%] rounded-[0.3rem]  border-[0.1rem] border-grey-#1 bg-white  sm:h-[5.6rem] sm:w-[32rem] sm:max-w-[100%] mbl:h-[4rem] mbl:max-h-[3rem] mbl:max-w-[80%] ${inputIsWrittenWithDataStyle} }`}
+        className={`flex w-[100%] bg-white ${inputIsWrittenWithDataStyle}`}
       >
         { renderIconIfExists }
 
         <input
           ref={inputRef}
           maxLength={maxLengthOfMask}
-          className={`ml-[2rem] w-[32.2rem] border-none text-[2.4rem] font-medium leading-[2.831rem] tracking-[-0.5%] text-grey-#1 outline-none placeholder:text-grey-#2 disabled:bg-white md:w-[80%] sm:w-[70%] mbl:max-w-[17rem] mbl:text-[1.2rem] ${inputIsWrittenWithDataStyle}`}
+          className={`border-[1px] border-black md:p-[1rem] rounded-r-[0.5rem] p-[1.25rem] sm:p-[0.1rem] text-[2.4rem] md:text-[1.5rem] sm:text-[1rem]  mbl:text-[1.2rem] font-medium leading-snug tracking-wide w-[100%]  ${inputIsWrittenWithDataStyle}`}
           onKeyUp={maskType && handlePutMaskOnKeyUp}
           onChange={(event) => {
             handleOnChange(event);
