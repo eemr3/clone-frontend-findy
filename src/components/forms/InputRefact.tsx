@@ -45,11 +45,6 @@ export function InputDBRefact(
     }
   }, [maskType]);
 
-  async function handleOnChange(e: ChangeEvent<HTMLInputElement>) {
-    if (maskType === "PHONE") {
-      e.currentTarget.value = maskPhone(e.currentTarget.value);
-    }
-  }
 
   const renderLabelIfExists = !!label && (
     <label
@@ -99,12 +94,6 @@ export function InputDBRefact(
           maxLength={maxLengthOfMask}
           className={`border-[1px] border-black md:p-[1rem] rounded-r-[0.5rem] p-[1.25rem] sm:p-[0.1rem] text-[2.4rem] md:text-[1.5rem] sm:text-[1rem]  mbl:text-[1.2rem] font-medium leading-snug tracking-wide w-[100%]  ${inputIsWrittenWithDataStyle}`}
           onKeyUp={maskType && handlePutMaskOnKeyUp}
-          onChange={(event) => {
-            handleOnChange(event);
-
-            onChange &&
-              onChange(event);
-          }}
           {...rest}
         />
       </div>

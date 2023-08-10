@@ -64,9 +64,9 @@ const schema = yup
         then: (schema) =>
           schema.min(1, 'Precisa informar pelo menos uma área de atuação'),
       }),
-      areaOfInterest: yup
+      role: yup
         .string()
-        .required('Interesse na sua área de atuação obrigatória'),
+        .required('area de atuação é obrigatoria'),
     },
     [['others', 'occupationArea']],
   )
@@ -143,6 +143,7 @@ export function ProfileTest() {
 
   function handleOthersInputChange(e: ChangeEvent<HTMLInputElement> | string) {
     const inputValue = typeof e === 'string' ? e : e.target.value;
+    console.log(inputValue)
     setOthers(inputValue);
     /* const othersArray = inputValue.split(",").map((item) => item.trim().charAt(0).toUpperCase() + item.trim().slice(1));
     setOthersArray(othersArray); */
@@ -293,13 +294,12 @@ export function ProfileTest() {
               />
 
               <InputDBRefact
-                name="areas_atuacao"
+                name="role"
                 type="text"
                 placeholder="'Tech Lead','Gestor'"
                 value={others}
                 disabled={disableOtherDescription}
                 error={errors.others?.message}
-                onChange={(e) => handleOthersInputChange(e)}
               />
             </div>
           </fieldset>
