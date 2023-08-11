@@ -149,7 +149,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, AutocompleteDBv2Prop
 
       {options && openList &&
         <div
-          className="bg-white overflow-hidden z-10 border-x border-b border-t-2 border-grey-#2 rounded-b-[0.8rem] "
+          className="bg-white overflow-clip z-10 border-x border-b border-t-2 border-grey-#2 rounded-b-[0.8rem] "
         >
           <ul
             className="overflow-y-auto max-h-[14.4rem] text-grey-#2 text-[1.4rem] leading-[1.82rem] font-medium"
