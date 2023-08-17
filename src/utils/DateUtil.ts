@@ -1,16 +1,13 @@
 export function calculateYears(date: Date, years: number): Date {
-  date.setFullYear(date.getFullYear() + years);
-  return date;
+  return new Date(new Date(date).setFullYear(date.getFullYear() + years));
 }
 
 export function calculateMonths(date: Date, months: number): Date {
-  date.setMonth(date.getMonth() + months);
-  return date;
+  return new Date(new Date(date).setMonth(date.getMonth() + months));
 }
 
 export function calculateDays(date: Date, days: number): Date {
-  date.setDate(date.getDate() + days);
-  return date;
+  return new Date(new Date(date).setDate(date.getDate() + days));
 }
 
 export function isDate(date: string) {
