@@ -21,6 +21,9 @@ export function ProfessionalAchievement() {
 
   const { nextStep, prevStep } = useSteps();
 
+  const fieldsFilled = !!feedback.trim().length && selected !== null
+
+
   //refatorar a validação para seguir o mesmo padrão dos outros componentes
   function handleOptionSelect(index: number) {
     setSelected(index);
@@ -39,7 +42,7 @@ export function ProfessionalAchievement() {
     if (selected === null || !feedback) {
       return;
     }
-    
+
     nextStep()
 
     validationSchema
@@ -66,13 +69,13 @@ export function ProfessionalAchievement() {
     };
 
     const convertedToString = JSON.stringify(storageProfessionalAchievement)
-    localStorage.setItem('@Findy:surveyProfessionalAchievement', JSON.stringify(storageProfessionalAchievement)); 
+    localStorage.setItem('@Findy:surveyProfessionalAchievement', JSON.stringify(storageProfessionalAchievement));
 
   }
 
   useEffect(() => {
     const dataInStorage = localStorage.getItem('@Findy:surveyProfessionalAchievement');
-    
+
     if (dataInStorage) {
       const { value, feedback } = JSON.parse(dataInStorage);
       setSelected(value);
@@ -282,7 +285,7 @@ export function ProfessionalAchievement() {
         <Button
           className="w-[10.7rem] text-[1.4rem] leading-[1.82rem] tracking-[0.091rem] font-semibold normal-case"
           fill
-          disabled={activeSubmit}
+          disabled={activeSubmit || !fieldsFilled}
           onClick={handleFormSubmit}
         >
           Continuar
