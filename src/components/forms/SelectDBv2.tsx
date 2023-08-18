@@ -210,7 +210,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
         </div>
       }
 
-      {!!error && (
+      {!!error && !openList && (
         <Text
           type="sm"
           className="text-red"

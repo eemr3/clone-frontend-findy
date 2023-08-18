@@ -24,32 +24,29 @@ const validationSchema = yup
   .required();
 
 export function MarketData() {
-  const { surveyMarketData, setSurveyMarketData, updatedSurveyMarketData } =
+  const { surveyMarketData, updatedSurveyMarketData } =
     useSurveyContext();
   const { nextStep, prevStep } = useSteps();
 
   const {
     register,
     handleSubmit,
-    setValue,
+    getValues,
     setFocus,
     formState: { errors, isSubmitting },
   } = useForm<SurveyMarketData>({
     resolver: yupResolver(validationSchema),
     shouldFocusError: true,
-    mode: 'onBlur',
+    mode: 'onTouched',
     defaultValues: {
       findySource: surveyMarketData ? surveyMarketData.findySource : '',
     },
   });
 
+  const fieldFilled = !!getValues("findySource").trim().length;
+
   const handleUpdateSurvey: SubmitHandler<SurveyMarketData> = async (values, event) => {
     event?.preventDefault();
-
-    // Simulando a espera da API
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    //setSurveyMarketData(values);
 
     updatedSurveyMarketData(values);
 
@@ -84,9 +81,8 @@ export function MarketData() {
 
         <Text
           type="sm"
-          className={`font-normal text-black opacity-80 ${
-            errors.findySource?.message ? '' : 'mt-[-1.1rem]'
-          } `}
+          className={`font-normal text-black opacity-80 ${errors.findySource?.message ? '' : 'mt-[-1.1rem]'
+            } `}
         >
           *Campos obrigatórios
         </Text>
@@ -94,6 +90,7 @@ export function MarketData() {
 
       <SurveyNav
         isSubmitting={isSubmitting}
+        disabledSubmitting={!fieldFilled}
         prevStep={prevStep}
         submitLabel="Continuar"
       />

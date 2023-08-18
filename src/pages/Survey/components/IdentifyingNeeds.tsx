@@ -19,6 +19,8 @@ import {
 } from '../../../services/api';
 import { SurveyPersonalData } from '../../../types/SurveyPersonalData';
 import { findyHelp, principalDifficulties } from '../data/data';
+import { SurveyIdentifyingNeedsData } from '../../../types/SurveyIdentifyingNeedsData';
+
 
 const schema = yup.object().shape({
   required_field: yup.array().min(1).of(yup.string().required()),
@@ -32,6 +34,7 @@ export function IdentifyingNeeds() {
 
   const [activeSubmit, setActiveSubmit] = useState(false);
   const [checkboxData, setCheckboxData] = useState(false);
+  const [wasTriggered, setWasTriggered] = useState(false);
 
   const { nextStep, prevStep } = useSteps();
 
@@ -40,20 +43,21 @@ export function IdentifyingNeeds() {
   const {
     register,
     handleSubmit,
-    //setValue,
-    //setFocus,
-
-    clearErrors,
+    getValues,
+    trigger,
     formState: { errors, isSubmitting },
-  } = useForm<any>({
+  } = useForm<SurveyIdentifyingNeedsData>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
-    mode: 'onBlur',
+    mode: 'onChange',
     defaultValues: {
       principalDifficulties: [],
       findyHelp: [],
     },
   });
+
+  const fieldsFilled = !!getValues("principalDifficulties").length &&
+    !!getValues("findyHelp").length
 
   const handleUpdateSurvey: SubmitHandler<any> = async (values, event) => {
     event?.preventDefault();
@@ -150,11 +154,15 @@ export function IdentifyingNeeds() {
                     className="h-[1.73rem] w-[1.7rem] accent-green-medium mbl:h-[1.9rem] mbl:w-[1.9rem]"
                     type="checkbox"
                     value={item}
-                    {...register('principalDifficulties')}
-                    onChange={(e) => {
-                      setCheckboxData(e.target.checked);
-                      clearErrors('principalDifficulties');
-                    }}
+                    {...register('principalDifficulties', {
+                      onChange: (event) => {
+                        setCheckboxData(event.target.checked);
+                        if (!wasTriggered && getValues("findyHelp").length) {
+                          trigger("principalDifficulties");
+                          setWasTriggered(true);
+                        }
+                      },
+                    })}
                   />
                 </div>
                 <label
@@ -203,11 +211,15 @@ export function IdentifyingNeeds() {
                     type="checkbox"
                     id={item}
                     value={item}
-                    {...register('findyHelp')}
-                    onChange={(e) => {
-                      setCheckboxData(e.target.checked);
-                      clearErrors('findyHelp');
-                    }}
+                    {...register('findyHelp', {
+                      onChange: (event) => {
+                        setCheckboxData(event.target.checked);
+                        if (!wasTriggered && getValues("principalDifficulties").length) {
+                          trigger("findyHelp");
+                          setWasTriggered(true);
+                        }
+                      }
+                    })}
                   />
                 </div>
                 <label htmlFor={item} className="text-[1.6rem] font-medium text-[#000]">
@@ -221,6 +233,7 @@ export function IdentifyingNeeds() {
 
       <SurveyNav
         isSubmitting={isSubmitting}
+        disabledSubmitting={!fieldsFilled}
         prevStep={prevStep}
         submitLabel="Salvar e sair"
       />

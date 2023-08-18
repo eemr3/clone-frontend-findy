@@ -1,7 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { SelectDBv2 } from '../../../components/forms/SelectDBv2';
-import { Button } from '../../../components/Button';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useSteps } from '../../../components/ProgressBar/context/useSteps';
@@ -22,7 +21,6 @@ const schema = yup
 export function ProfissionalArea() {
   const {
     surveyProfissionalArea,
-    setSurveyProfissionalArea,
     updatedProfissionalAreaData,
   } = useSurveyContext();
   const { nextStep, prevStep } = useSteps();
@@ -30,13 +28,13 @@ export function ProfissionalArea() {
   const {
     register,
     handleSubmit,
-    setValue,
+    getValues,
     setFocus,
     formState: { errors, isSubmitting },
   } = useForm<SurveyProfissionalArea>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
-    mode: 'onBlur',
+    mode: 'onTouched',
     defaultValues: {
       situation: surveyProfissionalArea ? surveyProfissionalArea.situation : '',
       area: surveyProfissionalArea ? surveyProfissionalArea.area : '',
@@ -44,16 +42,17 @@ export function ProfissionalArea() {
     },
   });
 
+  const fieldsFilled = !!getValues("situation").trim().length &&
+    !!getValues("area").trim().length &&
+    !!getValues("transition").trim().length
+
+
   const handleUpdateSurvey: SubmitHandler<SurveyProfissionalArea> = async (
     values,
     event,
   ) => {
     event?.preventDefault();
 
-    // Simulando a espera da API
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
-    // setSurveyProfissionalArea(values);
     updatedProfissionalAreaData(values);
 
     nextStep();
@@ -65,7 +64,7 @@ export function ProfissionalArea() {
 
   return (
     <form
-      className="mx-auto mt-[2rem] flex h-screen w-[66rem] flex-col items-center"
+      className="mx-auto mt-[2rem] flex min-h-screen w-[66rem] flex-col items-center"
       noValidate
       onSubmit={handleSubmit(handleUpdateSurvey)}
     >
@@ -109,7 +108,11 @@ export function ProfissionalArea() {
         />
       </fieldset>
 
-      <SurveyNav isSubmitting={isSubmitting} prevStep={prevStep} />
+      <SurveyNav
+        isSubmitting={isSubmitting}
+        disabledSubmitting={!fieldsFilled}
+        prevStep={prevStep}
+      />
     </form>
   );
 }

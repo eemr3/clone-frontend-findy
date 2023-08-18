@@ -185,7 +185,7 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, AutocompleteDBv2Prop
         </div>
       }
 
-      {!!error && (
+      {!!error && !openList && (
         <Text
           type="sm"
           className="text-red"

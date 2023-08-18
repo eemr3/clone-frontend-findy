@@ -66,7 +66,7 @@ export function PersonalData() {
   } = useForm<SurveyPersonalData>({
     resolver: yupResolver(schema),
     shouldFocusError: true,
-    mode: 'onBlur',
+    mode: 'onTouched',
     defaultValues: {
       name: surveyPersonalData ? surveyPersonalData.name : '',
       genre: surveyPersonalData ? surveyPersonalData.genre : '',
@@ -74,6 +74,10 @@ export function PersonalData() {
       residencePlace: surveyPersonalData ? surveyPersonalData.residencePlace : '',
     },
   });
+
+  const fieldsFilled = !!getValues("genre").trim().length &&
+    !!getValues("birth").toString().trim().length &&
+    !!getValues("residencePlace").trim().length
 
   function handleCitiesSuggestions(event: ChangeEvent<HTMLInputElement>) {
     const cityName = event.target.value;
@@ -109,9 +113,6 @@ export function PersonalData() {
 
   const handleUpdateSurvey: SubmitHandler<SurveyPersonalData> = async (values, event) => {
     event?.preventDefault();
-
-    // Simulando a espera da API
-    await new Promise((resolve) => setTimeout(resolve, 1000));
 
     updatedSurveyPersonalData(values);
 
@@ -191,7 +192,7 @@ export function PersonalData() {
 
       </fieldset>
 
-      <SurveyNav isSubmitting={isSubmitting} submitLabel="Continuar" />
+      <SurveyNav isSubmitting={isSubmitting} disabledSubmitting={!fieldsFilled} submitLabel="Continuar" />
     </form>
   );
 }
