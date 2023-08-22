@@ -17,9 +17,7 @@ import { PencilIcon } from '../../../components/icons/PencilIcon';
 import { InputDBv2 } from '../../../components/forms/InputDBv2';
 import { Input } from '../../../components/forms/Input';
 import { InputDBRefact } from '../../../components/forms/InputRefact';
-import { ProjectTest } from '../../Project/ProjectTest';
 import { Profile } from '../../Profile';
-import { ProfileTest } from '../../Profile/ProfileTest';
 
 // import mulherPagePrincipal from '../../../assets/mulher-page-principal.svg';
 // import mulherPagePrincipal3 from '../../../assets/mulher-page-principal3.svg';
@@ -80,39 +78,27 @@ export function Home() {
 
   return (
     <>
-<InputDB
-    icon={<PencilIcon className={'mbl:max-w-[2rem]'} />}
-    label="Nome completo"
-    placeholder="Nome"
-    fieldSetClassName={'even:ml-auto'}
-    fieldSetBG={`${
-      candidateUser?.name != '' || undefined ? 'bg-[#d3d3d3!important]' : ''
-    }`}
-    error={'erros'}
-    
-/>
-
-<InputDBv2
-  label="Nome completo"
-  requiredField
-  placeholder="Digite seu nome"
-  maxLength={70}
-  error='err'
-/>
-
+    <input
+      type="email"
+      placeholder="Email"
+      className={
+          false
+            ? 'h-[4.7rem] w-[100%] rounded-[0.8rem] border border-red pl-[2.06rem] text-[2.4rem] placeholder-grey-#2  mbl:text-[1.3rem] '
+            : 'mb-[1.49rem] h-[4.7rem] w-[100%] rounded-[0.8rem] border border-grey-#2 pl-[2.06rem] text-[2.4rem] text-grey-#2 mbl:mb-[1.5rem]  mbl:h-[4.5rem] mbl:w-[90%] mbl:text-[1.3rem] '
+      }
+    />
 <InputDBRefact  
-    icon={<PencilIcon className={'mbl:max-w-[2rem]'} />}
+    icon={PencilIcon}
     label="Nome completo"
     name="nameCandidate"
-    type='text'
-    maxLength={2}
-    maskType='PHONE'
+    type="text"
+    disabled={false}
+    readOnly
+    isFilled={false}
+    inputStyle="primary"
     placeholder="Nome"
-    isWrittenWithDBData={!!candidateUser?.name}
     error={'erros'}
   />
-<ProjectTest></ProjectTest>
-<ProfileTest></ProfileTest>
 </>
     /*
     <main className="flex w-full flex-col bg-blue-dark ">

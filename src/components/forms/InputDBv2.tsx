@@ -77,7 +77,6 @@ const InputBase: ForwardRefRenderFunction<HTMLInputElement, InputDBv2Props> = (
 
   function updateInputTypeDate() {
     if (type == "date" && inputRef.current) {
-
       if (isDate(inputRef.current.value)) {
         const brDate = formatDateBR(new Date(inputRef.current.value));
 

@@ -21,6 +21,7 @@
     "react-router-dom": "^6.9.0",
     "react-toastify": "^9.1.2",
     "swiper": "^9.2.0",
+    "tailwind-variants": "^0.1.13",
     "tailwindcss-box-shadow": "^2.0.1",
     "x2js": "^3.4.4",
     "yup": "^1.0.2"
