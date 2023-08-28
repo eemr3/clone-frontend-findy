@@ -80,6 +80,6 @@ export function Home() {
       </Menu.Root>
       <Landing />
       <FooterLand />
-    </main>
+    </main> 
   );
 }
