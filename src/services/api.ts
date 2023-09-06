@@ -7,8 +7,8 @@ import { ResonseConfirmationAccount } from '../types/ConfirmationAccount';
 /* const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjIzLCJuYW1lIjoiRGFyY2lvIENhcnZhbGhvIiwiZW1haWwiOiJkYXJjaW8uY2FydmFsaG8uZGV2QGdtYWlsLmNvbSIsInJvbGVzIjoiY2FuZGlkYXRlIiwiaWF0IjoxNjgxNDc5ODY4LCJleHAiOjE2ODE0ODc4Njh9.BP4yluPsDNGFGzMYn6Wuv6JQArxTnbiDJA4PU_-l3fQ"; */
 
 export const api = axios.create({
-  baseURL: 'http://localhost:3001',
-  // baseURL: 'https://findy-api.onrender.com',
+  // baseURL: 'http://localhost:3001',
+  baseURL: 'https://app-api-e3pk.onrender.com',
   //baseURL: 'http://20.169.167.3:3001' // 'http://52.255.206.198:3001',
 });
 
