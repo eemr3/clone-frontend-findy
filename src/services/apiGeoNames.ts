@@ -17,7 +17,7 @@ interface PostalCodes {
 }
 
 const apiCities = axios.create({
-  baseURL: 'https://api.geonames.org',
+  baseURL: 'http://api.geonames.org',
   headers: {
     'Content-Type': 'application/json',
   },
