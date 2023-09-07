@@ -97,9 +97,9 @@ export function IdentifyingNeeds() {
       });
 
       // setFinishiedSurvey(true);
-      localStorage.clear();
       setTimeout(() => {
         navigate('/dashboard');
+        localStorage.clear();
       }, 2000);
     } catch (error) {
       console.log(error);
