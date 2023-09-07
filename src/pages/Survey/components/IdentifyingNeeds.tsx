@@ -96,8 +96,8 @@ export function IdentifyingNeeds() {
         completeSurvey: true,
       });
 
-      // setFinishiedSurvey(true);
       setTimeout(() => {
+        setFinishiedSurvey(true);
         navigate('/dashboard');
         localStorage.clear();
       }, 2000);
