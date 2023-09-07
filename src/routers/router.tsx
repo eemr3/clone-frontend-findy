@@ -78,8 +78,7 @@ export const AppRouter = () => {
   const CanAccessSurvey = ({ children }: RouteElementProps) => {
     if (!candidateUser) return <Navigate to="/login" />;
 
-    if (candidateUser.completeSurvey || finishiedSurvey)
-      return <Navigate to="/dashboard" />;
+    if (candidateUser.completeSurvey) return <Navigate to="/dashboard" />;
 
     return children;
   };
