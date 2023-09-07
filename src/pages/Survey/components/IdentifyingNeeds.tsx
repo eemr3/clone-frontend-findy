@@ -21,7 +21,6 @@ import { SurveyPersonalData } from '../../../types/SurveyPersonalData';
 import { findyHelp, principalDifficulties } from '../data/data';
 import { SurveyIdentifyingNeedsData } from '../../../types/SurveyIdentifyingNeedsData';
 
-
 const schema = yup.object().shape({
   required_field: yup.array().min(1).of(yup.string().required()),
   required_field2: yup.array().min(1).of(yup.string().required()),
@@ -56,8 +55,8 @@ export function IdentifyingNeeds() {
     },
   });
 
-  const fieldsFilled = !!getValues("principalDifficulties").length &&
-    !!getValues("findyHelp").length
+  const fieldsFilled =
+    !!getValues('principalDifficulties').length && !!getValues('findyHelp').length;
 
   const handleUpdateSurvey: SubmitHandler<any> = async (values, event) => {
     event?.preventDefault();
@@ -98,8 +97,10 @@ export function IdentifyingNeeds() {
       });
 
       setFinishiedSurvey(true);
-      navigate('/dashboard');
       localStorage.clear();
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
     } catch (error) {
       console.log(error);
     }
@@ -157,8 +158,8 @@ export function IdentifyingNeeds() {
                     {...register('principalDifficulties', {
                       onChange: (event) => {
                         setCheckboxData(event.target.checked);
-                        if (!wasTriggered && getValues("findyHelp").length) {
-                          trigger("principalDifficulties");
+                        if (!wasTriggered && getValues('findyHelp').length) {
+                          trigger('principalDifficulties');
                           setWasTriggered(true);
                         }
                       },
@@ -214,11 +215,11 @@ export function IdentifyingNeeds() {
                     {...register('findyHelp', {
                       onChange: (event) => {
                         setCheckboxData(event.target.checked);
-                        if (!wasTriggered && getValues("principalDifficulties").length) {
-                          trigger("findyHelp");
+                        if (!wasTriggered && getValues('principalDifficulties').length) {
+                          trigger('findyHelp');
                           setWasTriggered(true);
                         }
-                      }
+                      },
                     })}
                   />
                 </div>
