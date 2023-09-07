@@ -96,7 +96,7 @@ export function IdentifyingNeeds() {
         completeSurvey: true,
       });
 
-      setFinishiedSurvey(true);
+      // setFinishiedSurvey(true);
       localStorage.clear();
       setTimeout(() => {
         navigate('/dashboard');
